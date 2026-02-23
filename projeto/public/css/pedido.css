@@ -1,0 +1,67 @@
+/* pedido.css - estilo clean e moderno */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 30px 25px;
+    width: 400px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+form {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+input[type="submit"] {
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(90deg, #6c63ff, #3b3bbf);
+    transition: all 0.3s;
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(90deg, #5a52e6, #2e2ea0);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Responsividade */
+@media (max-width: 450px) {
+    .container {
+        width: 95%;
+        padding: 25px 15px;
+    }
+
+    p {
+        font-size: 13px;
+    }
+}

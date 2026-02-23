@@ -1,0 +1,79 @@
+/* index.css - estilo clean e moderno */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+}
+
+fieldset {
+    width: 350px;
+    padding: 40px 30px;
+    border: none;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form .form-group {
+    margin-bottom: 20px;
+}
+
+form label {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+form input[type="email"],
+form input[type="password"] {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+form input[type="email"]:focus,
+form input[type="password"]:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
+    outline: none;
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+form input[type="submit"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #fff;
+    background: linear-gradient(90deg, #6c63ff, #3b3bbf);
+}
+
+form input[type="submit"]:hover {
+    background: linear-gradient(90deg, #5a52e6, #2e2ea0);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+form input[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}

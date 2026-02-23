@@ -1,0 +1,69 @@
+/* indexbanco.css - estilo clean e moderno */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+}
+
+form {
+    width: 360px;
+    padding: 40px 30px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: 600;
+    color: #555;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+input:focus,
+select:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
+    outline: none;
+}
+
+input[type="submit"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(90deg, #6c63ff, #3b3bbf);
+    transition: all 0.3s;
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(90deg, #5a52e6, #2e2ea0);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Responsividade */
+@media (max-width: 400px) {
+    form {
+        width: 90%;
+        padding: 30px 20px;
+    }
+}

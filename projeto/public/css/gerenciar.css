@@ -1,0 +1,160 @@
+/* gerenciar.css - estilo clean e moderno */
+
+body {
+margin: 0;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+min-height: 100vh;
+}
+
+header {
+background: #6c63ff;
+padding: 15px 30px;
+color: #fff;
+font-weight: bold;
+font-size: 20px;
+cursor: pointer;
+text-align: left;
+}
+
+header .logo {
+display: inline-block;
+}
+
+main {
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 20px;
+}
+
+.form-fieldset {
+width: 400px; /* levemente maior para caber os campos */
+max-width: 90%;
+padding: 25px;
+border-radius: 15px;
+background-color: #ffffff;
+box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+margin-bottom: 20px;
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+label {
+font-weight: 600;
+color: #555;
+font-size: 14px;
+}
+
+input[type="text"],
+input[type="email"] {
+width: 100%;
+box-sizing: border-box;
+padding: 12px;
+border-radius: 8px;
+border: 1px solid #ddd;
+font-size: 14px;
+transition: border 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+border-color: #6c63ff;
+box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
+outline: none;
+}
+
+input[type="submit"] {
+width: 100%;
+padding: 12px;
+border-radius: 8px;
+border: none;
+font-weight: bold;
+font-size: 15px;
+cursor: pointer;
+color: #fff;
+background: linear-gradient(90deg, #6c63ff, #3b3bbf);
+transition: all 0.3s;
+}
+
+input[type="submit"]:hover {
+background: linear-gradient(90deg, #5a52e6, #2e2ea0);
+transform: translateY(-2px);
+box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.add-pedido-btn {
+width: 400px;
+max-width: 90%;
+padding: 12px;
+margin-bottom: 20px;
+border-radius: 8px;
+border: none;
+font-weight: bold;
+font-size: 15px;
+cursor: pointer;
+color: #fff;
+background: linear-gradient(90deg, #2196F3, #0b7dda);
+transition: all 0.3s;
+}
+
+.add-pedido-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+table {
+border-collapse: collapse;
+width: 90%;
+margin-bottom: 40px;
+background-color: #e0e7ff; /* fundo mais escuro */
+box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+border-radius: 10px;
+overflow: hidden;
+}
+
+th, td {
+border-bottom: 1px solid #ddd;
+padding: 10px;
+text-align: center;
+}
+
+th {
+background-color: #c3cfe2; /* cabeçalho azul claro */
+font-weight: 600;
+color: #6c63ff; /* texto azul do site */
+}
+
+tr:last-child td {
+border-bottom: none;
+}
+
+/* Responsividade */
+@media (max-width: 400px) {
+.form-fieldset, .add-pedido-btn {
+width: 90%;
+padding: 20px;
+}
+table {
+width: 100%;
+}
+}
+
+.add-pedido-btn {
+width: 400px; /* mesmo que o fieldset */
+max-width: 90%; /* mesma responsividade */
+padding: 12px;
+margin: 0 0 20px 0; /* só margem inferior */
+border-radius: 8px;
+border: none;
+font-weight: bold;
+font-size: 15px;
+cursor: pointer;
+color: #fff;
+background: linear-gradient(90deg, #2196F3, #0b7dda);
+transition: all 0.3s;
+}
+.add-pedido-btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
