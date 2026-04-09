@@ -10,9 +10,9 @@ TECNOLOGIAS UTILIZADAS:
 
 BackEnd: 
 - PHP 
-- PostgreSQL 
+- MySQL 
 - PDO (PHP Data Objects) 
-- Extensão pgcrypto
+
 
 FrontEnd: 
 - HTML5 
@@ -22,20 +22,18 @@ FrontEnd:
 Ambiente de Desenvolvimento: 
 - Servidor local (XAMPP, WAMP ou similar) 
 -Apache 
-- PostgreSQL
   
 INSTRUÇÕES DE USO
 1. Configuração do Ambiente:
 - Instalar um servidor local (XAMPP, WAMP ou similar).
-- Instalar e configurar o PostgreSQL.
+- Instalar e configurar o WampServer.
 - Criar o banco de dados do projeto.
-- Ativar a extensão pgcrypto no PostgreSQL.
 2. Configuração da Conexão:
 - Acessar o arquivo de conexão com o banco de dados.
 - Inserir as credenciais corretas (host, banco, usuário e senha).
 3. Execução:
 - Colocar a pasta do projeto dentro do diretório do servidor (ex:htdocs).
-- Iniciar o Apache e o PostgreSQL.
+- Iniciar o Apache e o Wamp (Ou servidor escolhido).
 - Acessar no navegador: http://localhost/Focus1.8/
 4. Utilização:
 - Realizar login no sistema.
