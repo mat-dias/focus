@@ -70,7 +70,7 @@
 
       <div id="alerta"></div>
 
-      <form id="formCadastro" enctype="multipart/form-data" novalidate>
+      <form id="formCadastro" enctype="multipart/form-data" novalidate >
 
         <!-- Foto -->
         <div class="foto-area">
@@ -166,7 +166,7 @@
         <div class="field">
           <label for="confirma-senha">Confirmar Senha</label>
           <div class="field-wrap">
-            <input type="password" id="confirma-senha" placeholder="Repita sua senha" minlength="6" required
+            <input type="password" id="confirma-senha" name="confirmar" placeholder="Repita sua senha" minlength="6" required
               autocomplete="new-password" />
             <button type="button" class="field-toggle" onclick="toggleSenha('confirma-senha', this)"
               aria-label="Mostrar senha">

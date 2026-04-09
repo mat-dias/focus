@@ -1,9 +1,9 @@
 <?php
-session_start();
+session_start(); //corrigido
 header('Content-Type: application/json; charset=utf-8');
 
-// Carrega classe de manipulação do banco PostgreSQL
-require_once __DIR__ . '/PostgreSQLClass.php';
+// Carrega classe de manipulação do banco MySQL
+require_once __DIR__ . 'conexao.php';
 
 // Rejeita requisições que não sejam do tipo POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Captura e limpa dados de login enviados
-$email = trim($_POST['username'] ?? '');
+$email = trim($_POST['email'] ?? '');
 $senha = trim($_POST['password'] ?? '');
 
 // Verifica se os campos obrigatórios foram preenchidos
@@ -24,67 +24,45 @@ if (empty($email) || empty($senha)) {
 }
 
 try {
+    $sql = "SELECT id, name, email, password, tipo FROM user WHERE email = :email LIMIT 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(":email", $email);
+    $stmt->execute();
 
-    $pgsql = new PostgreSQLClass();
+    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Busca dados do usuário pelo e-mail fornecido
-    $usuario = $pgsql->search(
-    "SELECT id_usuario, nome_usuario, senha_usuario
-     FROM usuario
-     WHERE email_usuario = :email
-     LIMIT 1",
-    [":email" => $email],
-    true
-);
-
-    // Retorna erro caso e-mail não seja encontrado
-    if (!$usuario) {
+    /* 🔐 VALIDAÇÃO DE SENHA — AQUI */
+    if (!$usuario || !password_verify($senha, $usuario["password"])) {
         http_response_code(401);
-        echo json_encode(['sucesso' => false, 'mensagem' => 'Usuário ou senha inválidos.']);
+        echo json_encode([
+            "sucesso" => false,
+            "mensagem" => "Usuário ou senha inválidos"
+        ]);
         exit;
     }
 
-    // Compara senha enviada com o hash criptografado
-    $senhaValida = $pgsql->search(
-    "SELECT senha_usuario = crypt(:senha, senha_usuario) AS valido
-     FROM usuario
-     WHERE id_usuario = :id",
-    [
-        ":senha" => $senha,
-        ":id"    => $usuario->id_usuario
-    ],
-    true
-);
-
-    // Valida se a senha está correta
-    if (!$senhaValida->valido) {
-        http_response_code(401);
-        echo json_encode(['sucesso' => false, 'mensagem' => 'Usuário ou senha inválidos.']);
-        exit;
-    }
-
-    // Gera novo ID de sessão por segurança
     session_regenerate_id(true);
 
-    // Salva dados essenciais do usuário na sessão
-    $_SESSION['id_usuario']   = $usuario->id_usuario;
-    $_SESSION['email_usuario'] = $usuario->nome_usuario; //email = nome (corrigir assim que o banco de dados estiver pronto)
-    $_SESSION['perfil_usuario'] = $usuario->perfil_usuario;
+    /* SESSÃO */
+    $_SESSION["id"]   = $usuario["id"];
+    $_SESSION["nome"] = $usuario["name"]; // corrigido
+    $_SESSION["tipo"] = $usuario["tipo"];
 
-    // Define destino baseado no nível de acesso
-    $redirect = $usuario->perfil_usuario === 'admin'
-    ? '../admin.php'
-    : '../dashboard.php';
+    /* REDIRECIONAMENTO */
+    $redirect = ($usuario["tipo"] === "admin")
+        ? "../admin/dashboard.php"
+        : "../dashboard/dashboard.php"; // corrigido
 
-    // Retorna sucesso e URL de redirecionamento
     echo json_encode([
-        'sucesso'  => true,
-        'nome'     => $usuario->nome_usuario,
-        'redirect' => $redirect
+        "sucesso" => true,
+        "nome" => $usuario["name"], // corrigido
+        "redirect" => $redirect
     ]);
-
 } catch (PDOException $e) {
-    // Trata falhas de conexão ou erros SQL
+
     http_response_code(500);
-    echo json_encode(['sucesso' => false, 'mensagem' => 'Erro interno.']);
+    echo json_encode([
+        "sucesso" => false,
+        "mensagem" => "Erro Eterno."
+    ]);
 }

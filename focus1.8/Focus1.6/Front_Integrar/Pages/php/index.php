@@ -29,6 +29,6 @@
 
 </div>
 
-<script src="script_ia.js"></script>
+<script src="../js/script_ia.js"></script>
 </body>
 </html>

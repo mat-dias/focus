@@ -1,7 +1,7 @@
-<?php
+<?php //Corrigido
 header('Content-Type: application/json; charset=utf-8');
 
-require_once __DIR__ . '/PostgreSQLClass.php';
+require_once __DIR__ . '/Focus.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -25,22 +25,20 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 try {
 
-    $db = new PostgreSQLClass();
+    $db = new MySQLClass();
 
-    // Buscar usuário
-
+    /* BUSCAR USUÁRIO PELO EMAIL */
     $usuario = $db->search(
-    "SELECT id_usuario 
-     FROM usuario
-     WHERE reset_token = ?
-       AND reset_token_exp > CURRENT_TIMESTAMP
-     LIMIT 1",
-    [$token],
-    true
+        "SELECT id, name 
+         FROM user
+         WHERE email = ?
+         LIMIT 1",
+        [$email],
+        true
     );
 
-    // Sempre retorna mensagem genérica
-    if (!$cliente) {
+    // Sempre resposta genérica (segurança)
+    if (!$usuario) {
         echo json_encode([
             'sucesso'  => true,
             'mensagem' => 'Se este e-mail estiver cadastrado, você receberá um link em breve.'
@@ -48,25 +46,23 @@ try {
         exit;
     }
 
-    $id   = $cliente['id'];
-    $nome = $cliente['nome'];
+    $id   = $usuario->id;
+    $nome = $usuario->name;
 
-    // Gerar token
-
-    $token = bin2hex(random_bytes(32)); // 64 chars
+    /* GERAR TOKEN */
+    $token = bin2hex(random_bytes(32));
     $expiracao = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
+    /* SALVAR TOKEN */
     $db->exec(
-    "UPDATE public.usuario
-     SET senha_usuario = ?,
-         reset_token = NULL,
-         reset_token_exp = NULL
-     WHERE id_usuario = ?",
-    [$senhaHash, $id]
-);
+        "UPDATE user
+         SET reset_token = ?,
+             reset_token_exp = ?
+         WHERE id = ?",
+        [$token, $expiracao, $id]
+    );
 
-    // Enviar e-mail
-
+    /* GERAR LINK */
     $link = "https://tccarandu.free.nf/nova-senha.html?token=" . urlencode($token);
 
     $assunto = "Recuperação de senha — Arandu";

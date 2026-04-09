@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     try {
       /* Envia dados para o processamento em PHP */
-      const res = await fetch('cadastro.php', { method: 'POST', body: new FormData(this) });
+      const res = await fetch('php/cadastro.php', { method: 'POST', body: new FormData(this) });
       const data = await res.json();
 
       if (data.sucesso) {

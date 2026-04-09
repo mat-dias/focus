@@ -1,7 +1,7 @@
-<?php
+<?php //Corrigido
 header('Content-Type: application/json; charset=utf-8');
 
-require_once __DIR__ . 'PostgreSQLClass.php';
+require_once __DIR__ . '/Focus.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -26,13 +26,12 @@ if (empty($token) || strlen($senha) < 6) {
 
 try {
 
-    $db = new PostgreSQLClass();
+    $db = new MySQLClass();
 
-    // Verificar token válido
-
-    $cliente = $db->search(
+    /* BUSCAR USUÁRIO PELO TOKEN */
+    $usuario = $db->search(
         "SELECT id 
-         FROM usuario
+         FROM user
          WHERE reset_token = ?
          AND reset_token_exp > NOW()
          LIMIT 1",
@@ -44,28 +43,29 @@ try {
         http_response_code(400);
         echo json_encode([
             'sucesso'  => false,
-            'mensagem' => 'Link inválido ou expirado. Solicite um novo.'
+            'mensagem' => 'Link inválido ou expirado.'
         ]);
         exit;
     }
 
-    $id = $usuario['id'];
+    $id = $usuario->id;
 
-    // Atualizar senha
+    /* GERAR HASH NOVO */
+    $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-    $senhaHash = password_hash($senha, PASSWORD_BCRYPT);
-
+    /* ATUALIZAR SENHA */
     $db->exec(
-    "UPDATE usuario
-     SET reset_token = ?,
-         reset_token_exp = CURRENT_TIMESTAMP + INTERVAL '1 hour'
-     WHERE id_usuario = ?",
-    [$token, $id]
+        "UPDATE user
+         SET password = ?,
+             reset_token = NULL,
+             reset_token_exp = NULL
+         WHERE id = ?",
+        [$senhaHash, $id]
     );
 
     echo json_encode([
         'sucesso'  => true,
-        'mensagem' => 'Senha alterada com sucesso! Redirecionando para o login...'
+        'mensagem' => 'Senha alterada com sucesso!'
     ]);
 
 } catch (Exception $e) {

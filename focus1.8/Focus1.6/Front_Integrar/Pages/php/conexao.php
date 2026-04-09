@@ -1,42 +1,27 @@
 <?php
+//Conexao MySQL
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db   = "focus";
 
-//Configuração e conexão com PostgreSQL
-
-define('DB_HOST', 'localhost');
-define('DB_PORT', '5432');
-define('DB_NAME', 'dbfocus');
-define('DB_USER', 'postgres');
-define('DB_PASS', '123');
-define('DB_CHARSET', 'utf8');
-
-function getConexao(): PDO
-{
-    $dsn = "pgsql:host=" . DB_HOST .
-        ";port=" . DB_PORT .
-        ";dbname=" . DB_NAME;
-
+function getConexao() {
+    global $host, $user, $pass, $db;
 
     try {
-        $conn = new PDO($dsn, DB_USER, DB_PASS);
+        $conn = new PDO(
+            "mysql:host=$host;dbname=$db;charset=utf8mb4",
+            $user,
+            $pass
+        );
 
-        // Tratamento robusto de erros
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Retorno como objeto (mais limpo para APIs)
         $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-
-        // Encoding
-        $conn->exec("SET client_encoding TO '" . DB_CHARSET . "'");
+        $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         return $conn;
-    } catch (PDOException $e) {
 
-        error_log("Erro de conexão: " . $e->getMessage());
-        http_response_code(500);
-
-        die(json_encode([
-            'sucesso' => false,
-            'mensagem' => 'Erro interno no servidor. Tente novamente mais tarde.'
-        ]));
+    } catch (PDOException $erro) {
+        die("Erro de conexão: " . $erro->getMessage());
     }
 }

@@ -25,7 +25,7 @@ function addMessage(role, text, options = {}) {
     }
     if (options.typing) {
         p.dataset.typing = "true";
-    }
+    }  
 
     p.innerHTML = text;
     box.appendChild(p);
