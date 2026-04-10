@@ -37,7 +37,7 @@ try {
         true
     );
 
-    // Sempre resposta genérica (segurança)
+    // Sempre resposta genérica
     if (!$usuario) {
         echo json_encode([
             'sucesso'  => true,

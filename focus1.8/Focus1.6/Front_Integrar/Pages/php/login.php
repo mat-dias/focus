@@ -1,9 +1,10 @@
 <?php
+ob_start();
 session_start(); //corrigido
 header('Content-Type: application/json; charset=utf-8');
 
 // Carrega classe do banco MySQL
-require_once __DIR__ . 'conexao.php';
+require_once __DIR__ . "/MySQLClass.php";
 
 // Rejeita requisições que não sejam do tipo POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -24,18 +25,16 @@ if (empty($email) || empty($senha)) {
 }
 
 try {
-    $sql = "SELECT id, name, email, password, tipo FROM user WHERE email = :email LIMIT 1";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(":email", $email);
-    $stmt->execute();
+    $db = new MySQLClass();
 
-    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+    $sql = "SELECT id, name, email, password, role FROM users WHERE email = :email LIMIT 1";
+    $usuario = $db->search($sql, [":email" => $email], true);
 
-    /*VALIDAÇÃO DE SENHA */
-    if (!$usuario || !password_verify($senha, $usuario["password"])) {
+    // 1. VALIDAÇÃO DE SENHA
+    if (!$usuario || !password_verify($senha, $usuario->password)) {
         http_response_code(401);
         echo json_encode([
-            "sucesso" => false,
+            "sucesso" => false, 
             "mensagem" => "Usuário ou senha inválidos"
         ]);
         exit;
@@ -43,26 +42,31 @@ try {
 
     session_regenerate_id(true);
 
-    /* SESSÃO */
-    $_SESSION["id"] = $usuario["id"];
-    $_SESSION["nome"] = $usuario["name"];
-    $_SESSION["tipo"] = $usuario["tipo"];
+    // SESSÃO
+    $_SESSION["id"]   = $usuario->id;
+    $_SESSION["nome"] = $usuario->name;
+    $_SESSION["role"] = $usuario->role;
 
-    /* REDIRECIONAMENTO */
-    $redirect = ($usuario["tipo"] === "admin")
-        ? "../admin/dashboard.php"
-        : "../dashboard/dashboard.php";
+    // REDIRECIONAMENTO
+    // Verifique se os nomes das pastas no seu PC são exatamente esses
+    $redirect = ($usuario->role === "admin")
+        ? "../adm/dashboard.php"
+        : "/focus1.8/Focus1.6/Front_Integrar/Pages/Dashboard/Dashboard.php";
 
     echo json_encode([
         "sucesso" => true,
-        "nome" => $usuario["name"],
+        "nome" => $usuario->name,
         "redirect" => $redirect
     ]);
-} catch (PDOException $e) {
+    exit;
 
+} catch (PDOException $e) {
+    // Log do erro para Dev, resposta genérica para o usuário
+    error_log($e->getMessage());
     http_response_code(500);
     echo json_encode([
         "sucesso" => false,
-        "mensagem" => "Erro Eterno."
+        "mensagem" => "Erro interno no servidor."
     ]);
 }
+?>

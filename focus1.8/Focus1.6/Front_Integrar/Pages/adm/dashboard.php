@@ -1,7 +1,8 @@
 <?php
 session_start();//Exemplo para corrigir depois (nada aqui faz sentido, apenas usar de base)
 
-require_once __DIR__ . "/classes/PostgreSQLClass.php";
+require_once __DIR__ . "../php/MySQLClass.php";
+require_once __DIR__ ."/../Functions/auth.php"; //direcionamento manter assim
 
 /* ===============================
    VERIFICA LOGIN
