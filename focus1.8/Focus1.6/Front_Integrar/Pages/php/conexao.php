@@ -3,9 +3,10 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "focus";
+$db = "focus";
 
-function getConexao() {
+function getConexao()
+{
     global $host, $user, $pass, $db;
 
     try {

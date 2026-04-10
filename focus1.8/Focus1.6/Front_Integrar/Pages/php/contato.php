@@ -6,7 +6,7 @@ require_once __DIR__ . '/Focus.php';
 $db = new MySQLClass();
 
 $metodo = $_SERVER['REQUEST_METHOD'];
-$acao   = $_GET['acao']   ?? '';
+$acao = $_GET['acao'] ?? '';
 $listar = $_GET['listar'] ?? '';
 
 /*LISTAR CHAMADOS*/
@@ -29,7 +29,7 @@ if ($metodo === 'GET' && $listar === '1') {
 /*ATUALIZAR STATUS (ADMIN)*/
 if ($metodo === 'POST' && $acao === 'status') {
 
-    $id     = intval($_POST['id'] ?? 0);
+    $id = intval($_POST['id'] ?? 0);
     $status = trim($_POST['status'] ?? '');
 
     $validos = ['aberto', 'andamento', 'resolvido'];
@@ -50,7 +50,7 @@ if ($metodo === 'POST' && $acao === 'status') {
     );
 
     echo json_encode([
-        'sucesso'  => $linhas > 0,
+        'sucesso' => $linhas > 0,
         'mensagem' => $linhas > 0 ? 'Status atualizado.' : 'Chamado não encontrado.'
     ]);
     exit;
@@ -67,21 +67,25 @@ if ($metodo !== 'POST') {
 
 /*NOVO CHAMADO*/
 
-$nome       = trim($_POST['nome'] ?? '');
-$email      = trim($_POST['email'] ?? '');
-$categoria  = trim($_POST['categoria'] ?? '');
-$assunto    = trim($_POST['assunto'] ?? '');
-$mensagem   = trim($_POST['mensagem'] ?? '');
+$nome = trim($_POST['nome'] ?? '');
+$email = trim($_POST['email'] ?? '');
+$categoria = trim($_POST['categoria'] ?? '');
+$assunto = trim($_POST['assunto'] ?? '');
+$mensagem = trim($_POST['mensagem'] ?? '');
 $prioridade = trim($_POST['prioridade'] ?? 'baixa');
-$ip         = $_SERVER['REMOTE_ADDR'] ?? null;
+$ip = $_SERVER['REMOTE_ADDR'] ?? null;
 
 /* VALIDAÇÕES */
 $erros = [];
 
-if (strlen($nome) < 2)       $erros[] = 'Nome muito curto.';
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $erros[] = 'E-mail inválido.';
-if (strlen($assunto) < 5)    $erros[] = 'Assunto muito curto.';
-if (strlen($mensagem) < 10)  $erros[] = 'Mensagem muito curta.';
+if (strlen($nome) < 2)
+    $erros[] = 'Nome muito curto.';
+if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+    $erros[] = 'E-mail inválido.';
+if (strlen($assunto) < 5)
+    $erros[] = 'Assunto muito curto.';
+if (strlen($mensagem) < 10)
+    $erros[] = 'Mensagem muito curta.';
 
 if (!empty($erros)) {
     http_response_code(422);

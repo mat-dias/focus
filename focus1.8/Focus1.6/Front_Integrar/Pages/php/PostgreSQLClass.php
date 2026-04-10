@@ -1,5 +1,5 @@
 <?php
-
+//Reformular essa pagina inteira com MySQL
 require_once __DIR__ . "/conexao.php"; 
 
 class PostgreSQLClass {

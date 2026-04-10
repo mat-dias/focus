@@ -1,8 +1,8 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-// Correção do caminho do require (adicionada a barra)
-require_once __DIR__ . "/MySQLClass.php"; 
+// caminho da classe MySQL
+require_once __DIR__ . "/MySQLClass.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405);
@@ -10,22 +10,26 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit();
 }
 
-/* DADOS - Capturados via name="" do seu HTML */
-$nome         = trim($_POST["nome"] ?? "");
-$sobrenome    = trim($_POST["sobrenome"] ?? "");
-$dataNasc     = trim($_POST["data_nascimento"] ?? "");
-$genero       = trim($_POST["genero"] ?? "");
-$telefone     = preg_replace('/\D/', '', $_POST["telefone"] ?? "");
-$email        = trim($_POST["email"] ?? "");
-$senha        = $_POST["senha"] ?? "";
-$confirmar    = $_POST["confirmar"] ?? ""; // Bate com name="confirmar"
+/* DADOS */
+$nome = trim($_POST["nome"] ?? "");
+$sobrenome = trim($_POST["sobrenome"] ?? "");
+$dataNasc = trim($_POST["data_nascimento"] ?? "");
+$genero = trim($_POST["genero"] ?? "");
+$telefone = preg_replace('/\D/', '', $_POST["telefone"] ?? "");
+$email = trim($_POST["email"] ?? "");
+$senha = $_POST["senha"] ?? "";
+$confirmar = $_POST["confirmar"] ?? "";
 
 /* VALIDAÇÕES BÁSICAS */
 $erros = [];
-if ($nome === "" || $sobrenome === "") $erros[] = "Nome e sobrenome são obrigatórios.";
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $erros[] = "E-mail inválido.";
-if (strlen($senha) < 6) $erros[] = "A senha deve ter ao menos 6 caracteres.";
-if ($senha !== $confirmar) $erros[] = "As senhas não coincidem.";
+if ($nome === "" || $sobrenome === "")
+    $erros[] = "Nome e sobrenome são obrigatórios.";
+if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+    $erros[] = "E-mail inválido.";
+if (strlen($senha) < 6)
+    $erros[] = "A senha deve ter ao menos 6 caracteres.";
+if ($senha !== $confirmar)
+    $erros[] = "As senhas não coincidem.";
 
 if (!empty($erros)) {
     http_response_code(422);
@@ -38,31 +42,30 @@ $avatar = null;
 if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK) {
     $ext = strtolower(pathinfo($_FILES["foto"]["name"], PATHINFO_EXTENSION));
     $pasta = __DIR__ . "/uploads/fotos/";
-    if (!is_dir($pasta)) mkdir($pasta, 0755, true);
-    
+    if (!is_dir($pasta))
+        mkdir($pasta, 0755, true);
+
     $avatar = "user_" . uniqid() . "." . $ext;
     move_uploaded_file($_FILES["foto"]["tmp_name"], $pasta . $avatar);
 }
 
-/* INSERT ALINHADO COM A SUA TABELA */
 try {
     $db = new MySQLClass();
 
-    // Montado exatamente na ordem das colunas que você passou
     $sql = "INSERT INTO users 
             (name, email, password, role, phone, gender, birth_date, avatar, created_at, updated_at)
             VALUES 
             (:name, :email, :password, :role, :phone, :gender, :birth_date, :avatar, NOW(), NOW())";
 
     $db->exec($sql, [
-        ":name"       => $nome . " " . $sobrenome,
-        ":email"      => $email,
-        ":password"   => password_hash($senha, PASSWORD_DEFAULT),
-        ":role"       => 'user', // Valor para a coluna 'role'
-        ":phone"      => $telefone,
-        ":gender"     => $genero,
+        ":name" => $nome . " " . $sobrenome,
+        ":email" => $email,
+        ":password" => password_hash($senha, PASSWORD_DEFAULT),
+        ":role" => 'user', // Valor para a coluna 'role'
+        ":phone" => $telefone,
+        ":gender" => $genero,
         ":birth_date" => $dataNasc,
-        ":avatar"     => $avatar
+        ":avatar" => $avatar
     ]);
 
     echo json_encode(["sucesso" => true, "mensagem" => "Cadastro realizado com sucesso!"]);

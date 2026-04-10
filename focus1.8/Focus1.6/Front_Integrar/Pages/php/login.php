@@ -2,7 +2,7 @@
 session_start(); //corrigido
 header('Content-Type: application/json; charset=utf-8');
 
-// Carrega classe de manipulação do banco MySQL
+// Carrega classe do banco MySQL
 require_once __DIR__ . 'conexao.php';
 
 // Rejeita requisições que não sejam do tipo POST
@@ -31,7 +31,7 @@ try {
 
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    /* 🔐 VALIDAÇÃO DE SENHA — AQUI */
+    /*VALIDAÇÃO DE SENHA */
     if (!$usuario || !password_verify($senha, $usuario["password"])) {
         http_response_code(401);
         echo json_encode([
@@ -44,18 +44,18 @@ try {
     session_regenerate_id(true);
 
     /* SESSÃO */
-    $_SESSION["id"]   = $usuario["id"];
-    $_SESSION["nome"] = $usuario["name"]; // corrigido
+    $_SESSION["id"] = $usuario["id"];
+    $_SESSION["nome"] = $usuario["name"];
     $_SESSION["tipo"] = $usuario["tipo"];
 
     /* REDIRECIONAMENTO */
     $redirect = ($usuario["tipo"] === "admin")
         ? "../admin/dashboard.php"
-        : "../dashboard/dashboard.php"; // corrigido
+        : "../dashboard/dashboard.php";
 
     echo json_encode([
         "sucesso" => true,
-        "nome" => $usuario["name"], // corrigido
+        "nome" => $usuario["name"],
         "redirect" => $redirect
     ]);
 } catch (PDOException $e) {

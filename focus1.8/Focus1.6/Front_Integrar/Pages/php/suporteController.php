@@ -8,7 +8,7 @@ $db = new MySQLClass();
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? '';
 
-/*GET → LISTAR CHAMADOS*/
+/*LISTAR CHAMADOS*/
 if ($method === 'GET') {
 
     $tickets = $db->search("
@@ -24,13 +24,13 @@ if ($method === 'GET') {
     exit;
 }
 
-/*POST → ATUALIZAR STATUS*/
+/*ATUALIZAR STATUS*/
 if ($method === 'POST' && $action === 'status') {
 
-    $id     = intval($_POST['id'] ?? 0);
+    $id = intval($_POST['id'] ?? 0);
     $status = $_POST['status'] ?? '';
 
-    $validStatus = ['open','in_progress','resolved'];
+    $validStatus = ['open', 'in_progress', 'resolved'];
 
     if ($id <= 0 || !in_array($status, $validStatus)) {
         http_response_code(422);
@@ -55,14 +55,14 @@ if ($method === 'POST' && $action === 'status') {
     exit;
 }
 
-/*POST → CRIAR CHAMADO */
+/*CRIAR CHAMADO */
 if ($method === 'POST') {
 
-    $name     = trim($_POST['name'] ?? '');
-    $email    = trim($_POST['email'] ?? '');
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $category = $_POST['category'] ?? '';
-    $subject  = trim($_POST['subject'] ?? '');
-    $message  = trim($_POST['message'] ?? '');
+    $subject = trim($_POST['subject'] ?? '');
+    $message = trim($_POST['message'] ?? '');
     $priority = $_POST['priority'] ?? 'low';
 
     $ip = $_SERVER['REMOTE_ADDR'] ?? null;
