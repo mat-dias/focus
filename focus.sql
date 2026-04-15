@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 14/04/2026 às 04:15
--- Versão do servidor: 9.1.0
--- Versão do PHP: 8.3.14
+-- Tempo de geração: 14/04/2026 às 20:06
+-- Versão do servidor: 8.3.0
+-- Versão do PHP: 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,21 +24,68 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `profiles`
+-- Estrutura para tabela `tb_admins`
 --
 
-DROP TABLE IF EXISTS `profiles`;
-CREATE TABLE IF NOT EXISTS `profiles` (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `tb_admins`;
+CREATE TABLE IF NOT EXISTS `tb_admins` (
+  `adm_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` bigint UNSIGNED NOT NULL,
-  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `streak` int NOT NULL DEFAULT '0',
-  `xp` int DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `profiles_username_unique` (`username`),
+  `adm_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `adm_photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `adm_status` tinyint(1) NOT NULL DEFAULT '1',
+  `last_login_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`adm_id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  UNIQUE KEY `admname` (`adm_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tb_calls`
+--
+
+DROP TABLE IF EXISTS `tb_calls`;
+CREATE TABLE IF NOT EXISTS `tb_calls` (
+  `call_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `call_code` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profile_id` bigint UNSIGNED NOT NULL,
+  `adm_id` bigint UNSIGNED DEFAULT NULL,
+  `call_subject` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `call_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `call_reply` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `call_priority` enum('low','medium','high','urgent') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'low',
+  `call_status` enum('pending','replied','closed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'pending',
+  `replied_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`call_id`),
+  UNIQUE KEY `code` (`call_code`),
+  KEY `profile_id` (`profile_id`),
+  KEY `adm_id` (`adm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tb_profiles`
+--
+
+DROP TABLE IF EXISTS `tb_profiles`;
+CREATE TABLE IF NOT EXISTS `tb_profiles` (
+  `profile_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `profile_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profile_photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `profile_streak` int NOT NULL DEFAULT '0',
+  `profile_xp` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`profile_id`),
+  UNIQUE KEY `profiles_username_unique` (`profile_name`),
   UNIQUE KEY `user_id` (`user_id`),
   KEY `profiles_user_id_foreign` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -46,34 +93,34 @@ CREATE TABLE IF NOT EXISTS `profiles` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `schedules`
+-- Estrutura para tabela `tb_schedules`
 --
 
-DROP TABLE IF EXISTS `schedules`;
-CREATE TABLE IF NOT EXISTS `schedules` (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `tb_schedules`;
+CREATE TABLE IF NOT EXISTS `tb_schedules` (
+  `schedule_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `profile_id` bigint UNSIGNED NOT NULL,
-  `time` timestamp NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `schedule_time` timestamp NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`schedule_id`),
   KEY `schedules_profile_id_foreign` (`profile_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `schedulings`
+-- Estrutura para tabela `tb_schedulings`
 --
 
-DROP TABLE IF EXISTS `schedulings`;
-CREATE TABLE IF NOT EXISTS `schedulings` (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `tb_schedulings`;
+CREATE TABLE IF NOT EXISTS `tb_schedulings` (
+  `scheduling_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `schedule_id` bigint UNSIGNED NOT NULL,
   `task_id` bigint UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`scheduling_id`),
   KEY `scheduling_schedule_id_foreign` (`schedule_id`),
   KEY `scheduling_task_id_foreign` (`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -81,110 +128,99 @@ CREATE TABLE IF NOT EXISTS `schedulings` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `support_tickets`
+-- Estrutura para tabela `tb_tasks`
 --
 
-DROP TABLE IF EXISTS `support_tickets`;
-CREATE TABLE IF NOT EXISTS `support_tickets` (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `category` enum('account','payment','technical','feature','suggestion','other') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `priority` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'low',
-  `status` enum('open','in_progress','resolved') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'open',
-  `ip_address` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `tasks`
---
-
-DROP TABLE IF EXISTS `tasks`;
-CREATE TABLE IF NOT EXISTS `tasks` (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `tb_tasks`;
+CREATE TABLE IF NOT EXISTS `tb_tasks` (
+  `task_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `profile_id` bigint UNSIGNED NOT NULL,
-  `title` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `priority` enum('high','medium','low') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'low',
-  `done` tinyint(1) NOT NULL DEFAULT '0',
-  `tag` char(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `task_title` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `task_priority` enum('high','medium','low') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'low',
+  `task_done` tinyint(1) NOT NULL DEFAULT '0',
+  `task_tag` char(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`task_id`),
   KEY `tasks_ibfk_1` (`profile_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `users`
+-- Estrutura para tabela `tb_tokens`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+DROP TABLE IF EXISTS `tb_tokens`;
+CREATE TABLE IF NOT EXISTS `tb_tokens` (
+  `token_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `token_content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `sent_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`token_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tb_users`
+--
+
+DROP TABLE IF EXISTS `tb_users`;
+CREATE TABLE IF NOT EXISTS `tb_users` (
+  `user_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `role` enum('admin','user') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'user',
-  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `gender` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `birth_date` date DEFAULT NULL,
-  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `reset_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `reset_token_exp` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Despejando dados para a tabela `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `created_at`, `updated_at`, `role`, `phone`, `gender`, `birth_date`, `avatar`, `reset_token`, `reset_token_exp`) VALUES
-(1, 'Jose Luiz', 'deoliveiramoreiramatheus67@gmail.com', NULL, '$2y$10$IWqRg8XNpAPm32ONwoEemuJw8UPQ9Tt2bFrFa2DR.G7rZ.qtliFYi', '2026-04-09 19:51:24', '2026-04-09 19:51:24', 'user', '11952392032', 'masculino', '2001-05-09', NULL, '750dfb4471da6f6a160d70b4e66e47bd2a0dbfd5e3b13e8b0c09a3190c3ff0cf', '2026-04-14 04:44:37'),
-(2, 'Jose Santos', 'deoliveiramoreiramatheus68@gmail.com', NULL, '$2y$10$eB8Hsfu3NzRyDn9FkOHm6.tg4YZNiQ36Z9UANArdS6PeadDpzML7a', '2026-04-09 19:55:04', '2026-04-09 19:55:04', 'user', '11952392032', 'masculino', '2002-04-24', NULL, NULL, NULL),
-(3, 'Daniel Santos', 'karlos2@gmail.com', NULL, '$2y$10$j0TKX9KTtLSGYHtMT0czB.E1B18r/f1gpBXsQqieE9XcXNYZKN/CC', '2026-04-09 19:57:21', '2026-04-09 19:57:21', 'user', '11952392032', 'masculino', '2001-03-02', NULL, NULL, NULL),
-(7, 'Jonas Manoel', 'deoliveiramoreiramatheus@gmail.com', NULL, '$2y$10$jZX3MF0DTXLAnjVVQapO0uSAJreoG72nSF6o9re4LscXXkxoKvTqi', '2026-04-10 02:51:23', '2026-04-10 02:51:23', 'user', '11912210334', 'masculino', '2006-02-09', NULL, NULL, NULL);
+  `user_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `users_email_unique` (`user_email`),
+  UNIQUE KEY `email` (`user_email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Restrições para tabelas despejadas
 --
 
 --
--- Restrições para tabelas `profiles`
+-- Restrições para tabelas `tb_admins`
 --
-ALTER TABLE `profiles`
-  ADD CONSTRAINT `profiles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+ALTER TABLE `tb_admins`
+  ADD CONSTRAINT `tb_admins_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tb_users` (`user_id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `schedules`
+-- Restrições para tabelas `tb_calls`
 --
-ALTER TABLE `schedules`
-  ADD CONSTRAINT `schedules_profile_id_foreign` FOREIGN KEY (`profile_id`) REFERENCES `profiles` (`id`) ON DELETE CASCADE;
+ALTER TABLE `tb_calls`
+  ADD CONSTRAINT `tb_calls_ibfk_1` FOREIGN KEY (`profile_id`) REFERENCES `tb_profiles` (`profile_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tb_calls_ibfk_2` FOREIGN KEY (`adm_id`) REFERENCES `tb_admins` (`adm_id`) ON DELETE SET NULL;
 
 --
--- Restrições para tabelas `schedulings`
+-- Restrições para tabelas `tb_profiles`
 --
-ALTER TABLE `schedulings`
-  ADD CONSTRAINT `scheduling_schedule_id_foreign` FOREIGN KEY (`schedule_id`) REFERENCES `schedules` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `scheduling_task_id_foreign` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`) ON DELETE CASCADE;
+ALTER TABLE `tb_profiles`
+  ADD CONSTRAINT `profiles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `tb_users` (`user_id`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `tasks`
+-- Restrições para tabelas `tb_schedules`
 --
-ALTER TABLE `tasks`
-  ADD CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`profile_id`) REFERENCES `profiles` (`id`) ON DELETE CASCADE;
+ALTER TABLE `tb_schedules`
+  ADD CONSTRAINT `schedules_profile_id_foreign` FOREIGN KEY (`profile_id`) REFERENCES `tb_profiles` (`profile_id`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `tb_schedulings`
+--
+ALTER TABLE `tb_schedulings`
+  ADD CONSTRAINT `scheduling_schedule_id_foreign` FOREIGN KEY (`schedule_id`) REFERENCES `tb_schedules` (`schedule_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `scheduling_task_id_foreign` FOREIGN KEY (`task_id`) REFERENCES `tb_tasks` (`task_id`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `tb_tasks`
+--
+ALTER TABLE `tb_tasks`
+  ADD CONSTRAINT `tb_tasks_ibfk_1` FOREIGN KEY (`profile_id`) REFERENCES `tb_profiles` (`profile_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
