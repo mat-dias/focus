@@ -1,4 +1,5 @@
 /* Evento de submissão do formulário de solicitação de recuperação*/
+/* Corrigido */
 document.getElementById('formRecuperar').addEventListener('submit', async function (e) {
   e.preventDefault();
   // Referência ao botão para aplicar estados de carregamento
@@ -6,13 +7,12 @@ document.getElementById('formRecuperar').addEventListener('submit', async functi
   btn.disabled = true;
   btn.textContent = 'Enviando...';
   try {
-    // Faz a requisição POST para o backend PHP
     const res = await fetch('php/recuperar-senha.php', { method: 'POST', body: new FormData(this) });
     // Converte a resposta do servidor para um objeto JSON
     const data = await res.json();
     mostrarAlerta(data.mensagem, data.sucesso ? 'sucesso' : 'erro');
   } catch {
-    // Caso ocorra uma falha crítica na rede ou servidor, mensagem abaixo:
+    // Caso ocorra uma falha crítica na rede, mensagem de erro
     mostrarAlerta('Erro de conexão com o servidor.', 'erro');
   } finally {
     // Restaura o botão para que o usuário possa tentar novamente se desejar.

@@ -1,4 +1,5 @@
 /* Alterna entre exibir ou ocultar a senha */
+/*Corrigido*/
 function toggleSenha(id, btn) {
   const input = document.getElementById(id);
   const icon = btn.querySelector('i');

@@ -30,7 +30,7 @@
         $sql = "SELECT id, name, email, password, role FROM users WHERE email = :email LIMIT 1";
         $usuario = $db->search($sql, [":email" => $email], true);
 
-        // 1. VALIDAÇÃO DE SENHA
+        // VALIDAÇÃO DE SENHA
         if (!$usuario || !password_verify($senha, $usuario->password)) {
             http_response_code(401);
             echo json_encode([

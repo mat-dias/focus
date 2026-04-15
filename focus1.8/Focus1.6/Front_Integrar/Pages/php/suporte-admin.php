@@ -35,7 +35,7 @@
   <?php
 require_once 'PostgreSQLClass.php';
 
-$db = new PostgreSQLClass();
+$db = new MySQLClass();
 
 /*CRIAR TABELA (PostgreSQL)*/
 

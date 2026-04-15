@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 09/04/2026 às 20:05
+-- Tempo de geração: 14/04/2026 às 20:30
 -- Versão do servidor: 8.3.0
--- Versão do PHP: 8.3.6
+-- Versão do PHP: 8.2.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -87,18 +87,25 @@ CREATE TABLE IF NOT EXISTS `schedulings` (
 DROP TABLE IF EXISTS `support_tickets`;
 CREATE TABLE IF NOT EXISTS `support_tickets` (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `category` enum('account','payment','technical','feature','suggestion','other') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `priority` enum('low','medium','high') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'low',
-  `status` enum('open','in_progress','resolved') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'open',
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `category` enum('account','payment','technical','feature','suggestion','other') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `priority` enum('low','medium','high') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'low',
+  `status` enum('open','in_progress','resolved') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'open',
+  `ip_address` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `support_tickets`
+--
+
+INSERT INTO `support_tickets` (`id`, `name`, `email`, `category`, `subject`, `message`, `priority`, `status`, `ip_address`, `created_at`, `updated_at`) VALUES
+(2, 'Jose', 'deoliveiramoreiramatheus67@gmail.com', '', 'Acesso negado', 'revogaram meu acesso, não consigo entrar mais', '', '', '::1', '2026-04-14 19:53:10', '2026-04-14 19:53:10');
 
 -- --------------------------------------------------------
 
@@ -140,19 +147,20 @@ CREATE TABLE IF NOT EXISTS `users` (
   `gender` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reset_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reset_token_exp` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Despejando dados para a tabela `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `created_at`, `updated_at`, `role`, `phone`, `gender`, `birth_date`, `avatar`) VALUES
-(1, 'Jose Luiz', 'deoliveiramoreiramatheus67@gmail.com', NULL, '$2y$10$yNnCnv61O991xRaj3cHG5O.Rl8mbuEAVkqnbrEvILan6yirOFvH.W', '2026-04-09 19:51:24', '2026-04-09 19:51:24', 'user', '11952392032', 'masculino', '2001-05-09', NULL),
-(2, 'Jose Santos', 'deoliveiramoreiramatheus68@gmail.com', NULL, '$2y$10$eB8Hsfu3NzRyDn9FkOHm6.tg4YZNiQ36Z9UANArdS6PeadDpzML7a', '2026-04-09 19:55:04', '2026-04-09 19:55:04', 'user', '11952392032', 'masculino', '2002-04-24', NULL),
-(3, 'Daniel Santos', 'karlos2@gmail.com', NULL, '$2y$10$j0TKX9KTtLSGYHtMT0czB.E1B18r/f1gpBXsQqieE9XcXNYZKN/CC', '2026-04-09 19:57:21', '2026-04-09 19:57:21', 'user', '11952392032', 'masculino', '2001-03-02', NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `created_at`, `updated_at`, `role`, `phone`, `gender`, `birth_date`, `avatar`, `reset_token`, `reset_token_exp`) VALUES
+(1, 'Jose Luiz', 'deoliveiramoreiramatheus67@gmail.com', NULL, '$2y$10$veqfxlH/QOf2dOrfwdrg7etI4sd.PMuzPfAG0OYWMOm7TXa4RE3GW', '2026-04-09 19:51:24', '2026-04-09 19:51:24', 'admin', '11952392032', 'masculino', '2001-05-09', NULL, NULL, NULL),
+(2, 'Jose Santos', 'deoliveiramoreiramatheus68@gmail.com', NULL, '$2y$10$eB8Hsfu3NzRyDn9FkOHm6.tg4YZNiQ36Z9UANArdS6PeadDpzML7a', '2026-04-09 19:55:04', '2026-04-09 19:55:04', 'user', '11952392032', 'masculino', '2002-04-24', NULL, NULL, NULL);
 
 --
 -- Restrições para tabelas despejadas

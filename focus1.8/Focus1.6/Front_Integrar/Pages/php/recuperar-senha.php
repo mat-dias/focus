@@ -1,4 +1,9 @@
 <?php
+//Corrigido
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
@@ -62,8 +67,8 @@ try {
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = USER; // Definido em SENHAEMAIL.php
-    $mail->Password   = PWD;  // Definido em SENHAEMAIL.php
+    $mail->Username   = USER;
+    $mail->Password   = PWD;  
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
     $mail->CharSet    = 'UTF-8';
@@ -98,7 +103,7 @@ try {
     ]);
 
 } catch (Exception $e) {
-    // Log interno do erro para depuração
+    // Log interno do erro para averiguar
     error_log("Erro no envio: " . $mail->ErrorInfo);
 
     http_response_code(500);

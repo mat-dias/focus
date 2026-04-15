@@ -730,6 +730,25 @@ tbody td {
   height: 14px;
 }
 
+/*Modal*/
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay .support-form-wrap {
+    margin: 0;
+    width: 100%;
+    max-width: 550px;
+}
+
 @keyframes shimmer {
   0% {
     background-position: 200% 0;

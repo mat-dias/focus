@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
+//Corrigido
 
 // caminho da classe MySQL
 require_once __DIR__ . "/MySQLClass.php";
@@ -37,7 +38,7 @@ if (!empty($erros)) {
     exit();
 }
 
-/* LÓGICA DE UPLOAD (Avatar) */
+/* LÓGICA DE UPLOAD */
 $avatar = null;
 if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK) {
     $ext = strtolower(pathinfo($_FILES["foto"]["name"], PATHINFO_EXTENSION));

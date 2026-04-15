@@ -1,3 +1,4 @@
+/* Corrigido */
 function toggleSenha(id, btn) {
   const input = document.getElementById(id);
   const icon = btn.querySelector('i');
@@ -26,7 +27,6 @@ document.getElementById('formLogin').addEventListener('submit', async function (
       body: new FormData(this)
     });
 
-    // Pegamos o texto primeiro para garantir que não há erros de PHP no meio
     const text = await response.text();
 
     try {
