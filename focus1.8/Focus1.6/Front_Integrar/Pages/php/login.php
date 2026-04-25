@@ -1,75 +1,77 @@
 <?php
+set_time_limit(60);
 ob_start();
 session_start();
 header('Content-Type: application/json; charset=utf-8');
-
+//corrigido
 require_once __DIR__ . "/MySQLClass.php";
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo json_encode(['sucesso' => false, 'mensagem' => 'Método não permitido.']);
-    exit;
-}
-
-$email = trim($_POST['email'] ?? '');
-$senha = trim($_POST['password'] ?? '');
-
-if (empty($email) || empty($senha)) {
-    http_response_code(422);
-    echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha e-mail e senha.']);
-    exit;
-}
-
 try {
-    $db = new MySQLClass();
+    $mysql = new MySQLClass();
+    $conn = $mysql->getConnection(); // Pega a conexão MySQLi
 
+    $email = trim($_POST['email'] ?? '');
+    $senha = trim($_POST['password'] ?? ''); 
+
+    if (empty($email) || empty($senha)) {
+        throw new Exception("PREENCHA_CAMPOS");
+    }
+
+    // Usando Prepare Statement do MySQLi
     $sql = "SELECT 
                 u.user_id, 
-                u.user_name, 
-                u.user_password, 
-                p.profile_name, 
-                p.profile_photo,
+                u.password,
+                p.profile_id, 
+                p.username, 
+                p.photo, 
+                p.xp, 
+                p.streak, 
                 a.adm_id
-            FROM tb_users u
-            LEFT JOIN tb_profiles p ON u.user_id = p.user_id
-            LEFT JOIN tb_admins a ON u.user_id = a.user_id
-            WHERE u.user_email = :email LIMIT 1";
+            FROM users u
+            LEFT JOIN profiles p ON u.user_id = p.user_id
+            LEFT JOIN admins a ON u.user_id = a.user_id
+            WHERE u.email = ? 
+            LIMIT 1";
 
-    $usuario = $db->search($sql, [":email" => $email], true);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $usuario = $resultado->fetch_object();
 
-    // Validação de senha
-    if (!$usuario || !password_verify($senha, $usuario->user_password)) {
-        http_response_code(401);
-        echo json_encode(["sucesso" => false, "mensagem" => "E-mail ou senha incorretos."]);
-        exit;
-    }
+    if ($usuario && password_verify($senha, $usuario->password)) {
+        session_regenerate_id(true);
 
-    session_regenerate_id(true);
+        // Ajuste dos nomes vindos do objeto $usuario
+        $_SESSION["user_id"]     = $usuario->user_id;
+        $_SESSION["profile_id"]     = $usuario->profile_id;
+        $_SESSION["user_nome"]   = $usuario->username;
+        $_SESSION["user_foto"]   = $usuario->photo;
+        $_SESSION["user_xp"]     = (int)$usuario->xp;
+        $_SESSION["user_streak"] = (int)$usuario->streak;
 
-    // Salva na sessão
-    $_SESSION["user_id"] = $usuario->user_id;
-    $_SESSION["user_nome"] = $usuario->profile_name ?? $usuario->user_name;
-    $_SESSION["user_foto"] = $usuario->profile_photo;
+        // Verificação de Admin usando o nome correto da coluna
+        if (!empty($usuario->adm_id)) {
+            $_SESSION['role'] = 'admin';
+            $_SESSION['adm_id'] = $usuario->adm_id;
+            $redirect = "../adm/dashboard.php";
+        } else {
+            $_SESSION['role'] = 'user';
+            $redirect = "inicialusuario.html";
+        }
 
-    if (!empty($usuario->adm_id)) {
-        // Administrador
-        $_SESSION["nivel"] = "admin";
-        $redirect = "/focus1.8/Focus1.6/Front_Integrar/Pages/adm/dashboard.php";
+        ob_clean();
+        echo json_encode([
+            "sucesso" => true, 
+            "nome" => $usuario->username, 
+            "redirect" => $redirect
+        ]);
     } else {
-        // Usuário 
-        $_SESSION["nivel"] = "usuario";
-        $redirect = "/focus1.8/Focus1.6/Front_Integrar/Pages/Dashboard/Dashboard.php";
+        throw new Exception("CREDENCIAIS_INCORRETAS");
     }
-
-    echo json_encode([
-        "sucesso" => true,
-        "nome" => $_SESSION["user_nome"],
-        "redirect" => $redirect
-    ]);
-    exit;
 
 } catch (Exception $e) {
-    error_log($e->getMessage());
-    http_response_code(500);
-    echo json_encode(["sucesso" => false, "mensagem" => "Erro interno no servidor."]);
+    ob_clean();
+    echo json_encode(["sucesso" => false, "mensagem" => $e->getMessage()]);
 }
+exit;

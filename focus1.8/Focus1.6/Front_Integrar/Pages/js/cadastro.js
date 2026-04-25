@@ -1,8 +1,9 @@
-/* Toggle Senha */
-//corrigido
-function toggleSenha(id, btn) {
+/* Alternar visualização da senha */
+function toggleSenha(id, btn) { //corrigido
     const input = document.getElementById(id);
     const icon = btn.querySelector('i');
+    if (!input || !icon) return;
+    
     input.type = input.type === 'password' ? 'text' : 'password';
     icon.classList.toggle('fa-eye');
     icon.classList.toggle('fa-eye-slash');
@@ -13,36 +14,34 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnEnviar = document.getElementById('btnEnviar');
     const alerta = document.getElementById('alerta');
 
-    /* FOTO CLICÁVEL */
+    /* LÓGICA DA FOTO DE PERFIL */
     const inputFoto = document.getElementById('foto');
     const fotoWrapper = document.getElementById('fotoWrapper');
     const fotoPreview = document.getElementById('fotoPreview');
     const fotoPlaceholder = document.getElementById('fotoPlaceholder');
 
-    fotoWrapper?.addEventListener('click', () => {
-        inputFoto.click();
-    });
+    fotoWrapper?.addEventListener('click', () => inputFoto.click());
 
-    /* Preview da Foto ao selecionar */
     inputFoto?.addEventListener('change', function () {
         if (this.files && this.files[0]) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 fotoPreview.src = e.target.result;
                 fotoPreview.style.display = 'block';
-                fotoPlaceholder.style.display = 'none';
+                if (fotoPlaceholder) fotoPlaceholder.style.display = 'none';
             };
             reader.readAsDataURL(this.files[0]);
         }
     });
 
-    /* Envio via AJAX */
-    form.addEventListener('submit', async function (e) {
+    /* ENVIO DO FORMULÁRIO */
+    form?.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         btnEnviar.disabled = true;
-        btnEnviar.textContent = 'Enviando...';
-        alerta.style.display = 'none';
+        const originalText = btnEnviar.textContent;
+        btnEnviar.textContent = 'Processando...';
+        if (alerta) alerta.style.display = 'none';
 
         try {
             const formData = new FormData(this);
@@ -58,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 alerta.textContent = result.mensagem;
                 alerta.style.display = 'block';
                 form.reset();
+                // Redireciona após 2 segundos
                 setTimeout(() => window.location.href = 'login.html', 2000);
             } else {
                 throw new Error(result.mensagem);
@@ -65,11 +65,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         } catch (error) {
             alerta.className = 'alerta erro';
-            alerta.textContent = error.message || "Erro ao cadastrar.";
+            alerta.textContent = error.message || "Erro ao conectar com o servidor.";
             alerta.style.display = 'block';
         } finally {
             btnEnviar.disabled = false;
-            btnEnviar.textContent = 'Criar conta';
+            btnEnviar.textContent = originalText;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });

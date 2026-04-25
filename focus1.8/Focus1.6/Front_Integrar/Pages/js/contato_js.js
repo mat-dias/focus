@@ -1,5 +1,5 @@
 const prioButtons = document.querySelectorAll('.priority-btn');
-const prioInput = document.getElementById('prioridade');
+const prioInput = document.getElementById('prioridade');//corrigido
 
 prioButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -52,28 +52,25 @@ function mostrarAlerta(msg, tipo) {
 }
 
 // Envio de Chamado
-document.getElementById('formContato')?.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const btn = document.getElementById('btnEnviar');
-    const originalText = btn.innerHTML;
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Enviando...';
+async function enviarComPersistencia(formData, tentativas = 3) {
+    for (let i = 0; i < tentativas; i++) {
+        try {
+            const res = await fetch('php/contato.php', { method: 'POST', body: formData });
+            const data = await res.json();
 
-    try {
-        const res = await fetch('php/contato.php', { method: 'POST', body: new FormData(this) });
-        const data = await res.json();
-        mostrarAlerta(data.mensagem, data.sucesso ? 'sucesso' : 'erro');
-        if (data.sucesso) {
-            this.reset();
-            carregarTickets();
+            // Se o PHP enviou uma mensagem de erro de conexão (o que tratamos na classe)
+            if (!data.sucesso && data.mensagem.includes("conexão")) {
+                throw new Error("Timeout de rede");
+            }
+
+            return data; // Sucesso total
+        } catch (err) {
+            console.warn(`Tentativa ${i + 1} falhou. Tentando novamente...`);
+            if (i === tentativas - 1) throw err; // Se for a última, desiste
+            await new Promise(r => setTimeout(r, 1000)); // Espera 1s antes de repetir
         }
-    } catch (err) {
-        mostrarAlerta('Erro de conexão.', 'erro');
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
     }
-});
+}
 
 // Login Administrativo
 document.getElementById('formLoginAdmin')?.addEventListener('submit', async function (e) {
@@ -104,34 +101,88 @@ document.getElementById('formLoginAdmin')?.addEventListener('submit', async func
     }
 });
 
-// Tabela de Chamados
+document.getElementById('formContato')?.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnEnviar');
+    btn.disabled = true;
+
+    try {
+        const formData = new FormData(this);
+        const data = await enviarComPersistencia(formData);
+
+        if (data.sucesso) {
+            mostrarAlerta(data.mensagem, "sucesso");
+            this.reset();
+            carregarTickets(); // Atualiza a lista automaticamente
+        } else {
+            mostrarAlerta(data.mensagem, "erro");
+        }
+    } catch (err) {
+        mostrarAlerta("Falha na comunicação com o servidor.", "erro");
+    } finally {
+        btn.disabled = false;
+    }
+});
+
 async function carregarTickets() {
     const wrap = document.getElementById('tabelaTickets');
     if (!wrap) return;
 
     try {
         const res = await fetch('php/contato.php?listar=1');
-        const data = await res.json();
+        const rawText = await res.text();
+        const data = JSON.parse(rawText);
 
         if (!data.tickets || data.tickets.length === 0) {
             wrap.innerHTML = `<div class="tickets-empty">Nenhum chamado registrado.</div>`;
             return;
         }
 
-        const rows = data.tickets.map(t => `
-            <tr>
-                <td><span class="ticket-id">#${t.call_code}</span></td>
-                <td class="ticket-assunto">${t.call_subject}</td>
-                <td><span class="badge-status badge-${t.call_status}">${t.call_status.toUpperCase()}</span></td>
-                <td><span class="badge-prioridade prio-${t.call_priority}">${t.call_priority.toUpperCase()}</span></td>
-                <td style="color:var(--text-muted);font-size:12px;">${new Date(t.created_at).toLocaleDateString('pt-BR')}</td>
-            </tr>`).join('');
+        const rows = data.tickets.map(t => {
+            const traduzirPrio = { 'low': 'baixa', 'medium': 'media', 'high': 'alta' };
+            const prioPT = traduzirPrio[t.priority] || 'baixa';
+
+            const traduzirStatus = { 'pending': 'aberto', 'in_progress': 'andamento', 'resolved': 'resolvido' };
+            const statusPT = traduzirStatus[t.status] || 'aberto';
+
+            return `
+                <tr>
+                    <td><span class="ticket-id">#${t.code}</span></td>
+                    <td class="ticket-assunto">${t.subject}</td>
+                    <td><span class="badge-status badge-${statusPT}">${statusPT.toUpperCase()}</span></td>
+                    <td><span class="badge-prioridade prio-${prioPT}">${prioPT.toUpperCase()}</span></td>
+                    <td style="color:var(--text-muted);font-size:12px;">${new Date(t.created_at).toLocaleDateString('pt-BR')}</td>
+                </tr>`;
+        }).join('');
 
         wrap.innerHTML = `<table><thead><tr><th>Protocolo</th><th>Assunto</th><th>Status</th><th>Prio</th><th>Data</th></tr></thead><tbody>${rows}</tbody></table>`;
+
     } catch (err) {
-        wrap.innerHTML = `<div class="tickets-empty">Erro ao carregar lista.</div>`;
+        console.error("Erro ao carregar tickets:", err);
+        wrap.innerHTML = `<div class="tickets-empty">Erro ao carregar lista de chamados.</div>`;
+    }
+} 
+
+// verifica status de user logado
+async function verificarStatusUsuario() {
+    try {
+        const res = await fetch('php/checar_status.php');
+        const status = await res.json();
+
+        if (!status.logado) {
+            document.getElementById('btnEnviar').disabled = true;
+            abrirModalLogin();
+            mostrarAlerta("Faça login para gerenciar seus chamados.", "erro");
+        } else {
+            document.getElementById('btnEnviar').disabled = false;
+        }
+    } catch (err) {
+        console.error("Erro ao verificar sessão");
     }
 }
 
-// Inicializa a lista
-carregarTickets();
+// Inicialização correta
+document.addEventListener('DOMContentLoaded', () => {
+    verificarStatusUsuario();
+    carregarTickets();
+});

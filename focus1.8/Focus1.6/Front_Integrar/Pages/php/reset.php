@@ -2,8 +2,8 @@
 require_once __DIR__ . "/MySQLClass.php"; //apagar depois
 
 $db = new MySQLClass();
-$novaSenha = "123456";
-$emailUsuario = "deoliveiramoreiramatheus67@gmail.com";
+$novaSenha = "senha";
+$emailUsuario = "emai@gmail.com";
 
 $hashProtegido = password_hash($novaSenha, PASSWORD_DEFAULT);
 
