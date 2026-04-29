@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estatísticas - Focus Study</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/estatisticas-new.css" />
+  <link rel="icon" type="image/png" href="images/poppy.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="dash-body">
+  <header class="header">
+    <div class="container header-inner">
+      <a href="../index.html" class="logo"><span>Focus Study</span></a>
+      <nav class="nav">
+        <a href="inicialusuario.html" class="nav-link">Painel</a>
+        <a href="horarios.html" class="nav-link">Horários</a>
+        <a href="grade-habitos.html" class="nav-link">Hábitos</a>
+        <a href="estatisticas-new.html" class="nav-link active">Estatísticas</a>
+      </nav>
+      <div class="header-actions">
+        <a href="configuracoes.html" class="icon-btn" title="Configurações">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </a>
+        <a href="perfil.html" class="user-avatar">
+          <img id="nav-avatar" src="https://ui-avatars.com/api/?name=Focado&background=06b6d4&color=fff" alt="Perfil">
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container stats-container">
+
+    <section class="stats-top-row">
+      <div>
+        <h1 class="dash-title">Minhas <span class="gradient-text">Estatísticas</span></h1>
+        <p class="dash-date" id="current-date">Carregando...</p>
+      </div>
+      <div class="stats-year-nav">
+        <button class="year-btn" id="prev-year">&#8592;</button>
+        <span class="year-label" id="year-label">2025</span>
+        <button class="year-btn" id="next-year">&#8594;</button>
+      </div>
+    </section>
+
+    <!-- Summary row -->
+    <div class="stats-summary-grid">
+      <div class="dash-card stat-card">
+        <div class="stat-icon cyan-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><p class="stat-lbl">Sessões de Foco</p><p class="stat-val" id="s-sessions">0</p></div>
+      </div>
+      <div class="dash-card stat-card">
+        <div class="stat-icon pink-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div><p class="stat-lbl">Horas Estudadas</p><p class="stat-val" id="s-hours">0h</p></div>
+      </div>
+      <div class="dash-card stat-card">
+        <div class="stat-icon green-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <div><p class="stat-lbl">Maior Sequência</p><p class="stat-val" id="s-streak">0 dias</p></div>
+      </div>
+      <div class="dash-card stat-card">
+        <div class="stat-icon orange-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <div><p class="stat-lbl">Hábitos Cumpridos</p><p class="stat-val" id="s-habits-done">0</p></div>
+      </div>
+    </div>
+
+    <!-- Horas de estudo semanal com metas -->
+    <div class="dash-card weekly-hours-card">
+      <div class="weekly-hours-header-row">
+        <h3 style="font-size:17px;font-weight:700;">Horas de Estudo por Dia</h3>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <div class="wh-week-nav">
+            <button class="wh-week-btn" id="wh-prev-week">&#8592;</button>
+            <span class="wh-week-label" id="wh-week-label">Esta semana</span>
+            <button class="wh-week-btn" id="wh-next-week">&#8594;</button>
+          </div>
+          <span class="badge-cyan">Defina sua meta diária</span>
+        </div>
+      </div>
+      <div class="weekly-hours-grid" id="weekly-hours-grid">
+        <!-- JS preenche -->
+      </div>
+    </div>
+
+    <!-- Panorama anual -->
+    <div class="dash-card annual-card">
+      <div class="card-header">
+        <h3>Panorama Anual</h3>
+        <div class="annual-legend">
+          <span class="legend-box" style="background:rgba(255,255,255,0.06)"></span><span class="legend-txt">0</span>
+          <span class="legend-box" style="background:rgba(6,182,212,0.25)"></span>
+          <span class="legend-box" style="background:rgba(6,182,212,0.5)"></span>
+          <span class="legend-box" style="background:rgba(6,182,212,0.75)"></span>
+          <span class="legend-box" style="background:#06b6d4"></span><span class="legend-txt">+</span>
+        </div>
+      </div>
+      <div class="annual-grid-wrap" id="annual-grid-wrap">
+        <!-- JS preenche -->
+      </div>
+    </div>
+
+    <!-- Conquistas -->
+    <div class="dash-card achievements-card">
+      <div class="card-header">
+        <h3>Conquistas <span class="badge-count" id="ach-count">0/0</span></h3>
+        <button class="btn btn-outline" id="btn-add-custom-ach">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Adicionar Personalizada
+        </button>
+      </div>
+      <div class="achievements-grid" id="achievements-grid">
+        <!-- JS preenche -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal: Conquista personalizada -->
+  <div class="fs-modal-overlay" id="modal-custom-ach">
+    <div class="fs-modal custom-ach-modal">
+      <div class="modal-form-header">
+        <h3>Nova Conquista</h3>
+        <p class="fs-modal-sub">Crie uma conquista pessoal para celebrar seu progresso</p>
+      </div>
+      <div class="form-group full" style="margin-bottom:14px">
+        <label>Título</label>
+        <input type="text" id="ach-title" placeholder="Ex: 30 dias sem falhar" maxlength="50" />
+      </div>
+      <div class="form-group full" style="margin-bottom:14px">
+        <label>Descrição</label>
+        <input type="text" id="ach-desc" placeholder="Ex: Mantive minha rotina por 30 dias seguidos" maxlength="80" />
+      </div>
+      <div class="form-group full" style="margin-bottom:20px">
+        <label>Emoji / Ícone</label>
+        <input type="text" id="ach-icon" placeholder="Ex: 🏆" maxlength="4" />
+      </div>
+      <div class="fs-modal-actions">
+        <button class="fs-btn-cancel" id="ach-cancel">Cancelar</button>
+        <button class="fs-btn-confirm" id="ach-confirm">Criar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification toast -->
+  <div class="achievement-toast" id="ach-toast">
+    <div class="ach-toast-icon" id="ach-toast-icon">🏆</div>
+    <div>
+      <p class="ach-toast-title">Conquista Desbloqueada!</p>
+      <p class="ach-toast-name" id="ach-toast-name"></p>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script src="js/estatisticas-new.js"></script>
+</body>
+</html>

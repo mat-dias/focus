@@ -1,0 +1,147 @@
+/* ══════════════════════════════════════
+   EXTRAS — inicialusuario
+   inicialusuario-extras.css
+══════════════════════════════════════ */
+
+/* ── Shared icon-btn e header-actions ── */
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.icon-btn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); cursor: pointer; transition: var(--transition); text-decoration: none;
+}
+.icon-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ── Timer: top-right (modos + fullscreen btn) ── */
+.timer-top-right {
+  display: flex; align-items: center; gap: 6px;
+}
+
+.fullscreen-btn {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text-muted); width: 28px; height: 28px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: var(--transition); flex-shrink: 0;
+}
+.fullscreen-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+/* ── Segunda linha (música + notas) ── */
+.dash-grid-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+  align-items: start;
+}
+
+.dash-grid-bottom > .dash-card {
+  min-height: 320px;
+}
+
+/* Notas: tornar o textarea mais alto */
+.notes-card .quick-note {
+  min-height: 120px !important;
+  flex: 1;
+}
+
+.notes-card .note-history-list {
+  max-height: 200px !important;
+}
+
+/* ── Shuffle button ── */
+.player-btn-shuffle.active {
+  color: var(--cyan);
+  background: rgba(6,182,212,0.1);
+  border-radius: 6px;
+}
+
+/* ── Fullscreen Timer ── */
+.fullscreen-timer {
+  position: fixed; inset: 0; z-index: 9000;
+  background: var(--primary);
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(6,182,212,0.08), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(236,72,153,0.06), transparent 50%);
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 20px;
+  transition: opacity 0.3s;
+}
+.fullscreen-timer.active { display: flex; }
+
+.fs-exit-btn {
+  position: absolute; top: 24px; right: 28px;
+  background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+  color: var(--text-muted); width: 40px; height: 40px;
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: var(--transition);
+}
+.fs-exit-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.fs-modes {
+  display: flex; gap: 8px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  border-radius: 12px; padding: 6px;
+}
+.fs-mode-btn {
+  background: transparent; border: none; color: var(--text-muted);
+  font-size: 14px; font-weight: 600; padding: 8px 20px; border-radius: 8px;
+  cursor: pointer; transition: var(--transition);
+}
+.fs-mode-btn:hover { color: var(--text); }
+.fs-mode-btn.active {
+  background: rgba(6,182,212,0.12); color: var(--cyan); border: 1px solid rgba(6,182,212,0.3);
+}
+
+.fs-display {
+  font-size: clamp(100px, 18vw, 200px);
+  font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: -4px;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 60px rgba(6,182,212,0.3);
+  line-height: 1;
+}
+
+.fs-status-txt {
+  font-size: 18px; color: var(--text-muted); height: 24px;
+}
+
+.fs-actions { display: flex; gap: 16px; }
+
+.fs-play-btn {
+  background: linear-gradient(135deg, var(--cyan), var(--pink));
+  border: none; color: #fff; font-size: 18px; font-weight: 700;
+  padding: 16px 48px; border-radius: 16px; cursor: pointer;
+  transition: var(--transition); box-shadow: 0 0 30px rgba(6,182,212,0.3);
+}
+.fs-play-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(6,182,212,0.5); }
+
+.fs-reset-btn {
+  background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+  color: var(--text-muted); font-size: 18px; font-weight: 700;
+  padding: 16px 32px; border-radius: 16px; cursor: pointer; transition: var(--transition);
+}
+.fs-reset-btn:hover { border-color: var(--text); color: var(--text); }
+
+.fs-pomo-dots {
+  display: flex; gap: 10px;
+}
+.fs-pomo-dots .pomo-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); border: 1.5px solid var(--border);
+  transition: var(--transition);
+}
+.fs-pomo-dots .pomo-dot.done {
+  background: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 10px rgba(6,182,212,0.5);
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .dash-grid-bottom { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .fs-display { font-size: 20vw; }
+  .timer-mode-btns { display: none; }
+}

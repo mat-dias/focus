@@ -44,7 +44,7 @@ try {
         $assunto = trim($_POST['assunto'] ?? '');
         $mensagem = trim($_POST['mensagem'] ?? '');
 
-        // Tradução para o ENUM do banco: low, medium, high
+        // Tradução para o ENUM do banco
         $mapPrio = ['baixa' => 'low', 'media' => 'medium', 'alta' => 'high'];
         $prioBanco = $mapPrio[$_POST['prioridade'] ?? 'baixa'] ?? 'low';
 

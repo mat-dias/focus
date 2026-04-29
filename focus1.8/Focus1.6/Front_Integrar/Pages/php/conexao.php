@@ -1,9 +1,9 @@
 <?php
 function getConexao() { //corrigido
-    $host = "localhost"; // Use o IP direto para ser mais rápido
-    $user = "root";
-    $pass = "";
-    $db   = "focus";
+    $host = "tcc_bd7.mysql.dbaas.com.br"; // Use o IP direto para ser mais rápido
+    $user = "tcc_bd7";
+    $pass = "ROSA123456a#";
+    $db   = "tcc_bd7";
 
     $conn = mysqli_init();
     

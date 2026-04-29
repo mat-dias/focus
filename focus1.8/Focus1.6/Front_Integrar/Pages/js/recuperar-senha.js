@@ -37,5 +37,4 @@ function mostrarAlerta(msg, tipo) {
   a.textContent = msg;
   a.className = `alerta ${tipo}`;
   a.style.display = 'block';
-  setTimeout(() => { a.style.display = 'none'; }, 10000);
 }
