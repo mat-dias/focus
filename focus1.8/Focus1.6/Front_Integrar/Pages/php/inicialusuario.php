@@ -7,7 +7,9 @@ if (isset($_SESSION['user_id'])) {
         'logado' => true,
         'nome'   => $_SESSION['user_nome'] ?? 'Utilizador',
         'foto'   => $_SESSION['user_foto'] ?? null,
-        'profile_id' => $_SESSION['profile_id'] ?? null
+        'profile_id' => $_SESSION['profile_id'] ?? null,
+        'streak' => (int)($perfil[0]['streak'] ?? 0),
+        'xp' => (int)($perfil[0]['xp'] ?? 0)
     ]);
 } else {
     echo json_encode(['logado' => false]);

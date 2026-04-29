@@ -6,6 +6,7 @@ class MySQLClass
 
     public function __construct()
     {
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         try {
             $this->db = getConexao();
             if ($this->db->connect_error) {
@@ -51,4 +52,8 @@ class MySQLClass
         $stmt->bind_param($types, ...$params);
         return $stmt->execute();
     }
+    public function lastInsertId()
+{
+    return $this->db->insert_id;
+}
 }

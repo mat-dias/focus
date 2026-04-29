@@ -1,100 +1,75 @@
 <?php
-ob_start();
-session_start(); //corrigido
+session_start();
 header('Content-Type: application/json; charset=utf-8');
-
 require_once __DIR__ . '/MySQLClass.php';
 
+$db = new MySQLClass();
+$metodo = $_SERVER['REQUEST_METHOD'];
+$acao = $_GET['acao'] ?? '';
 
 try {
-    $db = new MySQLClass();
-    $metodo = $_SERVER['REQUEST_METHOD'];
-    $acao   = $_GET['acao'] ?? '';
-
-    // LOGIN DO MODAL ADMIN
+    // LOGIN ADMINISTRATIVO (CORRIGIR MODAL: erro no servidor e erro de senha)
     if ($metodo === 'POST' && $acao === 'login') {
         $email = trim($_POST['email'] ?? '');
         $senha = $_POST['senha'] ?? '';
 
         $sql = "SELECT u.user_id, u.password, a.adm_id 
-                FROM users u 
-                INNER JOIN admins a ON u.user_id = a.user_id 
-                WHERE u.email = ? LIMIT 1";
+            FROM users u 
+            INNER JOIN admins a ON u.user_id = a.user_id 
+            WHERE u.email = ? LIMIT 1";
 
-        $usuario = $db->search($sql, [$email], false);
+        $res = $db->searchSafe($sql, [$email]);
+        $usuario = $res[0] ?? null;
 
-        if ($usuario && password_verify($senha, $usuario->password)) {
-            $_SESSION['admin_id'] = $usuario->adm_id;
-            $_SESSION['user_id']  = $usuario->user_id;
-            $_SESSION['role']     = 'admin';
-
-            if (ob_get_length()) ob_clean();
-            echo json_encode(['sucesso' => true, 'mensagem' => 'Admin autorizado!']);
+        if (!$usuario) {
+            echo json_encode(['sucesso' => false, 'mensagem' => 'Utilizador não encontrado ou não é Admin.']);
+        } else if (!password_verify($senha, $usuario['senha'])) {
+            echo json_encode(['sucesso' => false, 'mensagem' => 'Senha incorreta.']);
         } else {
-            throw new Exception('Acesso negado. Credenciais incorretas.');
+            $_SESSION['user_id'] = $usuario['user_id'];
+            $_SESSION['role'] = 'admin';
+            echo json_encode(['sucesso' => true]);
         }
         exit;
     }
 
-    // NOVO CHAMADO
+
+    // CRIAR CHAMADO
     if ($metodo === 'POST' && empty($acao)) {
-        $userId = $_SESSION['user_id'] ?? null;
-
-        if (!$userId) {
-            throw new Exception("Você precisa estar logado para abrir um chamado.");
+        if (!isset($_SESSION['profile_id'])) {
+            throw new Exception("Sessão expirada. Faça login novamente.");
         }
 
-        // Busca o perfil real do usuário logado
-        $resPerfil = $db->search("SELECT profile_id FROM profiles WHERE user_id = ?", [$userId], false);
-        $profileId = $resPerfil->profile_id ?? null;
+        $profileId = $_SESSION['profile_id'];
+        $assunto = trim($_POST['assunto'] ?? '');
+        $mensagem = trim($_POST['mensagem'] ?? '');
 
-        if (!$profileId) throw new Exception("Perfil de usuário não encontrado.");
+        // Tradução para o ENUM do banco: low, medium, high
+        $mapPrio = ['baixa' => 'low', 'media' => 'medium', 'alta' => 'high'];
+        $prioBanco = $mapPrio[$_POST['prioridade'] ?? 'baixa'] ?? 'low';
 
-        $assunto   = trim($_POST['assunto'] ?? '');
-        $mensagem  = trim($_POST['mensagem'] ?? '');
+        $codigo = "CALL-" . strtoupper(substr(md5(uniqid()), 0, 6));
 
-        // MAPEAMENTO
-        $mapPrio = [
-            'baixa' => 'low',
-            'media' => 'medium',
-            'alta'  => 'high'
-        ];
+        $sql = "INSERT INTO calls (code, profile_id, subject, message, priority, status) 
+                VALUES (?, ?, ?, ?, ?, 'pending')";
 
-        $prioPT = $_POST['prioridade'] ?? 'baixa';
-        $prioridade = $mapPrio[$prioPT] ?? 'low'; // Traduz para o banco
+        $db->execSafe($sql, [$codigo, $profileId, $assunto, $mensagem, $prioBanco]);
 
-        $codigo = "CALL-" . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
-
-        $sql = "INSERT INTO calls (code, profile_id, subject, message, priority, status, created_at) 
-            VALUES (?, ?, ?, ?, ?, 'pending', NOW())";
-
-        $sucesso = $db->exec($sql, [$codigo, $profileId, $assunto, $mensagem, $prioridade]);
-
-        if ($sucesso) {
-            if (ob_get_length()) ob_clean();
-            echo json_encode(['sucesso' => true, 'mensagem' => "Chamado $codigo enviado!"]);
-        } else {
-            throw new Exception("Erro ao gravar chamado no banco.");
-        }
+        echo json_encode(['sucesso' => true, 'mensagem' => "Protocolo $codigo gerado!"]);
         exit;
     }
 
-    // LISTAR CHAMADOS
+    // LISTAR MEUS CHAMADOS
     if ($metodo === 'GET' && isset($_GET['listar'])) {
-        $sql = "SELECT code, subject, priority, status, created_at 
-                FROM calls ORDER BY created_at DESC LIMIT 10";
-        $tickets = $db->search($sql);
+        $profileId = $_SESSION['profile_id'] ?? 0;
 
-        if (ob_get_length()) ob_clean();
-        echo json_encode(['sucesso' => true, 'tickets' => $tickets ?: []]);
+        $sql = "SELECT code, subject, priority, status, created_at 
+                FROM calls WHERE profile_id = ? ORDER BY created_at DESC";
+
+        $tickets = $db->searchSafe($sql, [$profileId]);
+        echo json_encode(['sucesso' => true, 'tickets' => $tickets]);
         exit;
     }
 } catch (Exception $e) {
-    if (ob_get_length()) ob_clean();
-    // Tratamento para o erro 2002 de conexão remota
-    $msg = (strpos($e->getMessage(), '2002') !== false)
-        ? "Erro de conexão com o banco remoto."
-        : $e->getMessage();
-
-    echo json_encode(['sucesso' => false, 'mensagem' => $msg]);
+    echo json_encode(['sucesso' => false, 'mensagem' => $e->getMessage()]);
 }
