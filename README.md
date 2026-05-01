@@ -11,7 +11,7 @@ TECNOLOGIAS UTILIZADAS:
 BackEnd: 
 - PHP 
 - MySQL 
-- PDO (PHP Data Objects) 
+- MySQLi 
 
 
 FrontEnd: 
