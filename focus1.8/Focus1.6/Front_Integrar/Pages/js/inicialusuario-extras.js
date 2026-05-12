@@ -5,17 +5,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ── Perfil e Avatar ──
-  const profile = JSON.parse(localStorage.getItem('fs_profile') || '{}');
-  if (profile.name) {
-    const nameEl = document.getElementById('welcome-name');
-    if (nameEl) nameEl.textContent = profile.name.split(' ')[0];
-  }
-  if (profile.avatar) {
-    const navAv = document.getElementById('nav-avatar');
-    if (navAv) navAv.src = profile.avatar;
-  }
-
   // ── Elementos do Fullscreen Timer ──
   const fsEl       = document.getElementById('fullscreen-timer');
   const openBtn    = document.getElementById('fullscreen-btn');

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     exercise: '🏋️ Exercício',
     meal: '🍽️ Refeição',
     work: '💼 Trabalho',
-    personal: '🌟 Pessoal', 
+    personal: '🌟 Pessoal',
     rest: '😴 Descanso',
     other: '📌 Outro'
   };
@@ -324,6 +324,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   carregarAtividadesDoBanco();
+});
+
+function aplicarTema(settings) {
+    if (!settings || !settings.accentColor) return;
+
+    const cores = {
+        'cyan': '#06b6d4',
+        'pink': '#ec4899',
+        'violet': '#8b5cf6',
+        'green': '#10b981',
+        'orange': '#f59e0b'
+    };
+
+    const hex = cores[settings.accentColor] || cores['cyan'];
+    
+    // Aplica a cor no root do documento (afeta todo o CSS que usa var(--cyan))
+    document.documentElement.style.setProperty('--cyan', hex);
+    
+    // Se quiser aplicar o modo compacto também:
+    document.body.classList.toggle('compact-mode', settings.compact);
+}
+
+// Executa ao carregar a página
+const settingsSalvas = JSON.parse(localStorage.getItem('fs_settings') || '{}');
+aplicarTema(settingsSalvas);
+
+// Escuta mudanças em tempo real (se mudar a cor na aba de configurações)
+window.addEventListener('storage', (e) => {
+    if (e.key === 'fs_settings') {
+        const novosSettings = JSON.parse(e.newValue);
+        aplicarTema(novosSettings);
+    }
 });
 
 /*

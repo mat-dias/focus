@@ -5,18 +5,17 @@ document.addEventListener('DOMContentLoaded', () => { //a corrigir junto com o p
     async function carregarDadosIniciais() {
         try {
             const response = await fetch('php/inicialusuario.php');
-            const text = await response.text();
-            try {
-                const data = JSON.parse(text);
-                if (data.logado) {
-                    document.getElementById('welcome-name').textContent = data.nome;
-                    if (data.foto) document.getElementById('nav-avatar').src = data.foto;
-                    carregarMissoes();
-                } else {
-                    window.location.href = 'login.html';
+            const data = await response.json();
+            if (data.logado) {
+                document.getElementById('welcome-name').textContent = data.nome;
+                if (data.foto) {
+                    document.getElementById('nav-avatar').src = data.foto;
+                    profile.avatar = data.foto; profile.name = data.nome;
+                    localStorage.setItem('fs_profile', JSON.stringify(profile));
                 }
-            } catch (e) { console.error("Erro no JSON do PHP:", text); }
-        } catch (e) { console.error("Falha no Fetch perfil:", e); }
+                carregarMissoes();
+            } else { window.location.href = 'login.html'; }
+        } catch (e) { console.error("Erro ao carregar dados do banco:", e); }
     }
 
     // ══════════════════════════════════════════
@@ -404,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => { //a corrigir junto com o p
         } catch (e) { console.error("Erro ao deletar"); }
     });
 
-    // 5. ADICIONAR TAREFA
+    // ADICIONAR TAREFA
     let isAddingTask = false;
     const btnConfirm = document.getElementById('confirm-add-task');
     const inputTask = document.getElementById('task-input');
@@ -460,7 +459,7 @@ document.addEventListener('DOMContentLoaded', () => { //a corrigir junto com o p
     carregarMissoes();
 
     // ============================================================
-    // NOTAS RÁPIDAS
+    // NOTAS E INICIALIZAÇÃO FINAL
     // ============================================================
     const noteArea = document.getElementById('quick-note');
     const charCount = document.getElementById('note-chars');
@@ -513,9 +512,6 @@ document.addEventListener('DOMContentLoaded', () => { //a corrigir junto com o p
         });
     }
 
-    // ============================================================
-    // INICIALIZAÇÃO E MODAIS
-    // ============================================================
     const modalAdd = document.getElementById('modal-add-task');
     const modalDelete = document.getElementById('modal-delete-task');
     const inputAdd = document.getElementById('task-input');
@@ -580,6 +576,24 @@ document.addEventListener('DOMContentLoaded', () => { //a corrigir junto com o p
             fillEl.style.width = `${pct}%`;
         }
     }
+
+    function aplicarMudancasVisuais(s) {
+        if (!s) return;
+        const cores = { 'cyan': '#06b6d4', 'pink': '#ec4899', 'violet': '#8b5cf6', 'green': '#10b981', 'orange': '#f59e0b' };
+        document.documentElement.style.setProperty('--cyan', cores[s.accentColor] || cores['cyan']);
+        document.body.classList.toggle('compact-mode', s.compact);
+        document.body.classList.toggle('no-animations', !s.animations);
+        document.body.classList.toggle('no-blur', !s.blur);
+    }
+
+    window.addEventListener('storage', (e) => { if (e.key === 'fs_settings') aplicarMudancasVisuais(JSON.parse(e.newValue)); });
+    aplicarMudancasVisuais(JSON.parse(localStorage.getItem('fs_settings') || '{}'));
+
+    document.getElementById('confirm-delete-task')?.addEventListener('click', async () => {
+        const fd = new FormData(); fd.append('acao', 'deletar'); fd.append('task_id', pendingDeleteItem);
+        await fetch('php/tarefas.php', { method: 'POST', body: fd });
+        document.getElementById('modal-delete-task').classList.remove('open'); carregarMissoes();
+    });
 
     carregarDadosIniciais();
     renderHistory();

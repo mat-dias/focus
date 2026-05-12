@@ -35,11 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Atualização sincronizada de Avatares
         const avatarImg = document.getElementById('profile-avatar-img');
         const navAv = document.getElementById('nav-avatar'); // Avatar da sidebar/nav
-        
-        const imgSrc = p.photo 
-          ? 'php/uploads/' + p.photo 
+
+        const imgSrc = p.photo
+          ? 'php/uploads/' + p.photo
           : `https://ui-avatars.com/api/?name=${encodeURIComponent(p.username)}&background=06b6d4&color=fff`;
-        
+
         avatarImg.src = imgSrc;
         if (navAv) navAv.src = imgSrc;
       }
@@ -47,6 +47,28 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error("Erro ao carregar perfil:", err);
     }
   }
+
+  function aplicarCorDinamica() {
+    const settings = JSON.parse(localStorage.getItem('fs_settings') || '{}');
+    const cores = {
+        'cyan': '#06b6d4',
+        'pink': '#ec4899',
+        'violet': '#8b5cf6',
+        'green': '#10b981',
+        'orange': '#f59e0b'
+    };
+
+    if (settings.accentColor) {
+        const hex = cores[settings.accentColor] || cores['cyan'];
+        document.documentElement.style.setProperty('--cyan', hex);
+    }
+}
+
+// Executa ao carregar e quando houver mudança no storage
+aplicarCorDinamica();
+window.addEventListener('storage', (e) => {
+    if (e.key === 'fs_settings') aplicarCorDinamica();
+});
 
   // --- FUNÇÕES DE FEEDBACK ---
   function showToast(msg, type = 'success') {
@@ -64,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(id);
     if (!el) return;
     el.textContent = msg;
-    el.style.color = isError ? '#ff4b91' : '#4ade80'; 
+    el.style.color = isError ? '#ff4b91' : '#4ade80';
     el.classList.add('show');
     setTimeout(() => el.classList.remove('show'), 3000);
   }
@@ -80,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (avatarWrapper) {
     avatarWrapper.addEventListener('click', () => avatarInput.click());
   }
-  
+
   if (editBtn) {
     editBtn.addEventListener('click', (e) => {
       e.stopPropagation(); // Evita clique duplo com o wrapper
