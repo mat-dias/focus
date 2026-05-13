@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Date ──
   const today = new Date();
-  document.getElementById('current-date').innerText = today.toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
+  document.getElementById('current-date').innerText = today.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
 
   // Load avatar
   const profile = JSON.parse(localStorage.getItem('fs_profile') || '{}');
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function getWeekDates(offset) {
     const d = new Date(today);
     d.setDate(d.getDate() - d.getDay() + 1 + offset * 7); // Monday
-    return Array.from({length: 7}, (_, i) => {
+    return Array.from({ length: 7 }, (_, i) => {
       const day = new Date(d);
       day.setDate(d.getDate() + i);
       return day;
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Weekly goals: { 0: 60, 1: 90, ... } (Sun=0 ... Sat=6), minutes
   function getWeekGoals() {
-    const defaults = { 0:0, 1:90, 2:90, 3:90, 4:90, 5:90, 6:30 };
+    const defaults = { 0: 0, 1: 90, 2: 90, 3: 90, 4: 90, 5: 90, 6: 30 };
     return { ...defaults, ...JSON.parse(localStorage.getItem('fs_week_goals') || '{}') };
   }
   function saveWeekGoals(g) { localStorage.setItem('fs_week_goals', JSON.stringify(g)); }
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('s-sessions').textContent = pomosTotal;
 
-    const totalMins = Object.values(data).reduce((a,b) => a+b, 0);
+    const totalMins = Object.values(data).reduce((a, b) => a + b, 0);
     const hours = Math.floor(totalMins / 60);
     const mins = totalMins % 60;
     document.getElementById('s-hours').textContent = mins ? `${hours}h${mins}m` : `${hours}h`;
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Habits done
     const habits = JSON.parse(localStorage.getItem('fs_habits') || '[]');
     let habitsDone = 0;
-    const yearStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0');
+    const yearStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
     habits.forEach(h => {
       habitsDone += Object.keys(h.checks || {}).filter(k => k.startsWith(yearStr)).length;
     });
@@ -96,11 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function fmtKey(d) {
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   }
 
   // ── Weekly hours ──
-  const DAYS_NAMES = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const DAYS_NAMES = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
   function renderWeeklyHours() {
     const grid = document.getElementById('weekly-hours-grid');
@@ -138,9 +138,9 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="wh-bar-fill${overGoal ? ' over-goal' : ''}" style="height:${barH}%"></div>
         </div>
         <div class="wh-day-info">
-          <div class="wh-day-hours">${mins ? (Math.floor(mins/60) ? Math.floor(mins/60)+'h' : '') + (mins%60 ? (mins%60)+'m' : '') : '0m'}</div>
+          <div class="wh-day-hours">${mins ? (Math.floor(mins / 60) ? Math.floor(mins / 60) + 'h' : '') + (mins % 60 ? (mins % 60) + 'm' : '') : '0m'}</div>
           <div class="wh-day-goal">
-            Meta: <span class="goal-text-${dayOfWeek}">${goal ? (Math.floor(goal/60) ? Math.floor(goal/60)+'h' : '')+(goal%60 ? (goal%60)+'m':'') : '--'}</span>
+            Meta: <span class="goal-text-${dayOfWeek}">${goal ? (Math.floor(goal / 60) ? Math.floor(goal / 60) + 'h' : '') + (goal % 60 ? (goal % 60) + 'm' : '') : '--'}</span>
             <button class="wh-edit-goal" data-day="${dayOfWeek}">✎</button>
           </div>
         </div>
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── Annual heatmap ──
-  const MONTH_ABBR = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const MONTH_ABBR = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
   function renderAnnual() {
 
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Day labels (left column)
     let dayLabelsHtml = '<div class="annual-day-labels">';
-    ['','Seg','','Qua','','Sex',''].forEach(l => {
+    ['', 'Seg', '', 'Qua', '', 'Sex', ''].forEach(l => {
       dayLabelsHtml += `<div class="annual-day-lbl">${l}</div>`;
     });
     dayLabelsHtml += '</div>';
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (val > 0) level = Math.min(4, Math.ceil(val / maxVal * 4));
         const isT = d.toDateString() === today.toDateString();
         gridHtml += `<div class="annual-cell" data-level="${level}" data-date="${k}" data-mins="${val}"
-          title="${d.toLocaleDateString('pt-BR',{day:'numeric',month:'short',year:'numeric'})}: ${val}min"
+          title="${d.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' })}: ${val}min"
           ${isT ? 'style="outline:2px solid var(--cyan);outline-offset:1px;"' : ''}></div>`;
       });
       gridHtml += '</div>';
@@ -277,8 +277,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const gridWidth = totalWeeks * 15; // 12px cell + 3px gap
 
     wrap.innerHTML =
-      `<div style="position:relative;height:18px;margin-left:40px;width:${gridWidth}px;margin-bottom:2px">${monthPositions.map(({wi,month}) =>
-        `<span class="annual-month-label" style="position:absolute;left:${wi*15}px">${MONTH_ABBR[month]}</span>`
+      `<div style="position:relative;height:18px;margin-left:40px;width:${gridWidth}px;margin-bottom:2px">${monthPositions.map(({ wi, month }) =>
+        `<span class="annual-month-label" style="position:absolute;left:${wi * 15}px">${MONTH_ABBR[month]}</span>`
       ).join('')}</div>` +
       `<div style="display:flex">${dayLabelsHtml}${gridHtml}</div>`;
   }
@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('ach-count').textContent = `${done}/${total}`;
 
     grid.innerHTML = '';
-    all.sort((a,b) => (b.isUnlocked - a.isUnlocked));
+    all.sort((a, b) => (b.isUnlocked - a.isUnlocked));
 
     all.forEach(a => {
       const item = document.createElement('div');
@@ -384,10 +384,38 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSummary();
     updateWeekLabel();
     renderWeeklyHours();
-    renderAnnual();
-    renderAchievements();
-    checkAchievements();
   }
+  function aplicarTema(settings) {
+    if (!settings || !settings.accentColor) return;
+
+    const cores = {
+      'cyan': '#06b6d4',
+      'pink': '#ec4899',
+      'violet': '#8b5cf6',
+      'green': '#10b981',
+      'orange': '#f59e0b'
+    };
+
+    const hex = cores[settings.accentColor] || cores['cyan'];
+
+    // Aplica a cor no root do documento (afeta todo o CSS que usa var(--cyan))
+    document.documentElement.style.setProperty('--cyan', hex);
+
+    // Se quiser aplicar o modo compacto também:
+    document.body.classList.toggle('compact-mode', settings.compact);
+  }
+
+  // Executa ao carregar a página
+  const settingsSalvas = JSON.parse(localStorage.getItem('fs_settings') || '{}');
+  aplicarTema(settingsSalvas);
+
+  // Escuta mudanças em tempo real (se mudar a cor na aba de configurações)
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'fs_settings') {
+      const novosSettings = JSON.parse(e.newValue);
+      aplicarTema(novosSettings);
+    }
+  });
 
   renderAll();
 });

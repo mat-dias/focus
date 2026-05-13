@@ -62,19 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ── Sincronizar UI com Estado ──
     function loadUI() {
-        // Pomodoro
-        document.getElementById('cfg-focus').value = settings.focusDuration;
-        document.getElementById('cfg-short-break').value = settings.shortBreak;
-        document.getElementById('cfg-long-break').value = settings.longBreak;
-        document.getElementById('cfg-sessions-long').value = settings.sessionsLong;
-        document.getElementById('cfg-auto-break').checked = settings.autoBreak;
-        document.getElementById('cfg-auto-focus').checked = settings.autoFocus;
-
-        // Notificações
-        document.getElementById('cfg-notif-browser').checked = settings.notifBrowser;
-        document.getElementById('cfg-notif-sound').checked = settings.notifSound;
-        document.getElementById('cfg-notif-achievements').checked = settings.notifAchievements;
-        document.getElementById('cfg-reminder-time').value = settings.reminderTime;
 
         // Aparência
         document.getElementById('cfg-compact').checked = settings.compact;

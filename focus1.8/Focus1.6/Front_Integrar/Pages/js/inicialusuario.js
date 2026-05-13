@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => { //a corrigir junto com o p
         try {
             const response = await fetch('php/inicialusuario.php');
             const data = await response.json();
+            const profile = data.profile;
+            const avatar = data.foto;
             if (data.logado) {
                 document.getElementById('welcome-name').textContent = data.nome;
                 if (data.foto) {
@@ -284,7 +286,6 @@ document.addEventListener('DOMContentLoaded', () => { //a corrigir junto com o p
     //  MISSÕES
     // ══════════════════════════════════════════
     const taskList = document.querySelector('.js-task-list');
-    const addTaskBtn = document.querySelector('.js-add-task');
     const tasksEmpty = document.getElementById('tasks-empty');
     const tasksDone = document.getElementById('tasks-done-count');
     const tasksFill = document.getElementById('tasks-progress-fill');
@@ -401,58 +402,6 @@ document.addEventListener('DOMContentLoaded', () => { //a corrigir junto com o p
                 carregarMissoes();
             }
         } catch (e) { console.error("Erro ao deletar"); }
-    });
-
-    // ADICIONAR TAREFA
-    let isAddingTask = false;
-    const btnConfirm = document.getElementById('confirm-add-task');
-    const inputTask = document.getElementById('task-input');
-
-    if (btnConfirm) {
-        btnConfirm.onclick = async (e) => {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-
-            if (isAddingTask) return;
-
-            const titulo = inputTask.value.trim();
-            if (!titulo) {
-                inputTask.focus();
-                return;
-            }
-
-            isAddingTask = true;
-            btnConfirm.disabled = true;
-
-            const fd = new FormData();
-            fd.append('acao', 'inserir');
-            fd.append('titulo', titulo);
-
-            try {
-                const res = await fetch('php/tarefas.php', { method: 'POST', body: fd });
-                const dados = await res.json();
-
-                if (dados.sucesso) {
-                    inputTask.value = '';
-                    document.getElementById('modal-add-task')?.classList.remove('open');
-                    taskList.innerHTML = '';
-                    await carregarMissoes();
-                }
-            } catch (err) {
-                console.error("Erro ao inserir:", err);
-            } finally {
-                isAddingTask = false;
-                btnConfirm.disabled = false;
-            }
-        };
-    }
-
-    // 6. TRATAMENTO DO ENTER
-    inputTask?.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            btnConfirm?.click();
-        }
     });
 
     // Inicialização
