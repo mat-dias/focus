@@ -17,7 +17,8 @@ function loadEnv($path)
         $_ENV[trim($name)] = trim($value);
         putenv(trim($name) . "=" . trim($value));
     }
-}
+} 
+
 function getConexao() //corrigido
 { 
 

@@ -1,7 +1,16 @@
 <?php
-session_start();
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/MySQLClass.php';
+session_start();
+
+$mysql = new MySQLClass();
+
+$profile_id = $_SESSION['profile_id'] ?? null;
+
+if (!$profile_id) {
+    echo json_encode(['success' => false, 'error' => 'Sessão expirada']);
+    exit;
+}
 
 $db = new MySQLClass();
 $metodo = $_SERVER['REQUEST_METHOD'];
