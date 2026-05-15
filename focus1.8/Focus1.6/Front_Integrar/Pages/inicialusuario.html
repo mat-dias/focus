@@ -12,11 +12,10 @@
 <body class="dash-body">
     <header class="header">
         <div class="container header-inner">
-            <a href="../index.html" class="logo"><span>Focus Study</span></a>
+            <a href="inicialusuario.html" class="logo"><span>Focus Study</span></a>
             <nav class="nav">
                 <a href="inicialusuario.html" class="nav-link active">Painel</a>
                 <a href="horarios.html" class="nav-link">Horários</a>
-                <a href="grade-habitos.html" class="nav-link">Hábitos</a>
                 <a href="estatisticas-new.html" class="nav-link">Estatísticas</a>
             </nav>
             <div class="header-actions">
@@ -86,15 +85,12 @@
             <div class="dash-card tasks-card">
                 <div class="tasks-header">
                     <h3>Minhas Missões</h3>
-                    <button class="btn-add-task js-add-task" title="Adicionar Missão">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    </button>
                 </div>
                 <div class="tasks-content">
                     <ul class="task-list js-task-list"></ul>
                     <div class="tasks-empty" id="tasks-empty" style="display:none">
                         <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color:var(--border)"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-                        <p>Sem missões por enquanto.<br>Adicione uma para começar!</p>
+                        <p>Sem missões para hoje.<br>Configure seus horários para adicionar!</p>
                     </div>
                 </div>
                 <div class="tasks-footer" id="tasks-footer">
@@ -189,42 +185,6 @@
                 </div>
             </div>
 
-            <!-- Notas rápidas + Histórico (expandidas) -->
-            <div class="dash-card notes-card">
-                <div class="notes-editor-col">
-                    <div class="card-mini-header">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                        <h4>Notas Rápidas</h4>
-                        <span class="note-saved" id="note-saved">Salvo ✓</span>
-                    </div>
-                    <textarea class="quick-note" id="quick-note"
-                        placeholder="Escreva aqui suas ideias, objetivos do dia, ou qualquer coisa que precisar lembrar..."
-                        maxlength="1000"></textarea>
-                    <div class="note-footer">
-                        <span class="note-chars" id="note-chars">0/1000</span>
-                        <div class="note-footer-btns">
-                            <button class="btn-save-note" id="btn-save-note">
-                                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                                Guardar
-                            </button>
-                            <button class="btn-clear-note" id="btn-clear-note">Limpar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="notes-divider"></div>
-                <div class="notes-history-col">
-                    <div class="card-mini-header">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        <h4>Histórico</h4>
-                        <span class="note-history-count" id="note-history-count">0 notas</span>
-                    </div>
-                    <ul class="note-history-list" id="note-history-list"></ul>
-                    <div class="note-history-empty" id="note-history-empty">
-                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                        <p>Nenhuma nota guardada ainda</p>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </main>
@@ -250,21 +210,7 @@
         <div class="fs-pomo-dots" id="fs-dots"></div>
     </div>
 
-    <!-- Modal: Adicionar Missão -->
-    <div class="fs-modal-overlay" id="modal-add-task">
-        <div class="fs-modal">
-            <div class="fs-modal-icon cyan">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </div>
-            <h3>Nova Missão</h3>
-            <p class="fs-modal-sub">O que você quer conquistar hoje?</p>
-            <input type="text" id="task-input" class="fs-modal-input" placeholder="Ex: Estudar 2 capítulos de JS" maxlength="80" />
-            <div class="fs-modal-actions">
-                <button class="fs-btn-cancel" id="cancel-add-task">Cancelar</button>
-                <button class="fs-btn-confirm" id="confirm-add-task">Adicionar</button>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Modal: Confirmar exclusão -->
     <div class="fs-modal-overlay" id="modal-delete-task">

@@ -71,20 +71,27 @@
         </svg>
         Timer Pomodoro
       </button>
-      <button class="tab-btn" onclick="switchTab('planilha', this)">
+      <button class="tab-btn" onclick="switchTab('missoes', this)">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <line x1="3" y1="9" x2="21" y2="9" />
           <line x1="3" y1="15" x2="21" y2="15" />
           <line x1="9" y1="3" x2="9" y2="21" />
         </svg>
-        Planilha de Hábitos
+        Missões e Horários
       </button>
-      <button class="tab-btn" onclick="switchTab('dashboard', this)">
+      <button class="tab-btn" onclick="switchTab('painel', this)">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
         </svg>
-        Dashboard de Tarefas
+        Painel de Foco
+      </button>
+      <button class="tab-btn" onclick="switchTab('estatisticas', this)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+        Estatísticas
       </button>
       <button class="tab-btn" onclick="switchTab('assistant', this)">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -194,179 +201,69 @@
         </div>
       </div>
 
-      <!-- PLANILHA -->
-      <div class="tab-panel" id="panel-planilha">
+      <!-- MISSÕES E HORÁRIOS -->
+      <div class="tab-panel" id="panel-missoes">
         <div class="inst-layout">
           <aside class="inst-sidebar">
             <p class="sidebar-label">Nesta seção</p>
             <nav class="sidebar-nav">
-              <a href="#conceito">O Conceito</a>
-              <a href="#estrutura">Estrutura da Planilha</a>
-              <a href="#metricas">Métricas e Análises</a>
-              <a href="#grafico">Gráfico de Progresso</a>
-              <a href="#dicas-hab">Dicas de Hábitos</a>
+              <a href="#visao-horarios">Visão Geral</a>
+              <a href="#criar-horario">Como Criar Horários</a>
+              <a href="#missoes-automaticas">Missões Automáticas</a>
+              <a href="#marcar-conclusao">Marcando Conclusão</a>
             </nav>
           </aside>
           <main>
 
-            <section class="inst-section" id="conceito">
-              <h2>📊 A Planilha de Acompanhamento de Hábitos</h2>
-              <p>Inspirada em métodos comprovados de formação de hábitos (como o <em>Habit Tracking</em> de James Clear
-                em <em>Atomic Habits</em>), a planilha do Focus Study permite registrar e visualizar seus hábitos
-                diários ao longo do mês.</p>
-              <p>A ideia é criar uma "corrente" visual de consistência — cada dia marcado fortalece o hábito e motiva a
-                não "quebrar a sequência".</p>
+            <section class="inst-section" id="visao-horarios">
+              <h2>⏰ Missões e Horários</h2>
+              <p>As missões no Focus Study são geradas automaticamente a partir dos <strong>horários</strong> que você configura. Quando você cria um horário de estudo ou atividade, ele se torna uma missão no seu painel de foco.</p>
+              <p>Dessa forma, suas tarefas diárias estão sempre alinhadas com seu cronograma, garantindo que você cumpra o que foi planejado.</p>
+            </section>
 
+            <hr class="divider-line">
+
+            <section class="inst-section" id="criar-horario">
+              <h2>Como Criar Horários</h2>
+              <p>Acesse a aba <strong>Horários</strong> no painel principal:</p>
+              <ol>
+                <li>Clique em "Novo Horário".</li>
+                <li>Escolha o <strong>dia da semana</strong> (segunda a domingo).</li>
+                <li>Defina o <strong>horário de início</strong> e <strong>duração</strong> da atividade.</li>
+                <li>Dê um nome claro à atividade (ex: "Estudar Matemática", "Fazer Exercícios").</li>
+                <li>Salve o horário.</li>
+              </ol>
               <div class="tip-box">
-                <span class="tip-icon">📅</span>
-                <p>A planilha é organizada por <strong>mês</strong> e dividida em <strong>semanas</strong>, mostrando os
-                  dias úteis (Seg–Sex) de cada semana do mês.</p>
+                <span class="tip-icon">💡</span>
+                <p>Dê nomes específicos aos seus horários. "Estudar Cálculo de 14h às 15h" é melhor que apenas "Estudar".</p>
               </div>
             </section>
 
             <hr class="divider-line">
 
-            <section class="inst-section" id="estrutura">
-              <h2>Estrutura da Planilha</h2>
-
-              <div class="sheet-preview">
-                <div class="sheet-header">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <line x1="3" y1="9" x2="21" y2="9" />
-                    <line x1="9" y1="3" x2="9" y2="21" />
-                  </svg>
-                  Março — Semana 1 (Seg 2 → Sex 6)
-                </div>
-                <div class="sheet-body">
-                  <div class="habit-row-demo">
-                    <span class="habit-name">Acordar 6h da manhã</span>
-                    <span class="habit-check done">✓</span>
-                    <span class="habit-check done">✓</span>
-                    <span class="habit-check"></span>
-                    <span class="habit-check done">✓</span>
-                    <span class="habit-check"></span>
-                    <div class="habit-bar">
-                      <div class="habit-bar-fill" style="width:60%"></div>
-                    </div>
-                  </div>
-                  <div class="habit-row-demo">
-                    <span class="habit-name">Beber 2 litros de água</span>
-                    <span class="habit-check done">✓</span>
-                    <span class="habit-check done">✓</span>
-                    <span class="habit-check done">✓</span>
-                    <span class="habit-check done">✓</span>
-                    <span class="habit-check done">✓</span>
-                    <div class="habit-bar">
-                      <div class="habit-bar-fill" style="width:100%"></div>
-                    </div>
-                  </div>
-                  <div class="habit-row-demo">
-                    <span class="habit-name">Estudar / Curso</span>
-                    <span class="habit-check done">✓</span>
-                    <span class="habit-check"></span>
-                    <span class="habit-check done">✓</span>
-                    <span class="habit-check"></span>
-                    <span class="habit-check"></span>
-                    <div class="habit-bar">
-                      <div class="habit-bar-fill" style="width:40%"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <p>Cada linha representa um hábito. As colunas são os dias úteis do mês. Você marca (✓) ou deixa em branco
-                cada dia:</p>
+            <section class="inst-section" id="missoes-automaticas">
+              <h2>Missões Automáticas</h2>
+              <p>Quando você cria um horário, ele é automaticamente adicionado como uma <strong>missão</strong> para aquele dia. Você verá a missão no seu <strong>Painel de Foco</strong> no dia agendado.</p>
               <ul>
-                <li><strong>Cabeçalho superior:</strong> resumo do mês — total de hábitos, completados e barra de
-                  progresso geral.</li>
-                <li><strong>Coluna de hábitos:</strong> lista de até 14 hábitos personalizáveis (ilimitado no plano
-                  Pro).</li>
-                <li><strong>Grade de dias:</strong> checkboxes para marcação diária, agrupados por semana.</li>
-                <li><strong>Painel de Análises (lateral):</strong> Meta vs. Atual para cada hábito com barra de
-                  progresso.</li>
-                <li><strong>Linha de progresso diário:</strong> percentual de hábitos completados por dia.</li>
+                <li>Cada horário criado = uma missão a cumprir.</li>
+                <li>As missões aparecem listadas no painel principal com checkboxes.</li>
+                <li>Você pode visualizar todas as missões do dia em um só lugar.</li>
               </ul>
             </section>
 
             <hr class="divider-line">
 
-            <section class="inst-section" id="metricas">
-              <h2>Métricas e Análises</h2>
-              <p>A planilha calcula automaticamente diversas métricas para cada hábito e para o mês inteiro:</p>
-
-              <div class="metrics-grid">
-                <div class="metric-card">
-                  <div class="metric-icon">🎯</div>
-                  <div class="metric-name">Meta</div>
-                  <div class="metric-desc">Dias-alvo para o hábito no mês (padrão: dias úteis).</div>
-                </div>
-                <div class="metric-card">
-                  <div class="metric-icon">✅</div>
-                  <div class="metric-name">Atual</div>
-                  <div class="metric-desc">Quantos dias o hábito foi completado até hoje.</div>
-                </div>
-                <div class="metric-card">
-                  <div class="metric-icon">📈</div>
-                  <div class="metric-name">% Progresso</div>
-                  <div class="metric-desc">Percentual de dias cumpridos em relação à meta.</div>
-                </div>
-                <div class="metric-card">
-                  <div class="metric-icon">📅</div>
-                  <div class="metric-name">% Diário</div>
-                  <div class="metric-desc">Percentual de hábitos feitos em cada dia específico.</div>
-                </div>
-                <div class="metric-card">
-                  <div class="metric-icon">🔢</div>
-                  <div class="metric-name">Feito</div>
-                  <div class="metric-desc">Contagem absoluta de dias marcados por coluna.</div>
-                </div>
-                <div class="metric-card">
-                  <div class="metric-icon">📉</div>
-                  <div class="metric-name">Não Feito</div>
-                  <div class="metric-desc">Dias em que o hábito não foi executado.</div>
-                </div>
-              </div>
-            </section>
-
-            <hr class="divider-line">
-
-            <section class="inst-section" id="grafico">
-              <h2>Gráfico de Progresso Mensal</h2>
-              <p>Na parte inferior da planilha há um gráfico de linha que exibe a evolução do progresso diário ao longo
-                do mês. Ele é gerado automaticamente com base nos dados preenchidos.</p>
+            <section class="inst-section" id="marcar-conclusao">
+              <h2>Marcando Conclusão de Missões</h2>
+              <p>No <strong>Painel de Foco</strong>, clique no checkbox ao lado de cada missão para marcar como concluída:</p>
               <ul>
-                <li>O <strong>eixo X</strong> representa os dias do mês.</li>
-                <li>O <strong>eixo Y</strong> mostra o percentual de hábitos completados (0% a 100%).</li>
-                <li>A <strong>área sombreada</strong> abaixo da linha facilita a leitura da tendência geral.</li>
-                <li>Dias sem dados (futuros) aparecem em branco automaticamente.</li>
+                <li><strong>Checkbox vazio:</strong> Missão ainda não completada.</li>
+                <li><strong>Checkbox marcado:</strong> Missão cumprida (aparece com texto riscado).</li>
+                <li><strong>Barra de progresso:</strong> Mostra quantas missões você já completou hoje.</li>
               </ul>
-              <p>Use o gráfico para identificar padrões: dias da semana mais consistentes, semanas de queda e
-                oportunidades de melhoria.</p>
-            </section>
-
-            <hr class="divider-line">
-
-            <section class="inst-section" id="dicas-hab">
-              <h2>Dicas para Criar Hábitos Duradouros</h2>
-
-              <div class="steps-card">
-                <h3 style="margin-top:0">🌱 Como começar certo</h3>
-                <ol>
-                  <li>Comece com poucos hábitos (3 a 5 no máximo) — acumular muitos de vez garante falha.</li>
-                  <li>Defina hábitos pequenos e específicos: "Ler 10 páginas" é melhor que "Ler mais".</li>
-                  <li>Vincule novos hábitos a rotinas já existentes (ex.: ler após o café da manhã).</li>
-                  <li>Marque imediatamente após completar — o ato de marcar reforça o comportamento.</li>
-                  <li>Não quebre a corrente dois dias seguidos — um dia perdido acontece, dois é um novo hábito ruim.
-                  </li>
-                </ol>
-              </div>
-
               <div class="tip-box">
-                <span class="tip-icon">🔑</span>
-                <p>A planilha foi projetada para ser preenchida <strong>todo dia</strong>, idealmente à noite como parte
-                  de uma revisão diária de 2 minutos. A consistência de preenchimento é o primeiro hábito a cultivar.
-                </p>
+                <span class="tip-icon">🎯</span>
+                <p>Sua progressão nas missões é registrada e aparece nas <strong>Estatísticas</strong>, ajudando você a acompanhar sua produtividade ao longo do tempo.</p>
               </div>
             </section>
 
@@ -374,68 +271,134 @@
         </div>
       </div>
 
-      <!-- DASHBOARD -->
-      <div class="tab-panel" id="panel-dashboard">
+      <!-- PAINEL DE FOCO -->
+      <div class="tab-panel" id="panel-painel">
         <div class="inst-layout">
           <aside class="inst-sidebar">
             <p class="sidebar-label">Nesta seção</p>
             <nav class="sidebar-nav">
-              <a href="#dash-intro">Visão Geral</a>
-              <a href="#projetos">Projetos</a>
-              <a href="#tarefas">Tarefas</a>
-              <a href="#cronometro">Cronômetro</a>
+              <a href="#painel-intro">Visão Geral</a>
+              <a href="#componentes-painel">Componentes</a>
+              <a href="#timer-pomodoro-painel">Timer Pomodoro</a>
+              <a href="#player-musica">Player de Música</a>
             </nav>
           </aside>
           <main>
 
-            <section class="inst-section" id="dash-intro">
-              <h2>🗂 O Dashboard de Tarefas</h2>
-              <p>O Dashboard é o centro de controle do seu trabalho no Focus Study. Aqui você cria projetos, adiciona
-                tarefas e acompanha o tempo dedicado a cada uma delas com cronômetros integrados.</p>
+            <section class="inst-section" id="painel-intro">
+              <h2>🎯 Painel de Foco</h2>
+              <p>O Painel de Foco é a tela principal onde você acompanha suas missões diárias, usa o timer Pomodoro e desfruta de música relaxante para manter a concentração.</p>
+              <p>Tudo está organizado em um layout intuitivo que prioriza sua produtividade.</p>
             </section>
 
             <hr class="divider-line">
 
-            <section class="inst-section" id="projetos">
-              <h2>Criando Projetos</h2>
-              <p>Projetos são agrupamentos de tarefas relacionadas. Exemplos: "TCC", "Trabalho de Cálculo", "Estudo para
-                Concurso".</p>
+            <section class="inst-section" id="componentes-painel">
+              <h2>Componentes Principais</h2>
+              <p>O Painel de Foco contém 3 seções principais:</p>
               <ul>
-                <li>Clique em <strong>+ Adicionar Novo Projeto</strong> no Dashboard.</li>
-                <li>Dê um nome claro e objetivo ao projeto.</li>
-                <li>Use projetos para separar contextos diferentes da sua vida.</li>
+                <li><strong>Timer Pomodoro (esquerda):</strong> Suas sessões de foco com diferentes durações.</li>
+                <li><strong>Minhas Missões (direita):</strong> Lista de tarefas do dia com checkboxes para marcar conclusão.</li>
+                <li><strong>Música para Foco (abaixo):</strong> Player com faixas relaxantes para acompanhá-lo durante os estudos.</li>
               </ul>
             </section>
 
             <hr class="divider-line">
 
-            <section class="inst-section" id="tarefas">
-              <h2>Gerenciando Tarefas</h2>
-              <p>Cada tarefa tem um ciclo de vida com 4 status:</p>
-              <ul>
-                <li><strong>Pendente:</strong> tarefa criada, ainda não iniciada.</li>
-                <li><strong>Em Andamento:</strong> cronômetro ativo, tempo sendo contabilizado.</li>
-                <li><strong>Pausada:</strong> cronômetro parado temporariamente, tempo acumulado salvo.</li>
-                <li><strong>Concluída:</strong> tarefa finalizada, duração total registrada.</li>
-              </ul>
-            </section>
-
-            <hr class="divider-line">
-
-            <section class="inst-section" id="cronometro">
-              <h2>O Cronômetro Integrado</h2>
-              <p>Diferente do Pomodoro (que usa blocos fixos), o cronômetro do Dashboard mede o tempo real dedicado a
-                cada tarefa de forma contínua:</p>
+            <section class="inst-section" id="timer-pomodoro-painel">
+              <h2>⏱ Usando o Timer Pomodoro</h2>
+              <p>O timer Pomodoro no painel permite iniciar sessões de foco rápidas:</p>
               <ol>
-                <li>Clique em <strong>Iniciar</strong> para começar a contar o tempo.</li>
-                <li>Use <strong>Pausar</strong> se precisar interromper — o tempo acumulado é salvo.</li>
-                <li>Clique em <strong>Retomar</strong> para continuar de onde parou.</li>
-                <li>Ao terminar, clique em <strong>Finalizar</strong> — a duração total é registrada.</li>
+                <li>Escolha um modo: <strong>Foco (25min)</strong>, <strong>Pausa Curta (5min)</strong> ou <strong>Pausa Longa (15min)</strong>.</li>
+                <li>Clique em <strong>Iniciar</strong> para começar a contagem regressiva.</li>
+                <li>Use <strong>Resetar</strong> para voltar ao tempo original.</li>
+                <li>A contagem aparece em tempo real com um visual destacado.</li>
+                <li>Você pode expandir para tela cheia clicando no ícone de fullscreen.</li>
               </ol>
               <div class="tip-box">
-                <span class="tip-icon">⚡</span>
-                <p>Combine o Dashboard com o Pomodoro: use o timer Pomodoro para as sessões de foco e o cronômetro do
-                  Dashboard para medir o total investido em cada projeto.</p>
+                <span class="tip-icon">🔔</span>
+                <p>Ao terminar um pomodoro, você recebe uma notificação. O contador de sessões (bolinhas) mostra quantas você completou hoje.</p>
+              </div>
+            </section>
+
+            <hr class="divider-line">
+
+            <section class="inst-section" id="player-musica">
+              <h2>🎵 Player de Música para Foco</h2>
+              <p>O player integrado oferece várias faixas musicais curadas para aumentar concentração:</p>
+              <ul>
+                <li><strong>Seleção de faixas:</strong> Clique em uma música para ouvi-la.</li>
+                <li><strong>Controles:</strong> Play/Pause, próxima/anterior, loop e shuffle.</li>
+                <li><strong>Barra de progresso:</strong> Veja o tempo da música e pule para qualquer parte.</li>
+                <li><strong>Volume:</strong> Ajuste o som conforme sua preferência.</li>
+              </ul>
+              <div class="tip-box">
+                <span class="tip-icon">🎧</span>
+                <p>Encontre a música perfeita para seu estudo. Algumas pessoas concentram melhor com sons relaxantes, outras com ritmos suaves. Experimente e descubra sua preferência.</p>
+              </div>
+            </section>
+
+          </main>
+        </div>
+      </div>
+
+      <!-- ESTATÍSTICAS -->
+      <div class="tab-panel" id="panel-estatisticas">
+        <div class="inst-layout">
+          <aside class="inst-sidebar">
+            <p class="sidebar-label">Nesta seção</p>
+            <nav class="sidebar-nav">
+              <a href="#visao-geral-stats">Visão Geral</a>
+              <a href="#periodos-tempo">Períodos de Tempo</a>
+              <a href="#graficos-stats">Gráficos Interativos</a>
+              <a href="#heatmap-anual">Heatmap Anual</a>
+            </nav>
+          </aside>
+          <main>
+
+            <section class="inst-section" id="visao-geral-stats">
+              <h2>📊 Suas Estatísticas</h2>
+              <p>A página de Estatísticas oferece uma visão completa do seu progresso com base nas missões cumpridas. Você pode acompanhar seu desempenho em diferentes períodos de tempo e identificar padrões de produtividade.</p>
+            </section>
+
+            <hr class="divider-line">
+
+            <section class="inst-section" id="periodos-tempo">
+              <h2>Períodos de Tempo Disponíveis</h2>
+              <p>Escolha entre 5 períodos diferentes para analisar seu progresso:</p>
+              <ul>
+                <li><strong>Diário:</strong> Visão do dia de hoje com detalhes de missões concluídas.</li>
+                <li><strong>Semanal:</strong> Progresso de segunda a domingo, mostrando consistência ao longo da semana.</li>
+                <li><strong>Mensal:</strong> Acompanhamento completo do mês, dia a dia, para identificar tendências.</li>
+                <li><strong>Semestral:</strong> Análise de 6 meses agrupada por mês, visão de longo prazo.</li>
+                <li><strong>Anual:</strong> Panorama de todo o ano com dados agrupados mensalmente.</li>
+              </ul>
+            </section>
+
+            <hr class="divider-line">
+
+            <section class="inst-section" id="graficos-stats">
+              <h2>Gráficos Interativos</h2>
+              <p>O gráfico de progresso mostra as <strong>missões cumpridas</strong> (barras cyan) versus o <strong>total de missões</strong> (barras cinzentas) para cada período. Use os botões ← e → para navegar entre períodos anteriores e posteriores.</p>
+              <div class="tip-box">
+                <span class="tip-icon">📈</span>
+                <p>Quanto maior a altura da barra cyan em relação à cinzenta, maior sua taxa de conclusão. Uma barra cyan alta e consistente indica um padrão saudável de produtividade.</p>
+              </div>
+            </section>
+
+            <hr class="divider-line">
+
+            <section class="inst-section" id="heatmap-anual">
+              <h2>Heatmap Anual (Visão do Ano)</h2>
+              <p>A visualização tipo heatmap mostra cada dia do ano como uma pequena célula. Quanto mais intensa a cor cyan, mais missões você completou naquele dia.</p>
+              <ul>
+                <li><strong>Cores mais claras:</strong> Poucos ou nenhum missões cumpridas.</li>
+                <li><strong>Cores mais vibrantes:</strong> Alta atividade e muitas missões concluídas.</li>
+                <li><strong>Passe o mouse:</strong> Veja detalhes de quantas missões você cumpriu em cada dia.</li>
+              </ul>
+              <div class="tip-box">
+                <span class="tip-icon">🎯</span>
+                <p>Use o heatmap para visualizar sua consistência ao longo do ano. Você está estudando regularmente? Tem fins de semana menos produtivos? Identifique seus padrões e melhore.</p>
               </div>
             </section>
 

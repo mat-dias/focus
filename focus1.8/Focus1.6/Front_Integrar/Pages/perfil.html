@@ -11,11 +11,10 @@
 <body class="dash-body">
   <header class="header">
     <div class="container header-inner">
-      <a href="../index.html" class="logo"><span>Focus Study</span></a>
+      <a href="inicialusuario.html" class="logo"><span>Focus Study</span></a>
       <nav class="nav">
         <a href="inicialusuario.html" class="nav-link">Painel</a>
         <a href="horarios.html" class="nav-link">Horários</a>
-        <a href="grade-habitos.html" class="nav-link">Hábitos</a>
         <a href="estatisticas-new.html" class="nav-link">Estatísticas</a>
       </nav>
       <div class="header-actions">
@@ -89,35 +88,6 @@
                 <input type="text" id="inp-tag" placeholder="seunome" />
               </div>
             </div>
-            <div class="form-group full">
-              <label>Biografia</label>
-              <textarea id="inp-bio" placeholder="Fale um pouco sobre você..." rows="3"></textarea>
-            </div>
-            <div class="form-group">
-              <label>Objetivo Principal</label>
-              <select id="inp-goal">
-                <option value="">Selecione...</option>
-                <option value="vestibular">Vestibular / ENEM</option>
-                <option value="concurso">Concurso Público</option>
-                <option value="faculdade">Faculdade</option>
-                <option value="habitos">Melhorar Hábitos</option>
-                <option value="produtividade">Produtividade</option>
-                <option value="outro">Outro</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Fuso Horário</label>
-              <select id="inp-tz">
-                <option value="America/Sao_Paulo">América/São Paulo (BRT)</option>
-                <option value="America/Manaus">América/Manaus (AMT)</option>
-                <option value="America/Fortaleza">América/Fortaleza (BRT)</option>
-                <option value="America/Belem">América/Belém (BRT)</option>
-                <option value="America/Boa_Vista">América/Boa Vista (AMT)</option>
-                <option value="America/Porto_Velho">América/Porto Velho (AMT)</option>
-                <option value="America/Rio_Branco">América/Rio Branco (ACT)</option>
-                <option value="America/Noronha">América/Noronha (FNT)</option>
-              </select>
-            </div>
           </div>
           <div class="form-save-row">
             <button class="btn btn-primary" id="save-personal">Salvar Informações</button>
@@ -152,6 +122,15 @@
           </div>
         </div>
 
+        <div class="dash-card edit-card logout-card">
+          <h3 class="section-title">Sessão</h3>
+          <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">Sair da sua conta e retornar à página de login.</p>
+          <button class="btn btn-danger" id="btn-logout">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4m7 4l5-5m0 0l-5-5m5 5H9"/></svg>
+            Sair da Conta
+          </button>
+        </div>
+
       </div>
     </div>
   </main>
@@ -161,5 +140,6 @@
 
   <script src="js/script.js"></script>
   <script src="js/perfil.js"></script>
+  <script src="js/configuracoes.js" ></script>
 </body>
 </html>
