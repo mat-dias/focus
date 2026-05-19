@@ -524,7 +524,6 @@ document.addEventListener('DOMContentLoaded', () => { //corrigido
     });
 
     carregarDadosIniciais();
-    renderHistory();
     renderDots();
     updateTimerDisplay();
     atualizarProgresso();

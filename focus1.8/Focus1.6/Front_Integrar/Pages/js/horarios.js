@@ -299,7 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('next-week').addEventListener('click', () => { weekOffset++; carregarAtividadesDoBanco(); });
 
   async function carregarAtividadesDoBanco() {
-    const wk = getWeekKey(weekOffset);
     const dates = getWeekDates(weekOffset);
     const dataInicio = dates[0].toISOString().split('T')[0]; // Segunda
     const dataFim = dates[6].toISOString().split('T')[0];    // Domingo
@@ -310,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
       activities = dados;
       render();
     } catch (err) {
-      console.error("Erro ao buscar horários:", err);
+      console.error("Erro ao buscar horários", err);
     }
   }
 

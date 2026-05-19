@@ -51,6 +51,16 @@ function mostrarAlerta(msg, tipo) {
     setTimeout(() => { el.style.display = 'none'; }, 8000);
 }
 
+async function carregarMeusChamados() {
+    const res = await fetch('php/contato.php?listar=1');
+    const data = await res.json();
+
+    if (data.error === 'Sessão expirada') {
+        window.location.href = 'login.html';
+        return;
+    }
+}
+
 // Envio de Chamado
 async function enviarComPersistencia(formData, tentativas = 3) {
     for (let i = 0; i < tentativas; i++) {
@@ -86,7 +96,7 @@ document.getElementById('formLoginAdmin')?.addEventListener('submit', async func
         const data = await res.json();
 
         if (data.sucesso) {
-            window.location.href = 'adm/painelAdm.php';
+            window.location.href = 'adm/painelAdm.html';
         } else {
             erroDiv.textContent = data.mensagem;
             erroDiv.style.display = 'block';
@@ -165,7 +175,7 @@ async function carregarTickets() {
 // verifica status de user logado
 async function verificarStatusUsuario() {
     try {
-    
+
         const res = await fetch('adm/verificar_adm.php');
         const status = await res.json();
 
@@ -181,5 +191,15 @@ async function verificarStatusUsuario() {
 
 // Inicialização correta
 document.addEventListener('DOMContentLoaded', () => {
-    carregarTickets();
+
+    function aplicarTema() {
+        const settings = JSON.parse(localStorage.getItem('fs_settings') || '{}');
+        const cores = { 'cyan': '#06b6d4', 'pink': '#ec4899', 'violet': '#8b5cf6', 'green': '#10b981', 'orange': '#f59e0b' };
+        if (settings.accentColor) {
+            document.documentElement.style.setProperty('--cyan', cores[settings.accentColor] || cores['cyan']);
+        }
+        document.body.classList.toggle('compact-mode', settings.compact === true);
+    }
+    aplicarTema();
+    carregarTickets(); 
 });

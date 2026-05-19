@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentPeriod = 'monthly';
   let chart = null;
   let allDailyStats = [];
+  let dateOffset = 0; 
 
   const periods = {
     daily: { label: 'Hoje', days: 1 },
@@ -263,6 +264,26 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   });
+  // Botão de período anterior
+document.getElementById('chart-prev').addEventListener('click', async () => {
+    dateOffset--;
+    await atualizarGraficoComOffset();
+});
+
+// Botão de próximo período
+document.getElementById('chart-next').addEventListener('click', async () => {
+    dateOffset++;
+    await atualizarGraficoComOffset();
+});
+
+// Função para recarregar os dados com o novo offset
+async function atualizarGraficoComOffset() {
+    const data = await loadData(`php/api_estatisticas.php?action=stats&period=${currentPeriod}&offset=${dateOffset}`); 
+    if (data) {
+        updateStats(data);
+        renderChart();
+    }
+}
 
   // ════════════════════════════════════════════════════════
   // Inicialização
@@ -274,4 +295,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderChart();
   }
   await renderAnnualHeatmap();
+
+  // ── Lógica de Tema  ──
+
+function aplicarTema(settings) {
+  if (!settings || !settings.accentColor) return;
+
+  const cores = {
+    'cyan': '#06b6d4',
+    'pink': '#ec4899',
+    'violet': '#8b5cf6',
+    'green': '#10b981',
+    'orange': '#f59e0b'
+  };
+
+  const hex = cores[settings.accentColor] || cores['cyan'];
+
+  // Aplica a cor no root (variável --cyan que você usa nos gráficos e gradientes)
+  document.documentElement.style.setProperty('--cyan', hex);
+
+  // Aplica o modo compacto se os seletores CSS existirem nesta página
+  document.body.classList.toggle('compact-mode', settings.compact);
+}
+
+// Executa ao carregar a página
+const settingsSalvas = JSON.parse(localStorage.getItem('fs_settings') || '{}');
+aplicarTema(settingsSalvas);
+
+// Escuta mudanças em tempo real (caso o usuário mude o tema em outra aba)
+window.addEventListener('storage', (e) => {
+  if (e.key === 'fs_settings') {
+    const novosSettings = JSON.parse(e.newValue);
+    aplicarTema(novosSettings);
+  }
+});
 });

@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await checkAuth();
     initDate();
     initSidebarNav();
+    initTicketFilters();
     initModalClose();
     loadSection('dashboard');
 });
@@ -84,6 +85,22 @@ function initSidebarNav() {
             !toggle?.contains(e.target)) {
             sidebar.classList.remove('open');
         }
+    });
+}
+
+function initTicketFilters() {
+    const filterButtons = document.querySelectorAll('.adm-tab');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            
+            btn.classList.add('active');
+            
+            ticketFilter = btn.getAttribute('data-status');
+
+            loadChamados(ticketFilter);
+        });
     });
 }
 
@@ -522,4 +539,11 @@ function showToast(msg, tipo = '') {
     t.className   = `show ${tipo}`;
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { t.className = ''; }, 3200);
+}
+
+//LogOut
+async function logout() {
+    const res = await fetch('logout.php');
+    // Após limpar a sessão no servidor, limpamos no cliente e redirecionamos
+    window.location.href = '../login.html';
 }
