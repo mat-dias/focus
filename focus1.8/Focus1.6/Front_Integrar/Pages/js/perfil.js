@@ -25,10 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('inp-tag').value = p.tag || p.username.toLowerCase().replace(/\s/g, '');
         document.getElementById('inp-email').value = p.email;
 
-        // Stats vindas do Banco (conforme SQL)
-        document.getElementById('pstat-sessions').textContent = p.total_concluido || '0';
+        // Sequência calculada dinamicamente pelo api_perfil
         document.getElementById('pstat-streak').textContent = p.streak || '0';
-        document.getElementById('pstat-habits').textContent = p.xp || '0';
 
         // Atualização sincronizada de Avatares
         const avatarImg = document.getElementById('profile-avatar-img');

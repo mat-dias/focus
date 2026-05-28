@@ -46,7 +46,7 @@ async function loadAdminInfo() {
             const el = document.getElementById('sidebar-name');
             const av = document.getElementById('sidebar-avatar');
             if (el) el.textContent = data.nome || 'Admin';
-            if (av && data.foto) av.src = data.foto;
+            if (av && data.foto) av.src = '../php/uploads/' + data.foto;
         }
     } catch { /* silencioso */ }
 }
@@ -282,7 +282,7 @@ async function loadChamados(status) {
     ticketFilter = status;
     const tbody = document.getElementById('chamados-tbody');
     if (!tbody) return;
-    tbody.innerHTML = loadingRow(8);
+    tbody.innerHTML = loadingRow(7);
 
     try {
         const url = `${API}?action=tickets${status && status !== 'all' ? '&status=' + status : ''}`;
@@ -293,14 +293,14 @@ async function loadChamados(status) {
     } catch {
         showToast('Erro ao carregar chamados.', 'erro');
         const tbody = document.getElementById('chamados-tbody');
-        if (tbody) tbody.innerHTML = emptyRow(8, 'Erro ao carregar');
+        if (tbody) tbody.innerHTML = emptyRow(7, 'Erro ao carregar');
     }
 }
 
 function renderChamados(tickets) {
     const tbody = document.getElementById('chamados-tbody');
     if (!tbody) return;
-    if (!tickets?.length) { tbody.innerHTML = emptyRow(8, 'Nenhum chamado encontrado'); return; }
+    if (!tickets?.length) { tbody.innerHTML = emptyRow(7, 'Nenhum chamado encontrado'); return; }
 
     tbody.innerHTML = tickets.map(t => `
         <tr>
@@ -311,7 +311,6 @@ function renderChamados(tickets) {
             </td>
             <td style="max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px"
                 title="${esc(t.subject || t.assunto || '')}">${esc(t.subject || t.assunto || '—')}</td>
-            <td style="font-size:12px;color:var(--text-muted)">${esc(catLabel(t.category || t.categoria))}</td>
             <td><span class="badge badge-${(t.priority || t.prioridade || 'low').toLowerCase()}">${prioLabel(t.priority || t.prioridade)}</span></td>
             <td>
                 <select class="adm-status-select" data-id="${t.id}">
@@ -369,7 +368,6 @@ function openTicketModal(t) {
     const emailEl = document.getElementById('modal-ticket-email');
     emailEl.textContent = t.email || '—';
     emailEl.href = t.email ? `mailto:${t.email}` : '#';
-    document.getElementById('modal-ticket-cat').textContent     = catLabel(t.category || t.categoria);
     document.getElementById('modal-ticket-prio').textContent    = prioLabel(t.priority || t.prioridade);
     document.getElementById('modal-ticket-status').textContent  = statusLabel(t.status);
     document.getElementById('modal-ticket-date').textContent    = formatDate(t.created_at || t.criado_em);
@@ -424,7 +422,7 @@ function pad(n) { return String(n ?? 0).padStart(4, '0'); }
 
 function avatarSrc(u) {
     if (u.photo && u.photo.startsWith('http')) return u.photo;
-    if (u.photo) return '../' + u.photo;
+    if (u.photo) return '../php/uploads/' + u.photo;
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(u.username || 'U')}&background=06b6d4&color=fff`;
 }
 

@@ -52,12 +52,16 @@ function mostrarAlerta(msg, tipo) {
 }
 
 async function carregarMeusChamados() {
-    const res = await fetch('php/contato.php?listar=1');
-    const data = await res.json();
+    try {
+        const res = await fetch('php/contato.php?listar=1');
+        const data = await res.json();
 
-    if (data.error === 'Sessão expirada') {
-        window.location.href = 'login.html';
-        return;
+        if (data.error === 'Sessão expirada') {
+            window.location.href = 'login.html';
+            return;
+        }
+    } catch (err) {
+        console.error("Erro em carregar MeusChamados:", err);
     }
 }
 
@@ -139,10 +143,14 @@ async function carregarTickets() {
 
     try {
         const res = await fetch('php/contato.php?listar=1');
-        const rawText = await res.text();
-        const data = JSON.parse(rawText);
+        const data = await res.json();
 
-        if (!data.tickets || data.tickets.length === 0) {
+        if (data.error === 'Sessão expirada') {
+            wrap.innerHTML = `<div class="tickets-empty">Sessão expirada. Faça login novamente.</div>`;
+            return;
+        }
+
+        if (!data.sucesso || !data.tickets || data.tickets.length === 0) {
             wrap.innerHTML = `<div class="tickets-empty">Nenhum chamado registrado.</div>`;
             return;
         }

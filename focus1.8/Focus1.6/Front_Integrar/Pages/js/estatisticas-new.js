@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let currentPeriod = 'monthly';
   let chart = null;
   let allDailyStats = [];
-  let dateOffset = 0; 
+  let dateOffset = 0;
 
   const periods = {
     daily: { label: 'Hoje', days: 1 },
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     dailyStats.forEach(day => {
       if (day.completas > maxDay) {
         maxDay = day.completas;
-        bestDayName = new Date(day.data).toLocaleDateString('pt-BR', { weekday: 'short' });
+        bestDayName = new Date(day.data.replace(/-/g, '/')).toLocaleDateString('pt-BR', { weekday: 'short' });
       }
     });
 
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!ctx) return;
 
     const labels = allDailyStats.map(day => {
-      const d = new Date(day.data);
+      const d = new Date(day.data.replace(/-/g, '/'));
       if (currentPeriod === 'daily') return 'Hoje';
       if (currentPeriod === 'weekly') return d.toLocaleDateString('pt-BR', { weekday: 'short' });
       if (currentPeriod === 'monthly') return d.getDate();
@@ -123,8 +123,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Atualizar label do período
     if (allDailyStats.length > 0) {
-      const startDate = new Date(allDailyStats[0].data);
-      const endDate = new Date(allDailyStats[allDailyStats.length - 1].data);
+      const startDate = new Date(allDailyStats[0].data.replace(/-/g, '/'));
+      const endDate = new Date(allDailyStats[allDailyStats.length - 1].data.replace(/-/g, '/'));
       const label = document.getElementById('chart-label');
       label.textContent = `${startDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })} → ${endDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}`;
     }
@@ -232,7 +232,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       weekCol.style.gap = '3px';
 
       week.forEach(date => {
-        const dateStr = date.toISOString().split('T')[0];
+        const ano = date.getFullYear();
+        const mes = String(date.getMonth() + 1).padStart(2, '0');
+        const dia = String(date.getDate()).padStart(2, '0');
+        const dateStr = `${ano}-${mes}-${dia}`;
         const count = activity[dateStr] || 0;
         const level = count === 0 ? 0 : Math.max(1, Math.ceil((count / maxActivity) * 4));
 
@@ -265,25 +268,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
   // Botão de período anterior
-document.getElementById('chart-prev').addEventListener('click', async () => {
+  document.getElementById('chart-prev').addEventListener('click', async () => {
     dateOffset--;
     await atualizarGraficoComOffset();
-});
+  });
 
-// Botão de próximo período
-document.getElementById('chart-next').addEventListener('click', async () => {
+  // Botão de próximo período
+  document.getElementById('chart-next').addEventListener('click', async () => {
     dateOffset++;
     await atualizarGraficoComOffset();
-});
+  });
 
-// Função para recarregar os dados com o novo offset
-async function atualizarGraficoComOffset() {
-    const data = await loadData(`php/api_estatisticas.php?action=stats&period=${currentPeriod}&offset=${dateOffset}`); 
+  // Função para recarregar os dados com o novo offset
+  async function atualizarGraficoComOffset() {
+    const data = await loadData(`${currentPeriod}&offset=${dateOffset}`);
     if (data) {
-        updateStats(data);
-        renderChart();
+      updateStats(data);
+      renderChart();
     }
-}
+  }
 
   // ════════════════════════════════════════════════════════
   // Inicialização
@@ -298,35 +301,35 @@ async function atualizarGraficoComOffset() {
 
   // ── Lógica de Tema  ──
 
-function aplicarTema(settings) {
-  if (!settings || !settings.accentColor) return;
+  function aplicarTema(settings) {
+    if (!settings || !settings.accentColor) return;
 
-  const cores = {
-    'cyan': '#06b6d4',
-    'pink': '#ec4899',
-    'violet': '#8b5cf6',
-    'green': '#10b981',
-    'orange': '#f59e0b'
-  };
+    const cores = {
+      'cyan': '#06b6d4',
+      'pink': '#ec4899',
+      'violet': '#8b5cf6',
+      'green': '#10b981',
+      'orange': '#f59e0b'
+    };
 
-  const hex = cores[settings.accentColor] || cores['cyan'];
+    const hex = cores[settings.accentColor] || cores['cyan'];
 
-  // Aplica a cor no root (variável --cyan que você usa nos gráficos e gradientes)
-  document.documentElement.style.setProperty('--cyan', hex);
+    // Aplica a cor no root (variável --cyan que você usa nos gráficos e gradientes)
+    document.documentElement.style.setProperty('--cyan', hex);
 
-  // Aplica o modo compacto se os seletores CSS existirem nesta página
-  document.body.classList.toggle('compact-mode', settings.compact);
-}
-
-// Executa ao carregar a página
-const settingsSalvas = JSON.parse(localStorage.getItem('fs_settings') || '{}');
-aplicarTema(settingsSalvas);
-
-// Escuta mudanças em tempo real (caso o usuário mude o tema em outra aba)
-window.addEventListener('storage', (e) => {
-  if (e.key === 'fs_settings') {
-    const novosSettings = JSON.parse(e.newValue);
-    aplicarTema(novosSettings);
+    // Aplica o modo compacto se os seletores CSS existirem nesta página
+    document.body.classList.toggle('compact-mode', settings.compact);
   }
-});
+
+  // Executa ao carregar a página
+  const settingsSalvas = JSON.parse(localStorage.getItem('fs_settings') || '{}');
+  aplicarTema(settingsSalvas);
+
+  // Escuta mudanças em tempo real (caso o usuário mude o tema em outra aba)
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'fs_settings') {
+      const novosSettings = JSON.parse(e.newValue);
+      aplicarTema(novosSettings);
+    }
+  });
 });

@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const profile = JSON.parse(localStorage.getItem('fs_profile') || '{}');
   if (profile.avatar) {
     const navAv = document.getElementById('nav-avatar');
-    if (navAv) navAv.src = profile.avatar;
+    if (navAv) {
+      navAv.src = profile.avatar.replace('php/uploads', '');
+    }
   }
 
   // ── Calcular semana ──
@@ -135,8 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const item = document.createElement('div');
         item.className = `activity-item${act.done ? ' done' : ''}`;
         item.dataset.id = act.scheduling_id;
-        if (act.notes) {
-          item.setAttribute('title', `Observação: ${act.notes}`);
+        if (act.note) {
+          item.setAttribute('title', `Observação: ${act.note}`);
         }
         item.innerHTML = `
     <div class="act-time">${act.start} – ${act.end}</div>
@@ -218,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('act-notes').value = '';
     document.getElementById('act-start').value = '08:00';
     document.getElementById('act-end').value = '09:00';
+    document.getElementById('act-frequency').value = 'once';
     document.getElementById('modal-activity').classList.add('open');
     setTimeout(() => document.getElementById('act-title').focus(), 100);
   }
@@ -249,7 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
       start: document.getElementById('act-start').value,
       end: document.getElementById('act-end').value,
       tag: document.getElementById('act-category').value,
-      notes: document.getElementById('act-notes').value.trim(),
+      frequency: document.getElementById('act-frequency').value,
+      note: document.getElementById('act-notes').value.trim(),
       date: getWeekDates(weekOffset)[document.getElementById('act-day').value].toISOString().split('T')[0]
     };
 
@@ -304,12 +308,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataFim = dates[6].toISOString().split('T')[0];    // Domingo
 
     try {
+      // CORREÇÃO DA URL: Usamos apenas 'php/api_horarios.php' relativo à página atual 
+      // para evitar duplicações como (focus1.8/focus1.6)
       const response = await fetch(`php/api_horarios.php?action=list&inicio=${dataInicio}&fim=${dataFim}`);
+      
+      // Se o servidor responder com erro (Ex: 500 ou 404), interrompe antes de quebrar o JSON
+      if (!response.ok) {
+        throw new Error(`Erro no servidor: Status ${response.status}`);
+      }
+
       const dados = await response.json();
+      
+      // Proteção caso a sessão retorne um erro estruturado ['success' => false]
+      if (dados && dados.success === false) {
+        console.warn("Sessão ou erro controlado:", dados.error);
+        activities = {};
+        render();
+        return;
+      }
+
       activities = dados;
-      render();
+      render(); 
     } catch (err) {
-      console.error("Erro ao buscar horários", err);
+      console.error("Erro ao buscar horários:", err);
     }
   }
 
@@ -324,6 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alert("Erro ao salvar atividade.");
     }
   }
+
   carregarAtividadesDoBanco();
 });
 
