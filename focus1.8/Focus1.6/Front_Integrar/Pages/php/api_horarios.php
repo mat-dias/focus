@@ -214,28 +214,82 @@ try {
         echo json_encode(['success' => true]);
         exit;
     }
+    
 
     // --- ALTERAR STATUS (DONE) ---
     if ($method === 'POST' && $action === 'toggle_done') {
         $id = $input['id'] ?? null;
-        $mysql->execSafe("UPDATE schedulings SET done = NOT done WHERE scheduling_id = ?", [$id]);
+        
+        if (!$id) {
+            throw new Exception("ID do agendamento não fornecido.");
+        }
+
+        // A. Descobrir qual o status atual (antes do update) e validar o dono
+        $sqlCheckState = "SELECT sch.done, s.profile_id FROM schedulings sch 
+                          INNER JOIN schedules s ON sch.schedule_id = s.schedule_id 
+                          WHERE sch.scheduling_id = ? LIMIT 1";
+        $stateRes = $mysql->searchSafe($sqlCheckState, [$id]);
+        
+        if (!$stateRes) {
+            throw new Exception("Agendamento não encontrado.");
+        }
+        
+        $statusAtual = (int)$stateRes[0]['done'];
+
+        // B. Contar quantas tarefas ele JÁ concluiu hoje (excluindo a tarefa atual)
+        $sqlContagemHoje = "SELECT COUNT(*) AS total 
+                            FROM schedulings sch
+                            INNER JOIN schedules s ON sch.schedule_id = s.schedule_id
+                            WHERE s.profile_id = ? 
+                              AND sch.done = 1 
+                              AND DATE(sch.updated_at) = CURDATE()
+                              AND sch.scheduling_id != ?";
+        $resHoje = $mysql->searchSafe($sqlContagemHoje, [$profile_id, $id]);
+        $jaConcluiuOutraHoje = (int)($resHoje[0]['total'] ?? 0);
+
+        // C. Executar o chaveamento do status da tarefa
+        $mysql->execSafe("UPDATE schedulings SET done = NOT done, updated_at = NOW() WHERE scheduling_id = ?", [$id]);
+
+        // D. APLICAR LOGICA DE STREAK
+        if ($statusAtual === 0) {
+            // Estava aberta e foi CONCLUÍDA. Se for a PRIMEIRA do dia, mexe no streak
+            if ($jaConcluiuOutraHoje === 0) {
+                // Checar se ele fez alguma ontem para saber se acumula ou reseta
+                $sqlContagemOntem = "SELECT COUNT(*) AS total 
+                                     FROM schedulings sch
+                                     INNER JOIN schedules s ON sch.schedule_id = s.schedule_id
+                                     WHERE s.profile_id = ? 
+                                       AND sch.done = 1 
+                                       AND DATE(sch.updated_at) = SUBDATE(CURDATE(), 1)";
+                $resOntem = $mysql->searchSafe($sqlContagemOntem, [$profile_id]);
+                $fezOntem = (int)($resOntem[0]['total'] ?? 0);
+
+                if ($fezOntem > 0) {
+                    // Manteve a sequência de dias seguidos
+                    $mysql->execSafe("UPDATE profiles SET streak = streak + 1 WHERE profile_id = ?", [$profile_id]);
+                } else {
+                    // Não fez ontem, o streak quebrou e recomeça de 1
+                    $mysql->execSafe("UPDATE profiles SET streak = 1 WHERE profile_id = ?", [$profile_id]);
+                }
+            }
+        } else {
+            // Estava concluída e foi DESMARCADA. Se não sobrou nenhuma outra concluída hoje, remove o dia de streak
+            if ($jaConcluiuOutraHoje === 0) {
+                $mysql->execSafe("UPDATE profiles SET streak = GREATEST(0, streak - 1) WHERE profile_id = ?", [$profile_id]);
+            }
+        }
+
         echo json_encode(['success' => true]);
         exit;
     }
-
-    throw new Exception("Ação inválida ou não informada.");
-
-} catch (Throwable $e) {
-    if (isset($db) && method_exists($db, 'rollback')) {
-        @$db->rollback();
+} catch (Exception $e) {
+    if (isset($db) && $db->in_transaction) {
+        $db->rollback();
     }
-    http_response_code(200); 
-    echo json_encode([
-        'success' => false,
-        'error' => "Erro Interno no PHP: " . $e->getMessage() . " na linha " . $e->getLine() . " do arquivo " . $e->getFile()
-    ]);
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
     exit;
 }
+
 //
 /* codigo com modal novo a ser implementado
 

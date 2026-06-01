@@ -16,11 +16,18 @@ try {
     $sobrenome = trim($_POST["sobrenome"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $senha = $_POST["senha"] ?? "";
+    $confirmarSenha = $_POST["confirmarSenha"] ?? "";
 
     if (empty($nome) || empty($email) || strlen($senha) < 6) {
         throw new Exception("Dados insuficientes. A senha deve ter pelo menos 6 caracteres.");
     }
-
+    if ($senha !== $confirmarSenha) {
+        throw new Exception("As senhas não coincidem.");
+    }
+    if ($confirmarSenha == null) {
+        throw new Exception("Confirmação de senha é obrigatória.");
+    }
+    
     /* LÓGICA DE UPLOAD */
     $avatar = null;
     if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK) {
