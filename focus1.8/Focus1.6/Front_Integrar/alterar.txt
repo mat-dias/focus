@@ -1,9 +1,0 @@
-atualizar o css do instrução e planos
-criar tela de gerenciar do ADM
-implementar novas telas e seus respectivos codigos de backend
-Fazer uma tela de cadastro de adm (possivelmente)
-nessa possivel tela, o adm pode conceder privilegios de adm a qualquer id_user que ele quiser
-
-IMPORTANTE:
-Login, Cad, tarefas, recsenha, novasenha e inicialUsuario ok
--Ir para proxima fase, configurar contato e alterações das telas de user

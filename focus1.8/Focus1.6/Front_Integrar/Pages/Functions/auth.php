@@ -1,22 +1,24 @@
 <?php
-// Inicia ou retoma a sessão ativa
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-/*Função para validar login e nível de acesso */
+/**
+ * @param string|null $perfilNecessario 'admin' ou null
+ */
 function proteger($perfilNecessario = null)
 {
-    // 1. Verifica se o ID existe na sessão 
-    if (!isset($_SESSION['id'])) {
+    // Verifica se o usuário básico está logado
+    if (!isset($_SESSION['user_id'])) {
         header("Location: ../login.html");
         exit;
     }
 
-    // 2. Verifica o nível de acesso
-    if ($perfilNecessario && $_SESSION['role'] !== $perfilNecessario) {
-
-        header("Location: ../dashboard/dashboard.php");
-        exit;
+    // Se a página exigir nível admin, verifica a role setada no login admin
+    if ($perfilNecessario === 'admin') {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+            header("Location: ../adm/painelAdm.html");
+            exit;
+        }
     }
 }

@@ -6,6 +6,14 @@
     gap: 12px;
 }
 
+.icon-btn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); cursor: pointer; transition: var(--transition); text-decoration: none;
+}
+.icon-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
 .user-avatar {
     width: 38px;
     height: 38px;
@@ -833,9 +841,5 @@ tbody td {
   tbody td:nth-child(3) {
     display: none;
   }
-}
-/* Adicione isso ao final do seu contato_css.css */
-#chatBox.active {
-    display: flex !important;
 }
 
