@@ -1,3 +1,43 @@
+/* ══════════════════════════════════════
+    Instruções — Focus Study
+══════════════════════════════════════ */    
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: #374151 #1a1a1a;
+    }
+    ::-webkit-scrollbar       { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1a1a1a; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+
+    /* ── 2. Header: fundo totalmente opaco para o texto não "vazar" por cima ── */
+    .header {
+      background: #1a1a1a !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    /* ── 3. Tab-nav: sticky, fundo opaco, aparece após o hero ao rolar ── */
+    .tab-nav-wrap {
+      position: sticky !important;
+      top: 65px;
+      z-index: 90;
+      background: #1a1a1a !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    /* ── 4. inst-body: padding apenas para respiro visual ── */
+    .inst-body {
+      margin-top: 0 !important;
+      padding-top: 48px !important;
+    }
+
+    /* ── 5. Seções: ao navegar por âncora, para abaixo dos dois elementos ── */
+    .inst-section {
+      scroll-margin-top: 140px; /* 65 (header) + 53 (tab-nav) + 22 (respiro) */
+    }
+
     /* ── Hero ── */
     .inst-hero {
         padding: 140px 0 70px;

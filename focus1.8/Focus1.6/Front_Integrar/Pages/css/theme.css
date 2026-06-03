@@ -1,0 +1,264 @@
+/* ══════════════════════════════════════
+   THEME — Focus Study
+   theme.css  |  Inclua em todas as páginas
+   Gerencia modo Claro e Escuro globalmente
+══════════════════════════════════════ */
+
+/* ── Variáveis base do modo claro ── */
+html.light-mode,
+body.light-mode {
+  --primary:    #f0f4f8;
+  --secondary:  #e2e8f0;
+  --card:       #ffffff;
+  --text:       #1a202c;
+  --text-muted: #64748b;
+  --border:     #cbd5e1;
+  --pink:       #ec4899;
+}
+
+/* ════════════════════════════════════
+   LAYOUT GERAL
+════════════════════════════════════ */
+body.light-mode.dash-body,
+body.light-mode .dash-body {
+  background:
+    radial-gradient(circle at top right,  rgba(6,182,212,0.10), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(236,72,153,0.07), transparent 40%),
+    #f0f4f8 !important;
+}
+
+/* ════════════════════════════════════
+   HEADER & NAV
+════════════════════════════════════ */
+body.light-mode .header {
+  background: rgba(240,244,248,0.97) !important;
+  border-bottom-color: #cbd5e1 !important;
+  box-shadow: 0 1px 12px rgba(0,0,0,0.08) !important;
+}
+body.light-mode .logo span              { color: #1a202c !important; }
+body.light-mode .nav-link               { color: #64748b !important; }
+body.light-mode .nav-link:hover,
+body.light-mode .nav-link.active        { color: var(--cyan) !important; }
+body.light-mode .icon-btn               { background: rgba(0,0,0,0.04) !important; border-color: #cbd5e1 !important; color: #64748b !important; }
+body.light-mode .icon-btn:hover,
+body.light-mode .active-icon            { border-color: var(--cyan) !important; color: var(--cyan) !important; }
+
+/* ════════════════════════════════════
+   CARDS
+════════════════════════════════════ */
+body.light-mode .dash-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.97), rgba(240,244,248,0.99)) !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07) !important;
+}
+
+/* ════════════════════════════════════
+   TIPOGRAFIA COMUM
+════════════════════════════════════ */
+body.light-mode .dash-title             { color: #1a202c !important; }
+body.light-mode .dash-date              { background: rgba(0,0,0,0.04) !important; border-color: #cbd5e1 !important; color: #64748b !important; }
+body.light-mode h1, body.light-mode h2,
+body.light-mode h3, body.light-mode h4  { color: #1a202c; }
+
+/* ════════════════════════════════════
+   BOTÕES GERAIS
+════════════════════════════════════ */
+body.light-mode .btn-outline            { border-color: #cbd5e1 !important; color: #64748b !important; background: transparent !important; }
+body.light-mode .btn-outline:hover      { border-color: var(--cyan) !important; color: var(--cyan) !important; }
+body.light-mode .fs-btn-cancel          { background: rgba(0,0,0,0.04) !important; border-color: #cbd5e1 !important; color: #64748b !important; }
+body.light-mode .fs-btn-cancel:hover    { background: rgba(0,0,0,0.08) !important; color: #1a202c !important; }
+body.light-mode .week-nav-btn,
+body.light-mode .chart-nav-btn          { border-color: #cbd5e1 !important; color: #64748b !important; }
+body.light-mode .week-nav-btn:hover,
+body.light-mode .chart-nav-btn:hover    { border-color: var(--cyan) !important; color: var(--cyan) !important; }
+
+/* ════════════════════════════════════
+   FORMULÁRIOS (inputs, selects, etc.)
+════════════════════════════════════ */
+body.light-mode input:not([type=range]),
+body.light-mode select,
+body.light-mode textarea {
+  background: rgba(0,0,0,0.04) !important;
+  border-color: #cbd5e1 !important;
+  color: #1a202c !important;
+}
+body.light-mode input::placeholder,
+body.light-mode textarea::placeholder   { color: #94a3b8 !important; }
+body.light-mode input:focus,
+body.light-mode select:focus,
+body.light-mode textarea:focus          { border-color: var(--cyan) !important; box-shadow: 0 0 0 3px rgba(6,182,212,0.12) !important; }
+body.light-mode select option           { background: #ffffff; color: #1a202c; }
+body.light-mode .input-prefix          { background: rgba(0,0,0,0.04) !important; border-color: #cbd5e1 !important; color: #64748b !important; }
+body.light-mode .input-suffix-btn       { background: rgba(0,0,0,0.04) !important; border-color: #cbd5e1 !important; color: #64748b !important; }
+
+/* ════════════════════════════════════
+   TOAST
+════════════════════════════════════ */
+body.light-mode .toast {
+  background: linear-gradient(135deg, rgba(255,255,255,0.99), rgba(240,244,248,0.99)) !important;
+  border-color: #cbd5e1 !important; color: #1a202c !important;
+}
+
+/* ════════════════════════════════════
+   MODAIS
+════════════════════════════════════ */
+body.light-mode .fs-modal-overlay       { background: rgba(200,210,220,0.6) !important; }
+body.light-mode .fs-modal               { background: linear-gradient(145deg, rgba(255,255,255,0.99), rgba(240,244,248,0.99)) !important; border-color: #cbd5e1 !important; }
+body.light-mode .fs-modal h3            { color: #1a202c !important; }
+body.light-mode .fs-modal-sub           { color: #64748b !important; }
+
+/* ════════════════════════════════════
+   CONFIGURAÇÕES — Sidebar & Tabs
+════════════════════════════════════ */
+body.light-mode .config-sidebar {
+  background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(240,244,248,0.98)) !important;
+  border-color: #cbd5e1 !important;
+}
+body.light-mode .cfg-tab               { color: #64748b !important; }
+body.light-mode .cfg-tab:hover         { background: rgba(0,0,0,0.04) !important; color: #1a202c !important; }
+body.light-mode .cfg-tab.active        { background: rgba(6,182,212,0.10) !important; color: var(--cyan) !important; }
+body.light-mode .cfg-row-label         { color: #1a202c !important; }
+body.light-mode .cfg-row-desc          { color: #64748b !important; }
+body.light-mode .cfg-section-title     { color: #1a202c !important; border-bottom-color: #cbd5e1 !important; }
+body.light-mode .cfg-row               { border-bottom-color: rgba(203,213,225,0.5) !important; }
+
+/* Controles de aparência */
+body.light-mode .theme-toggle-group    { background: rgba(0,0,0,0.04) !important; border-color: #cbd5e1 !important; }
+body.light-mode .theme-btn             { color: #64748b !important; }
+body.light-mode .theme-btn:hover       { background: rgba(0,0,0,0.06) !important; color: #1a202c !important; }
+body.light-mode .swatch.active,
+body.light-mode .swatch:hover          { border-color: #1a202c !important; }
+body.light-mode .toggle-slider         { background: rgba(0,0,0,0.08) !important; border-color: #cbd5e1 !important; }
+body.light-mode .toggle-slider::before { background: #94a3b8 !important; }
+body.light-mode .cfg-select            { background: rgba(0,0,0,0.04) !important; border-color: #cbd5e1 !important; color: #1a202c !important; }
+body.light-mode .cfg-range             { background: rgba(0,0,0,0.10) !important; }
+body.light-mode .range-val             { color: var(--cyan) !important; }
+
+/* Save bar */
+body.light-mode .save-bar {
+  background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(240,244,248,0.99)) !important;
+  border-top-color: #cbd5e1 !important;
+}
+body.light-mode .save-bar span         { color: #64748b !important; }
+
+/* About section */
+body.light-mode .about-desc,
+body.light-mode .about-version,
+body.light-mode .about-copyright       { color: #64748b !important; }
+
+/* ════════════════════════════════════
+   HORÁRIOS — Grade da semana
+════════════════════════════════════ */
+body.light-mode .day-column            { background: rgba(0,0,0,0.01) !important; border-right-color: #cbd5e1 !important; }
+body.light-mode .day-column:hover      { background: rgba(6,182,212,0.03) !important; }
+body.light-mode .day-header            { background: rgba(0,0,0,0.025) !important; border-bottom-color: #e2e8f0 !important; }
+body.light-mode .day-name              { color: #64748b !important; }
+body.light-mode .day-date-label        { color: #94a3b8 !important; }
+body.light-mode .day-progress          { color: #64748b !important; }
+body.light-mode .day-progress-bar      { background: rgba(0,0,0,0.08) !important; }
+body.light-mode .activity-item         { background: rgba(0,0,0,0.03) !important; border-top-color: rgba(0,0,0,0.05) !important; border-right-color: rgba(0,0,0,0.05) !important; border-bottom-color: rgba(0,0,0,0.05) !important; }
+body.light-mode .activity-item:hover   { background: rgba(0,0,0,0.06) !important; }
+body.light-mode .act-title             { color: #1a202c !important; }
+body.light-mode .act-time              { color: #94a3b8 !important; }
+body.light-mode .act-cat-badge         { color: #94a3b8 !important; }
+body.light-mode .act-btn               { background: rgba(200,210,220,0.8) !important; color: #64748b !important; }
+body.light-mode .week-nav              { background: rgba(0,0,0,0.03) !important; border-color: #cbd5e1 !important; }
+body.light-mode .week-label            { color: #1a202c !important; }
+body.light-mode .prog-label            { color: #64748b !important; }
+body.light-mode .prog-value            { color: #1a202c !important; }
+
+/* ════════════════════════════════════
+   ESTATÍSTICAS
+════════════════════════════════════ */
+body.light-mode .period-selector       { background: rgba(0,0,0,0.03) !important; border-color: #cbd5e1 !important; }
+body.light-mode .period-btn            { color: #64748b !important; }
+body.light-mode .period-btn:hover      { background: rgba(0,0,0,0.04) !important; color: #1a202c !important; }
+body.light-mode .period-btn.active     { background: rgba(6,182,212,0.12) !important; color: var(--cyan) !important; border-color: rgba(6,182,212,0.3) !important; }
+body.light-mode .summary-label         { color: #64748b !important; }
+body.light-mode .summary-value         { color: #1a202c !important; }
+body.light-mode .chart-period-label    { color: #64748b !important; }
+body.light-mode .heatmap-subtitle      { color: #64748b !important; }
+body.light-mode .heatmap-cell          { background: rgba(0,0,0,0.06) !important; border-color: transparent !important; }
+body.light-mode .legend-label          { color: #64748b !important; }
+
+/* ════════════════════════════════════
+   PERFIL
+════════════════════════════════════ */
+body.light-mode .profile-name          { color: #1a202c !important; }
+body.light-mode .profile-tag,
+body.light-mode .profile-bio           { color: #64748b !important; }
+body.light-mode .pstat-val             { color: #1a202c !important; }
+body.light-mode .pstat-lbl             { color: #64748b !important; }
+body.light-mode .section-title         { color: #1a202c !important; }
+body.light-mode .avatar-edit-btn       { background: rgba(0,0,0,0.1) !important; border-color: #cbd5e1 !important; color: #64748b !important; }
+
+/* ════════════════════════════════════
+   CONTATO / SUPORTE
+════════════════════════════════════ */
+body.light-mode .support-hero          { background: transparent !important; }
+body.light-mode .channel-card          { background: rgba(255,255,255,0.97) !important; border-color: #cbd5e1 !important; }
+body.light-mode .channel-text h4       { color: #1a202c !important; }
+body.light-mode .channel-text p        { color: #64748b !important; }
+body.light-mode .form-title,
+body.light-mode .form-subtitle         { color: #1a202c !important; }
+body.light-mode .form-subtitle         { color: #64748b !important; }
+body.light-mode .support-form-wrap     { background: linear-gradient(145deg, rgba(255,255,255,0.97), rgba(240,244,248,0.99)) !important; border-color: #cbd5e1 !important; }
+body.light-mode .faq-wrap              { background: linear-gradient(145deg, rgba(255,255,255,0.97), rgba(240,244,248,0.99)) !important; border-color: #cbd5e1 !important; }
+body.light-mode .faq-title             { color: #1a202c !important; }
+body.light-mode .faq-question          { color: #1a202c !important; background: rgba(0,0,0,0.02) !important; border-color: #e2e8f0 !important; }
+body.light-mode .faq-question:hover    { background: rgba(0,0,0,0.04) !important; }
+body.light-mode .faq-answer p          { color: #64748b !important; }
+body.light-mode .faq-chevron           { color: #94a3b8 !important; }
+body.light-mode .priority-btn          { background: rgba(0,0,0,0.04) !important; border-color: #cbd5e1 !important; color: #64748b !important; }
+body.light-mode .priority-btn.active-baixa,
+body.light-mode .priority-btn.active-media,
+body.light-mode .priority-btn.active-alta { border-color: var(--cyan) !important; color: var(--cyan) !important; background: rgba(6,182,212,0.08) !important; }
+body.light-mode .char-count            { color: #94a3b8 !important; }
+body.light-mode .status-header h2,
+body.light-mode .status-header p       { color: #64748b !important; }
+body.light-mode .tickets-table-wrap    { background: rgba(255,255,255,0.97) !important; border-color: #cbd5e1 !important; }
+body.light-mode .tickets-table-header h3 { color: #1a202c !important; }
+
+/* ════════════════════════════════════
+   PAINEL INICIAL (inicialusuario)
+════════════════════════════════════ */
+body.light-mode .timer-card,
+body.light-mode .player-card           { /* herda de .dash-card */ }
+body.light-mode .timer-display         { color: var(--cyan) !important; }
+body.light-mode .timer-mode-btn        { color: #64748b !important; border-color: #cbd5e1 !important; }
+body.light-mode .timer-mode-btn.active { background: rgba(6,182,212,0.12) !important; color: var(--cyan) !important; border-color: rgba(6,182,212,0.3) !important; }
+body.light-mode .pomo-dot              { background: rgba(0,0,0,0.08) !important; border-color: #cbd5e1 !important; }
+body.light-mode .pomo-dot.done         { background: var(--cyan) !important; border-color: var(--cyan) !important; }
+body.light-mode .js-timer-status,
+body.light-mode .timer-status          { color: #64748b !important; }
+body.light-mode .track-item            { border-color: #e2e8f0 !important; color: #64748b !important; }
+body.light-mode .track-item:hover,
+body.light-mode .track-item.active     { background: rgba(6,182,212,0.07) !important; color: #1a202c !important; }
+body.light-mode .player-controls button { color: #64748b !important; }
+body.light-mode .player-controls button:hover { color: var(--cyan) !important; }
+body.light-mode .fullscreen-btn        { border-color: #cbd5e1 !important; color: #64748b !important; }
+body.light-mode .fullscreen-btn:hover  { border-color: var(--cyan) !important; color: var(--cyan) !important; }
+body.light-mode .habit-item            { border-color: #e2e8f0 !important; background: rgba(0,0,0,0.02) !important; }
+body.light-mode .habit-name            { color: #1a202c !important; }
+body.light-mode .habit-streak          { color: #64748b !important; }
+body.light-mode .task-item             { border-color: #e2e8f0 !important; background: rgba(0,0,0,0.02) !important; }
+body.light-mode .task-text             { color: #1a202c !important; }
+body.light-mode .card-title            { color: #1a202c !important; }
+body.light-mode .card-subtitle         { color: #64748b !important; }
+
+/* ════════════════════════════════════
+   FULLSCREEN TIMER
+════════════════════════════════════ */
+body.light-mode .fullscreen-timer {
+  background: #f0f4f8 !important;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(6,182,212,0.10), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(236,72,153,0.07), transparent 50%) !important;
+}
+body.light-mode .fs-exit-btn           { background: rgba(0,0,0,0.06) !important; border-color: #cbd5e1 !important; color: #64748b !important; }
+body.light-mode .fs-modes              { background: rgba(0,0,0,0.04) !important; border-color: #cbd5e1 !important; }
+body.light-mode .fs-mode-btn           { color: #64748b !important; }
+body.light-mode .fs-mode-btn.active    { background: rgba(6,182,212,0.12) !important; color: var(--cyan) !important; }
+body.light-mode .fs-reset-btn          { background: rgba(0,0,0,0.05) !important; border-color: #cbd5e1 !important; color: #64748b !important; }
+body.light-mode .fs-status-txt         { color: #64748b !important; }
+body.light-mode .fs-pomo-dots .pomo-dot { background: rgba(0,0,0,0.10) !important; border-color: #cbd5e1 !important; }

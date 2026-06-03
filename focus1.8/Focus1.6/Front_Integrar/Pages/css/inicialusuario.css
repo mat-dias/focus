@@ -115,6 +115,7 @@
 }
 
 .timer-top {
+  padding-top: 30px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -159,6 +160,7 @@
 }
 
 .timer-display {
+  padding-top: 40px;
   font-size: clamp(72px, 10vw, 96px);
   font-weight: 800;
   color: var(--cyan);

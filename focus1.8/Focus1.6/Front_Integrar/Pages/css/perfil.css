@@ -2,6 +2,16 @@
    PERFIL DO USUÁRIO — Focus Study
    perfil.css
 ══════════════════════════════════════ */
+.dash-body {
+  background:
+    radial-gradient(circle at top right, rgba(6,182,212,0.08), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(236,72,153,0.05), transparent 40%),
+    var(--primary);
+  padding-top: 100px;
+  min-height: 100vh;
+}
+
+.dash-container { padding-bottom: 80px; }
 
 .perfil-container { padding-bottom: 80px; }
 

@@ -1,0 +1,416 @@
+/* ══════════════════════════════════════
+    Organização Rotineira — Focus Study
+══════════════════════════════════════ */
+
+/* ─── Hero ─── */
+.org-hero {
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--primary);
+  padding: 130px 24px 72px;
+  text-align: center;
+}
+
+.org-hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 700px;
+}
+
+/* ─── Section label ─── */
+.section-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label::before,
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ─── Stat cards (igual origin-stat-card) ─── */
+.org-body {
+  background: var(--primary);
+  padding: 80px 0 0;
+}
+
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 80px;
+}
+
+.stat-item-org {
+  background: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.stat-item-org:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 24px rgba(6, 182, 212, 0.15);
+  transform: translateY(-4px);
+}
+
+.stat-item-org .num {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--cyan), var(--pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-item-org .desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ─── Pillars (igual feature-card) ─── */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+  margin-bottom: 96px;
+}
+
+.pillar-card {
+  background: var(--secondary);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.pillar-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--cyan), var(--pink));
+  opacity: 0;
+  transition: var(--transition);
+  z-index: 0;
+}
+
+.pillar-card:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
+  transform: translateY(-6px);
+}
+
+.pillar-card:hover::before {
+  opacity: 0.04;
+}
+
+.pillar-card>* {
+  position: relative;
+  z-index: 1;
+}
+
+.pillar-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.pillar-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.pillar-card>p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.pillar-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pillar-list li {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.pillar-list li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--cyan);
+  font-size: 12px;
+}
+
+/* ─── How it works replica (timeline do dia) ─── */
+.timeline-section {
+  background: var(--tertiary);
+  padding: 96px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-section-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  background: rgba(236, 72, 153, 0.04);
+  border-radius: 50%;
+  filter: blur(120px);
+}
+
+.timeline-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-col h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 28px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: 12px;
+}
+
+.tl-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.tl-dot-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.tl-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--cyan);
+  background: var(--tertiary);
+  flex-shrink: 0;
+}
+
+.tl-dot.pink {
+  border-color: var(--pink);
+}
+
+.tl-dot.green {
+  border-color: #22c55e;
+}
+
+.tl-line {
+  width: 1px;
+  flex: 1;
+  min-height: 28px;
+  background: rgba(255, 255, 255, 0.06);
+  margin-top: 4px;
+}
+
+.tl-content {
+  padding-bottom: 4px;
+}
+
+.tl-time {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 2px;
+}
+
+.tl-time.pink {
+  color: var(--pink);
+}
+
+.tl-time.green {
+  color: #22c55e;
+}
+
+.tl-content h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.tl-content p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.consistency-section .cons-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 24px !important;
+}
+
+.cons-card {
+  background: linear-gradient(135deg, var(--secondary), var(--tertiary));
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  transition: var(--transition);
+}
+
+.cons-card:hover {
+  border-color: var(--pink);
+  box-shadow: 0 0 24px rgba(236, 72, 153, 0.15);
+}
+
+.cons-emoji {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.cons-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.cons-card p {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* ─── CTA ─── */
+.org-cta {
+  background: var(--tertiary);
+  padding: 96px 24px;
+}
+
+.org-cta-card {
+  max-width: 560px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, var(--secondary), var(--tertiary));
+  border: 1px solid var(--border);
+  border-radius: 32px;
+  padding: 64px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.org-cta-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(236, 72, 153, 0.08));
+  pointer-events: none;
+}
+
+.org-cta-card>* {
+  position: relative;
+  z-index: 1;
+}
+
+.org-cta-card h2 {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin-bottom: 14px;
+}
+
+.org-cta-card p {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+/* ─── Challenge steps ─── */
+.challenge-steps {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.ch-step {
+  text-align: center;
+}
+
+.ch-step-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cyan), var(--pink));
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  font-weight: 900;
+  margin: 0 auto 10px;
+}
+
+.ch-step p {
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 110px;
+  margin: 0;
+}
+
+@media (max-width: 992px) {
+  .consistency-section .cons-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .consistency-section .cons-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
