@@ -218,9 +218,12 @@ document.addEventListener('DOMContentLoaded', () => { //corrigido
     // ══════════════════════════════════════════
     //  TIMER POMODORO
     // ══════════════════════════════════════════
-    let timer, timeLeft = 25 * 60, running = false;
+    let timer, running = false;
+    let timeLeft = parseInt(localStorage.getItem('fs_timer_left')) || 25 * 60;
     let pomodoroCount = parseInt(localStorage.getItem('fs_pomo_count') || '0');
-    let currentLabel = 'Foco';
+    let currentLabel = localStorage.getItem('fs_timer_label') || 'Foco';
+    let endTime = parseInt(localStorage.getItem('fs_timer_end')) || null;
+    let isRunningLocal = localStorage.getItem('fs_timer_running') === 'true';
 
     const minEl = document.getElementById('minutes');
     const secEl = document.getElementById('seconds');
@@ -253,6 +256,9 @@ document.addEventListener('DOMContentLoaded', () => { //corrigido
         playBtn.innerHTML = `<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Iniciar`;
         statusEl.innerText = '✅ Sessão concluída!';
 
+        localStorage.setItem('fs_timer_running', 'false');
+        localStorage.removeItem('fs_timer_end');
+
         if (currentLabel === 'Foco') {
             pomodoroCount = Math.min(pomodoroCount + 1, 4);
             if (pomodoroCount >= 4) pomodoroCount = 0;
@@ -274,13 +280,24 @@ document.addEventListener('DOMContentLoaded', () => { //corrigido
             clearInterval(timer);
             playBtn.innerHTML = `<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Retomar`;
             statusEl.innerText = '⏸ Pausado';
+            localStorage.setItem('fs_timer_running', 'false');
+            localStorage.setItem('fs_timer_left', timeLeft);
+            localStorage.removeItem('fs_timer_end');
         } else {
             if (Notification.permission === 'default') Notification.requestPermission();
             statusEl.innerText = currentLabel === 'Foco' ? '🎯 Foco total!' : '☕ Descansando...';
             playBtn.innerHTML = `<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Pausar`;
+            
+            endTime = Date.now() + (timeLeft * 1000);
+            localStorage.setItem('fs_timer_running', 'true');
+            localStorage.setItem('fs_timer_end', endTime);
+            localStorage.setItem('fs_timer_label', currentLabel);
+            
             timer = setInterval(() => {
-                if (timeLeft <= 0) { finishSession(); }
-                else { timeLeft--; updateTimerDisplay(); }
+                let now = Date.now();
+                timeLeft = Math.round((endTime - now) / 1000);
+                if (timeLeft <= 0) { timeLeft = 0; updateTimerDisplay(); finishSession(); }
+                else { updateTimerDisplay(); }
             }, 1000);
         }
         running = !running;
@@ -295,6 +312,10 @@ document.addEventListener('DOMContentLoaded', () => { //corrigido
         playBtn.innerHTML = `<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Iniciar`;
         statusEl.innerText = 'Pronto para começar';
         document.title = 'Focus Study';
+        
+        localStorage.setItem('fs_timer_running', 'false');
+        localStorage.setItem('fs_timer_left', timeLeft);
+        localStorage.removeItem('fs_timer_end');
     });
 
     // Botões de modo
@@ -309,11 +330,39 @@ document.addEventListener('DOMContentLoaded', () => { //corrigido
             updateTimerDisplay();
             playBtn.innerHTML = `<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Iniciar`;
             statusEl.innerText = 'Pronto para começar';
+            
+            localStorage.setItem('fs_timer_running', 'false');
+            localStorage.setItem('fs_timer_left', timeLeft);
+            localStorage.setItem('fs_timer_label', currentLabel);
+            localStorage.removeItem('fs_timer_end');
         });
     });
 
     renderDots();
-    updateTimerDisplay();
+    
+    // Restaurar estado visual da aba ativa
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        if (btn.dataset.label === currentLabel) {
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    });
+
+    // Retomar timer se estava rodando
+    if (isRunningLocal && endTime) {
+        let now = Date.now();
+        timeLeft = Math.round((endTime - now) / 1000);
+        if (timeLeft <= 0) {
+            timeLeft = 0;
+            updateTimerDisplay();
+            finishSession();
+        } else {
+            running = false;
+            playBtn?.click(); // Auto click para retomar o setInterval corretamente e arrumar UI
+        }
+    } else {
+        updateTimerDisplay();
+    }
 
     // ══════════════════════════════════════════
     //  MISSÕES

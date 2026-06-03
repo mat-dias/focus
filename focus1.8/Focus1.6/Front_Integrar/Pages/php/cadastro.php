@@ -16,22 +16,24 @@ try {
     $sobrenome = trim($_POST["sobrenome"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $senha = $_POST["senha"] ?? "";
-    $confirmarSenha = $_POST["confirmarSenha"] ?? "";
 
     if (empty($nome) || empty($email) || strlen($senha) < 6) {
         throw new Exception("Dados insuficientes. A senha deve ter pelo menos 6 caracteres.");
     }
-    if ($senha !== $confirmarSenha) {
-        throw new Exception("As senhas não coincidem.");
-    }
-    if ($confirmarSenha == null) {
-        throw new Exception("Confirmação de senha é obrigatória.");
-    }
-    
+
     /* LÓGICA DE UPLOAD */
     $avatar = null;
     if (isset($_FILES["foto"]) && $_FILES["foto"]["error"] === UPLOAD_ERR_OK) {
         $ext = strtolower(pathinfo($_FILES["foto"]["name"], PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+        
+        if (!in_array($ext, $allowed)) {
+            throw new Exception("Formato de imagem inválido. Use JPG, JPEG, PNG, WebP ou GIF.");
+        }
+        if (!getimagesize($_FILES["foto"]["tmp_name"])) {
+            throw new Exception("O arquivo enviado não é uma imagem válida.");
+        }
+
         $pasta_destino = __DIR__ . "/uploads/"; 
         
         if (!is_dir($pasta_destino)) {
@@ -39,7 +41,9 @@ try {
         }
 
         $avatar = "user_" . uniqid() . "." . $ext;
-        move_uploaded_file($_FILES["foto"]["tmp_name"], $pasta_destino . $avatar);
+        if (!move_uploaded_file($_FILES["foto"]["tmp_name"], $pasta_destino . $avatar)) {
+            throw new Exception("Falha ao salvar o upload do avatar.");
+        }
     }
 
     $mysql = new MySQLClass();

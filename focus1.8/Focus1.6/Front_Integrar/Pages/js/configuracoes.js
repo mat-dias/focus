@@ -20,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
         focusDuration: 25, shortBreak: 5, longBreak: 15, sessionsLong: 4,
         autoBreak: false, autoFocus: false,
         notifBrowser: true, notifSound: true, notifAchievements: true, reminderTime: '08:00',
-        accentColor: 'cyan', compact: false, animations: true, blur: true,
-        alertVol: 70, musicVol: 40, defaultSound: 'none'
+        accentColor: 'cyan', theme: 'dark',
+        alertVol: 70, musicVol: 40
     };
 
     let settings = { ...defaults, ...JSON.parse(localStorage.getItem('fs_settings') || '{}') };
@@ -33,25 +33,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // A. Cores de Destaque
         const cores = {
-            'cyan': '#06b6d4',
-            'pink': '#ec4899',
+            'cyan':   '#06b6d4',
+            'pink':   '#ec4899',
             'violet': '#8b5cf6',
-            'green': '#10b981',
+            'green':  '#10b981',
             'orange': '#f59e0b'
         };
         const hex = cores[s.accentColor] || cores['cyan'];
-        document.documentElement.style.setProperty('--cyan', hex); // Mantém compatibilidade com o CSS base
-        document.documentElement.style.setProperty('--accent', hex); // Vincula ao novo sistema
+        document.documentElement.style.setProperty('--cyan', hex);
+        document.documentElement.style.setProperty('--accent', hex);
         document.documentElement.style.setProperty('--accent-glow', hex + '80');
 
-        // B. Modo Compacto
-        document.body.classList.toggle('compact-mode', s.compact);
-        document.body.classList.toggle('layout-compact', s.compact);
+        // B. Tema Escuro / Claro
+        document.body.classList.toggle('light-mode', s.theme === 'light');
 
-        // C. Animações e Blur (Classes de controle)
-        document.body.classList.toggle('no-animations', !s.animations);
-        document.body.classList.toggle('no-anims', !s.animations);
-        document.body.classList.toggle('no-blur', !s.blur);
+
     }
 
     // ── Load avatar (Sincronizado com Perfil) ──
@@ -94,14 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── Sincronizar UI com Estado ──
     function loadUI() {
         // Aparência
-        const compactEl = document.getElementById('cfg-compact');
-        if (compactEl) compactEl.checked = settings.compact;
+        // Tema
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === settings.theme);
+        });
 
-        const animsEl = document.getElementById('cfg-animations');
-        if (animsEl) animsEl.checked = settings.animations;
 
-        const blurEl = document.getElementById('cfg-blur');
-        if (blurEl) blurEl.checked = settings.blur;
 
         // Sons
         const alertVolEl = document.getElementById('cfg-alert-vol');
@@ -115,9 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const musicTxtEl = document.getElementById('music-vol-val');
         if (musicTxtEl) musicTxtEl.textContent = settings.musicVol + '%';
-
-        const soundEl = document.getElementById('cfg-default-sound');
-        if (soundEl) soundEl.value = settings.defaultSound;
 
         // Swatches
         document.querySelectorAll('.swatch').forEach(s => {
@@ -153,9 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function collectSettings() {
-        settings.compact = document.getElementById('cfg-compact')?.checked ?? settings.compact;
-        settings.animations = document.getElementById('cfg-animations')?.checked ?? settings.animations;
-        settings.blur = document.getElementById('cfg-blur')?.checked ?? settings.blur;
+        const activeTheme = document.querySelector('.theme-btn.active');
+        if (activeTheme) settings.theme = activeTheme.dataset.theme;
+
+
 
         // Sons
         const alertVolEl = document.getElementById('cfg-alert-vol');
@@ -163,9 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const musicVolEl = document.getElementById('cfg-music-vol');
         if (musicVolEl) settings.musicVol = parseInt(musicVolEl.value);
-
-        const soundEl = document.getElementById('cfg-default-sound');
-        if (soundEl) settings.defaultSound = soundEl.value;
         
         const activeSwatch = document.querySelector('.swatch.active');
         if (activeSwatch) settings.accentColor = activeSwatch.dataset.color;
@@ -194,6 +183,15 @@ document.addEventListener('DOMContentLoaded', () => {
             markDirty();
         });
     }
+
+    // Theme toggle
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            markDirty();
+        });
+    });
 
     // Color swatches logic
     document.querySelectorAll('.swatch').forEach(s => {
