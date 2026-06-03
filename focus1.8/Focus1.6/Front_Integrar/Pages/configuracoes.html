@@ -1,10 +1,12 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Configurações - Focus Study</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <script src="js/theme.js"></script>
   <link rel="stylesheet" href="css/configuracoes.css" />
   <link rel="icon" type="image/png" href="images/poppy.png">
 </head>
@@ -37,19 +39,31 @@
 
     <div class="config-layout">
 
-      <!-- Sidebar de seções -->
       <nav class="config-sidebar">
-        <button class="cfg-tab" data-tab="appearance">🎨 Aparência</button>
-        <button class="cfg-tab" data-tab="sounds">🎵 Sons</button>
-        <button class="cfg-tab" data-tab="data">💾 Dados</button>
-        <button class="cfg-tab" data-tab="support">🆘 Suporte</button>
-        <button class="cfg-tab" data-tab="about">ℹ️ Sobre</button>
+        <button class="cfg-tab" data-tab="appearance">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: -2px;"><path d="M12 22C17.52 22 22 17.52 22 12S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="11.5" cy="7.5" r="1"/><circle cx="16.5" cy="9.5" r="1"/><circle cx="15.5" cy="14.5" r="1"/></svg>
+          Aparência
+        </button>
+        <button class="cfg-tab" data-tab="sounds">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: -2px;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          Sons
+        </button>
+        <button class="cfg-tab" data-tab="data">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: -2px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Dados
+        </button>
+        <button class="cfg-tab" data-tab="support">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: -2px;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Suporte
+        </button>
+        <button class="cfg-tab" data-tab="about">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: -2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Sobre
+        </button>
       </nav>
 
-      <!-- Painéis -->
       <div class="config-panels">
 
-        <!-- Aparência -->
         <div class="cfg-panel" id="tab-appearance">
           <div class="dash-card cfg-card">
             <h3 class="cfg-section-title">Aparência</h3>
@@ -71,39 +85,28 @@
               </div>
               <div class="cfg-row">
                 <div class="cfg-row-info">
-                  <span class="cfg-row-label">Compacto</span>
-                  <span class="cfg-row-desc">Reduz espaçamentos para mais conteúdo</span>
+                  <span class="cfg-row-label">Tema</span>
+                  <span class="cfg-row-desc">Alterne entre modo escuro e claro</span>
                 </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="cfg-compact" />
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-              <div class="cfg-row">
-                <div class="cfg-row-info">
-                  <span class="cfg-row-label">Animações</span>
-                  <span class="cfg-row-desc">Efeitos de transição e entrada</span>
+                <div class="cfg-row-control">
+                  <div class="theme-toggle-group" id="cfg-theme-group">
+                    <button class="theme-btn active" data-theme="dark" title="Modo Escuro">
+                      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                      Escuro
+                    </button>
+                    <button class="theme-btn" data-theme="light" title="Modo Claro">
+                      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                      Claro
+                    </button>
+                  </div>
                 </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="cfg-animations" checked />
-                  <span class="toggle-slider"></span>
-                </label>
               </div>
-              <div class="cfg-row">
-                <div class="cfg-row-info">
-                  <span class="cfg-row-label">Fundo Desfocado (Blur)</span>
-                  <span class="cfg-row-desc">Efeito glassmorphism nos cards</span>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="cfg-blur" checked />
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
+
+
             </div>
           </div>
         </div>
 
-        <!-- Sons -->
         <div class="cfg-panel" id="tab-sounds">
           <div class="dash-card cfg-card">
             <h3 class="cfg-section-title">Sons e Música</h3>
@@ -128,27 +131,10 @@
                   <span class="range-val" id="music-vol-val">40%</span>
                 </div>
               </div>
-              <div class="cfg-row">
-                <div class="cfg-row-info">
-                  <span class="cfg-row-label">Som Padrão de Foco</span>
-                  <span class="cfg-row-desc">Música que inicia automaticamente ao focar</span>
-                </div>
-                <div class="cfg-row-control">
-                  <select id="cfg-default-sound" class="cfg-select">
-                    <option value="none">Nenhum</option>
-                    <option value="lofi">Lo-fi Beats</option>
-                    <option value="rain">Chuva</option>
-                    <option value="forest">Floresta</option>
-                    <option value="cafe">Café</option>
-                    <option value="white">White Noise</option>
-                  </select>
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
-        <!-- Dados -->
         <div class="cfg-panel" id="tab-data">
           <div class="dash-card cfg-card">
             <h3 class="cfg-section-title">Gerenciar Dados</h3>
@@ -185,7 +171,6 @@
           </div>
         </div>
 
-        <!-- Suporte -->
         <div class="cfg-panel" id="tab-support">
           <div class="dash-card cfg-card">
             <h3 class="cfg-section-title">Suporte e Chamados</h3>
@@ -201,7 +186,6 @@
           </div>
         </div>
 
-        <!-- Sobre -->
         <div class="cfg-panel" id="tab-about">
           <div class="dash-card cfg-card about-card">
             <div class="about-logo-zone">
@@ -217,14 +201,15 @@
               <a href="termos.html" class="about-link">Termos de Uso</a>
               <a href="contato.html" class="about-link">Suporte</a>
             </div>
-            <p class="about-copyright">Feito com ❤️ para estudantes dedicados.</p>
+            <p class="about-copyright">
+              Feito com <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="vertical-align: middle; display: inline-block; margin: 0 2px; color: #ec4899;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> para estudantes dedicados.
+            </p>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- Barra de salvar -->
     <div class="save-bar" id="save-bar">
       <span>Você tem alterações não salvas</span>
       <div class="save-bar-actions">
@@ -234,7 +219,6 @@
     </div>
   </main>
 
-  <!-- Modal confirmação reset -->
   <div class="fs-modal-overlay" id="modal-reset">
     <div class="fs-modal">
       <div class="fs-modal-icon pink">
@@ -254,5 +238,6 @@
   <script src="js/script.js"></script>
   <script src="js/configuracoes.js"></script>
   <script src="js/avatar.js"></script>
+<script src=" js/global-timer.js\></script>
 </body>
 </html>

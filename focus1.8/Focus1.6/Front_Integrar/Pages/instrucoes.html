@@ -1,18 +1,17 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Instruções · Focus Study</title>
+  <title>Instruções - Focus Study</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="css/instrucoes.css" />
-  <link rel="icon" type="image/png" href="images/poppy.png">
+  <link class="icon" type="image/png" href="images/poppy.png">
 </head>
 
 <body>
-  <!-- Header -->
   <header class="header">
     <div class="container header-inner">
       <a href="../index.html" class="logo">
@@ -26,6 +25,9 @@
         <a href="../index.html" class="nav-link">Início</a>
         <a href="sobre.html" class="nav-link">Sobre</a>
         <a href="instrucoes.html" class="nav-link active">Instruções</a>
+        <a href="dica.html" class="nav-link">Dicas</a>
+        <a href="organizacao.html" class="nav-link">Rotina</a>
+        <a href="download.html" class="nav-link">Download</a>
       </nav>
       <div class="header-actions">
         <a href="login.html" class="btn-user" aria-label="Minha conta">
@@ -39,7 +41,6 @@
     </div>
   </header>
 
-  <!-- HERO -->
   <section class="inst-hero">
     <div class="hero-background">
       <div class="gradient-blob blob-1"></div>
@@ -59,7 +60,6 @@
     </div>
   </section>
 
-  <!-- TAB NAV -->
   <div class="tab-nav-wrap">
     <div class="tab-nav">
       <button class="tab-btn active" onclick="switchTab('pomodoro', this)">
@@ -91,20 +91,12 @@
         </svg>
         Estatísticas
       </button>
-      <button class="tab-btn" onclick="switchTab('assistant', this)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-        </svg>
-        Focus Assistant
-      </button>
     </div>
   </div>
 
-  <!-- BODY -->
   <div class="inst-body">
     <div class="container">
 
-      <!-- POMODORO  -->
       <div class="tab-panel active" id="panel-pomodoro">
         <div class="inst-layout">
           <aside class="inst-sidebar">
@@ -119,7 +111,7 @@
           <main>
 
             <section class="inst-section" id="o-que-e">
-              <h2>⏱ O que é a Técnica Pomodoro?</h2>
+              <h2><i class="fa-solid fa-stopwatch" style="margin-right: 8px;"></i>O que é a Técnica Pomodoro?</h2>
               <p>A Técnica Pomodoro é um método de gestão do tempo criado por Francesco Cirillo no final dos anos 1980.
                 O nome vem de um timer de cozinha em formato de tomate (<em>pomodoro</em> em italiano) que ele usava na
                 universidade.</p>
@@ -132,12 +124,9 @@
                 </div>
                 <p class="demo-timer-label">Sessão de Foco em andamento</p>
                 <div class="demo-phases">
-                  <span class="demo-phase"><span class="phase-dot" style="background:var(--cyan)"></span> Foco (25
-                    min)</span>
-                  <span class="demo-phase"><span class="phase-dot" style="background:#22c55e"></span> Pausa curta (5
-                    min)</span>
-                  <span class="demo-phase"><span class="phase-dot" style="background:var(--pink)"></span> Pausa longa
-                    (15 min)</span>
+                  <span class="demo-phase"><span class="phase-dot" style="background:var(--cyan)"></span> Foco (25 min)</span>
+                  <span class="demo-phase"><span class="phase-dot" style="background:#22c55e"></span> Pausa curta (5 min)</span>
+                  <span class="demo-phase"><span class="phase-dot" style="background:var(--pink)"></span> Pausa longa (15 min)</span>
                 </div>
               </div>
             </section>
@@ -156,7 +145,7 @@
               </ol>
 
               <div class="tip-box">
-                <span class="tip-icon">💡</span>
+                <span class="tip-icon"><i class="fa-regular fa-lightbulb"></i></span>
                 <p><strong>Dica:</strong> Durante a sessão de foco, feche abas desnecessárias, silencie notificações e
                   avise as pessoas ao redor que você está em modo de foco. Cada interrupção faz o cérebro levar até 23
                   minutos para reconcentrar totalmente.</p>
@@ -184,7 +173,7 @@
               <h2>Dicas para Maximizar o Foco</h2>
 
               <div class="steps-card">
-                <h3 style="margin-top:0">🧠 Regras de Ouro do Pomodoro</h3>
+                <h3 style="margin-top:0"><i class="fa-regular fa-star" style="margin-right: 8px;"></i>Regras de Ouro do Pomodoro</h3>
                 <ul>
                   <li>Se a tarefa for muito pequena, agrupe várias no mesmo pomodoro.</li>
                   <li>Se surgir uma ideia, anote-a rapidamente e continue — não quebre a sessão.</li>
@@ -199,7 +188,6 @@
         </div>
       </div>
 
-      <!-- MISSÕES E HORÁRIOS -->
       <div class="tab-panel" id="panel-missoes">
         <div class="inst-layout">
           <aside class="inst-sidebar">
@@ -214,9 +202,12 @@
           <main>
 
             <section class="inst-section" id="visao-horarios">
-              <h2>⏰ Missões e Horários</h2>
-              <p>As missões no Focus Study são geradas automaticamente a partir dos <strong>horários</strong> que você configura. Quando você cria um horário de estudo ou atividade, ele se torna uma missão no seu painel de foco.</p>
-              <p>Dessa forma, suas tarefas diárias estão sempre alinhadas com seu cronograma, garantindo que você cumpra o que foi planejado.</p>
+              <h2><i class="fa-regular fa-calendar-check" style="margin-right: 8px;"></i>Missões e Horários</h2>
+              <p>As missões no Focus Study são geradas automaticamente a partir dos <strong>horários</strong> que você
+                configura. Quando você cria um horário de estudo ou atividade, ele se torna uma missão no seu painel de
+                foco.</p>
+              <p>Dessa forma, suas tarefas diárias estão sempre alinhadas com seu cronograma, garantindo que você cumpra
+                o que foi planejado.</p>
             </section>
 
             <hr class="divider-line">
@@ -232,8 +223,9 @@
                 <li>Salve o horário.</li>
               </ol>
               <div class="tip-box">
-                <span class="tip-icon">💡</span>
-                <p>Dê nomes específicos aos seus horários. "Estudar Cálculo de 14h às 15h" é melhor que apenas "Estudar".</p>
+                <span class="tip-icon"><i class="fa-regular fa-lightbulb"></i></span>
+                <p>Dê nomes específicos aos seus horários. "Estudar Cálculo de 14h às 15h" é melhor que apenas
+                  "Estudar".</p>
               </div>
             </section>
 
@@ -241,11 +233,12 @@
 
             <section class="inst-section" id="missoes-automaticas">
               <h2>Missões Automáticas</h2>
-              <p>Quando você cria um horário, ele é automaticamente adicionado como uma <strong>missão</strong> para aquele dia. Você verá a missão no seu <strong>Painel de Foco</strong> no dia agendado.</p>
+              <p>Quando você cria um horário, ele é automaticamente adicionado como uma <strong>missão</strong> para
+                aquele dia. Você verá a missão no seu <strong>Painel de Foco</strong> no dia agendado.</p>
               <ul>
                 <li>Cada horário criado = uma missão a cumprir.</li>
                 <li>As missões aparecem listadas no painel principal com checkboxes.</li>
-                <li>Você pode visualizar todas as missões do dia em um só lugar.</li>
+                <li>You pode visualizar todas as missões do dia em um só lugar.</li>
               </ul>
             </section>
 
@@ -253,15 +246,17 @@
 
             <section class="inst-section" id="marcar-conclusao">
               <h2>Marcando Conclusão de Missões</h2>
-              <p>No <strong>Painel de Foco</strong>, clique no checkbox ao lado de cada missão para marcar como concluída:</p>
+              <p>No <strong>Painel de Foco</strong>, clique no checkbox ao lado de cada missão para marcar como
+                concluída:</p>
               <ul>
                 <li><strong>Checkbox vazio:</strong> Missão ainda não completada.</li>
                 <li><strong>Checkbox marcado:</strong> Missão cumprida (aparece com texto riscado).</li>
                 <li><strong>Barra de progresso:</strong> Mostra quantas missões você já completou hoje.</li>
               </ul>
               <div class="tip-box">
-                <span class="tip-icon">🎯</span>
-                <p>Sua progressão nas missões é registrada e aparece nas <strong>Estatísticas</strong>, ajudando você a acompanhar sua produtividade ao longo do tempo.</p>
+                <span class="tip-icon"><i class="fa-solid fa-crosshairs"></i></span>
+                <p>Sua progressão nas missões é registrada e aparece nas <strong>Estatísticas</strong>, ajudando você a
+                  acompanhar sua produtividade ao longo do tempo.</p>
               </div>
             </section>
 
@@ -269,7 +264,6 @@
         </div>
       </div>
 
-      <!-- PAINEL DE FOCO -->
       <div class="tab-panel" id="panel-painel">
         <div class="inst-layout">
           <aside class="inst-sidebar">
@@ -284,8 +278,9 @@
           <main>
 
             <section class="inst-section" id="painel-intro">
-              <h2>🎯 Painel de Foco</h2>
-              <p>O Painel de Foco é a tela principal onde você acompanha suas missões diárias, usa o timer Pomodoro e desfruta de música relaxante para manter a concentração.</p>
+              <h2><i class="fa-solid fa-crosshairs" style="margin-right: 8px;"></i>Painel de Foco</h2>
+              <p>O Painel de Foco é a tela principal onde você acompanha suas missões diárias, usa o timer Pomodoro e
+                desfruta de música relaxante para manter a concentração.</p>
               <p>Tudo está organizado em um layout intuitivo que prioriza sua produtividade.</p>
             </section>
 
@@ -296,33 +291,37 @@
               <p>O Painel de Foco contém 3 seções principais:</p>
               <ul>
                 <li><strong>Timer Pomodoro (esquerda):</strong> Suas sessões de foco com diferentes durações.</li>
-                <li><strong>Minhas Missões (direita):</strong> Lista de tarefas do dia com checkboxes para marcar conclusão.</li>
-                <li><strong>Música para Foco (abaixo):</strong> Player com faixas relaxantes para acompanhá-lo durante os estudos.</li>
+                <li><strong>Minhas Missões (direita):</strong> Lista de tarefas do dia com checkboxes para marcar
+                  conclusão.</li>
+                <li><strong>Música para Foco (abaixo):</strong> Player com faixas relaxantes para acompanhá-lo durante
+                  os estudos.</li>
               </ul>
             </section>
 
             <hr class="divider-line">
 
             <section class="inst-section" id="timer-pomodoro-painel">
-              <h2>⏱ Usando o Timer Pomodoro</h2>
+              <h2><i class="fa-solid fa-stopwatch" style="margin-right: 8px;"></i>Usando o Timer Pomodoro</h2>
               <p>O timer Pomodoro no painel permite iniciar sessões de foco rápidas:</p>
               <ol>
-                <li>Escolha um modo: <strong>Foco (25min)</strong>, <strong>Pausa Curta (5min)</strong> ou <strong>Pausa Longa (15min)</strong>.</li>
+                <li>Escolha um modo: <strong>Foco (25min)</strong>, <strong>Pausa Curta (5min)</strong> ou <strong>Pausa
+                    Longa (15min)</strong>.</li>
                 <li>Clique em <strong>Iniciar</strong> para começar a contagem regressiva.</li>
                 <li>Use <strong>Resetar</strong> para voltar ao tempo original.</li>
                 <li>A contagem aparece em tempo real com um visual destacado.</li>
                 <li>Você pode expandir para tela cheia clicando no ícone de fullscreen.</li>
               </ol>
               <div class="tip-box">
-                <span class="tip-icon">🔔</span>
-                <p>Ao terminar um pomodoro, você recebe uma notificação. O contador de sessões (bolinhas) mostra quantas você completou hoje.</p>
+                <span class="tip-icon"><i class="fa-regular fa-bell"></i></span>
+                <p>Ao terminar um pomodoro, você recebe uma notificação. O contador de sessões (bolinhas) mostra quantas
+                  você completou hoje.</p>
               </div>
             </section>
 
             <hr class="divider-line">
 
             <section class="inst-section" id="player-musica">
-              <h2>🎵 Player de Música para Foco</h2>
+              <h2><i class="fa-solid fa-music" style="margin-right: 8px;"></i>Player de Música para Foco</h2>
               <p>O player integrado oferece várias faixas musicais curadas para aumentar concentração:</p>
               <ul>
                 <li><strong>Seleção de faixas:</strong> Clique em uma música para ouvi-la.</li>
@@ -331,8 +330,9 @@
                 <li><strong>Volume:</strong> Ajuste o som conforme sua preferência.</li>
               </ul>
               <div class="tip-box">
-                <span class="tip-icon">🎧</span>
-                <p>Encontre a música perfeita para seu estudo. Algumas pessoas concentram melhor com sons relaxantes, outras com ritmos suaves. Experimente e descubra sua preferência.</p>
+                <span class="tip-icon"><i class="fa-solid fa-headphones"></i></span>
+                <p>Encontre a música perfeita para seu estudo. Algumas pessoas concentram melhor com sons relaxantes,
+                  as outras com ritmos suaves. Experimente e descubra sua preferência.</p>
               </div>
             </section>
 
@@ -340,7 +340,6 @@
         </div>
       </div>
 
-      <!-- ESTATÍSTICAS -->
       <div class="tab-panel" id="panel-estatisticas">
         <div class="inst-layout">
           <aside class="inst-sidebar">
@@ -355,8 +354,10 @@
           <main>
 
             <section class="inst-section" id="visao-geral-stats">
-              <h2>📊 Suas Estatísticas</h2>
-              <p>A página de Estatísticas oferece uma visão completa do seu progresso com base nas missões cumpridas. Você pode acompanhar seu desempenho em diferentes períodos de tempo e identificar padrões de produtividade.</p>
+              <h2><i class="fa-solid fa-chart-simple" style="margin-right: 8px;"></i>Suas Estatísticas</h2>
+              <p>A página de Estatísticas oferece uma visão completa do seu progresso com base nas missões cumpridas.
+                Você pode acompanhar seu desempenho em diferentes períodos de tempo e identificar padrões de
+                produtividade.</p>
             </section>
 
             <hr class="divider-line">
@@ -377,10 +378,13 @@
 
             <section class="inst-section" id="graficos-stats">
               <h2>Gráficos Interativos</h2>
-              <p>O gráfico de progresso mostra as <strong>missões cumpridas</strong> (barras cyan) versus o <strong>total de missões</strong> (barras cinzentas) para cada período. Use os botões ← e → para navegar entre períodos anteriores e posteriores.</p>
+              <p>O gráfico de progresso mostra as <strong>missões cumpridas</strong> (barras cyan) versus o
+                <strong>total de missões</strong> (barras cinzentas) para cada período. Use os botões ← e → para navegar
+                entre períodos anteriores e posteriores.</p>
               <div class="tip-box">
-                <span class="tip-icon">📈</span>
-                <p>Quanto maior a altura da barra cyan em relação à cinzenta, maior sua taxa de conclusão. Uma barra cyan alta e consistente indica um padrão saudável de produtividade.</p>
+                <span class="tip-icon"><i class="fa-solid fa-chart-line"></i></span>
+                <p>Quanto maior a altura da barra cyan em relação à cinzenta, maior sua taxa de conclusão. Uma barra
+                  cyan alta e consistente indica um padrão saudável de produtividade.</p>
               </div>
             </section>
 
@@ -388,89 +392,17 @@
 
             <section class="inst-section" id="heatmap-anual">
               <h2>Heatmap Anual (Visão do Ano)</h2>
-              <p>A visualização tipo heatmap mostra cada dia do ano como uma pequena célula. Quanto mais intensa a cor cyan, mais missões você completou naquele dia.</p>
+              <p>A visualização tipo heatmap mostra cada dia do ano como uma pequena célula. Quanto mais intensa a cor
+                cyan, mais missões você completou naquele dia.</p>
               <ul>
                 <li><strong>Cores mais claras:</strong> Poucos ou nenhum missões cumpridas.</li>
                 <li><strong>Cores mais vibrantes:</strong> Alta atividade e muitas missões concluídas.</li>
                 <li><strong>Passe o mouse:</strong> Veja detalhes de quantas missões você cumpriu em cada dia.</li>
               </ul>
               <div class="tip-box">
-                <span class="tip-icon">🎯</span>
-                <p>Use o heatmap para visualizar sua consistência ao longo do ano. Você está estudando regularmente? Tem fins de semana menos produtivos? Identifique seus padrões e melhore.</p>
-              </div>
-            </section>
-
-          </main>
-        </div>
-      </div>
-
-      <!-- ASSISTANT -->
-      <div class="tab-panel" id="panel-assistant">
-        <div class="inst-layout">
-          <aside class="inst-sidebar">
-            <p class="sidebar-label">Nesta seção</p>
-            <nav class="sidebar-nav">
-              <a href="#poppy-intro">Quem é a Poppy</a>
-              <a href="#o-que-faz">O que ela faz</a>
-              <a href="#como-usar-poppy">Como Usar</a>
-              <a href="#exemplos">Exemplos de Perguntas</a>
-            </nav>
-          </aside>
-          <main>
-
-            <section class="inst-section" id="poppy-intro">
-              <h2>🐰 Poppy — Focus Assistant</h2>
-              <p>A Poppy é a assistente virtual do Focus Study, acessível pelo widget no canto inferior direito da tela.
-                Ela foi treinada para ajudar estudantes e profissionais a otimizar seus estudos, técnicas de foco e
-                rotinas produtivas.</p>
-            </section>
-
-            <hr class="divider-line">
-
-            <section class="inst-section" id="o-que-faz">
-              <h2>O que a Poppy faz?</h2>
-              <ul>
-                <li>Responde dúvidas sobre técnicas de estudo e produtividade.</li>
-                <li>Sugere estratégias personalizadas de foco baseadas no seu contexto.</li>
-                <li>Explica conceitos difíceis de forma simples.</li>
-                <li>Ajuda a planejar sessões de estudo e definir prioridades.</li>
-                <li>Motiva e oferece suporte emocional nos momentos de procrastinação.</li>
-              </ul>
-            </section>
-
-            <hr class="divider-line">
-
-            <section class="inst-section" id="como-usar-poppy">
-              <h2>Como Usar</h2>
-              <ol>
-                <li>Clique no ícone da Poppy no canto inferior direito da tela.</li>
-                <li>Digite sua pergunta ou desafio no campo de texto.</li>
-                <li>Pressione Enter ou clique no botão enviar.</li>
-                <li>A Poppy responderá em poucos segundos com orientações personalizadas.</li>
-              </ol>
-              <p>No plano Grátis, você tem 10 mensagens por dia. Planos pagos têm acesso ilimitado.</p>
-            </section>
-
-            <hr class="divider-line">
-
-            <section class="inst-section" id="exemplos">
-              <h2>Exemplos de Perguntas</h2>
-
-              <div class="steps-card">
-                <ul>
-                  <li>"Como posso parar de procrastinar quando não tenho vontade de estudar?"</li>
-                  <li>"Me explica como funciona o método Feynman para aprender melhor."</li>
-                  <li>"Qual a melhor forma de estudar para provas com pouco tempo?"</li>
-                  <li>"Crie um plano de estudos de 2 semanas para [matéria]."</li>
-                  <li>"Como manter o foco por mais de 1 hora sem me distrair?"</li>
-                  <li>"Me dê 3 técnicas de memorização para vocabulário."</li>
-                </ul>
-              </div>
-
-              <div class="tip-box">
-                <span class="tip-icon">🐰</span>
-                <p>Quanto mais contexto você der à Poppy (seu objetivo, nível de conhecimento, tempo disponível), mais
-                  precisa e útil será a resposta dela.</p>
+                <span class="tip-icon"><i class="fa-solid fa-crosshairs"></i></span>
+                <p>Use o heatmap para visualizar sua consistência ao longo do ano. Você está estudando regularmente? Tem
+                  fins de semana menos produtivos? Identifique seus padrões e melhore.</p>
               </div>
             </section>
 
@@ -481,109 +413,48 @@
     </div>
   </div>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="footer-glow"></div>
-
     <div class="container">
-
-      <!-- TOPO DO FOOTER -->
       <div class="footer-top">
-
-        <!-- MARCA -->
         <div class="footer-brand">
-          <a href="index.html" class="footer-logo">
-            <svg class="icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
+          <a href="../index.html" class="footer-logo">
+            <svg class="icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
             <span>Focus Study</span>
           </a>
-          <p class="footer-tagline">
-            Domine sua concentração.<br>Alcance o próximo nível.
-          </p>
+          <p class="footer-tagline">Domine sua concentração.<br>Alcance o próximo nível.</p>
           <div class="footer-socials">
-            <a href="#" class="social-link" title="Twitter/X" aria-label="Twitter">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.266 5.64 5.898-5.64Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-            </a>
-            <a href="#" class="social-link" title="GitHub" aria-label="GitHub">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-              </svg>
-            </a>
-            <a href="#" class="social-link" title="LinkedIn" aria-label="LinkedIn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.39v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M7 8a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
-              </svg>
-            </a>
-            <a href="#" class="social-link" title="Instagram" aria-label="Instagram">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-              </svg>
-            </a>
+            <a href="#" class="social-link" aria-label="Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.266 5.64 5.898-5.64Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            <a href="https://github.com/mat-dias/focus" class="social-link" aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></a>
+            <a href="#" class="social-link" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.39v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M7 8a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg></a>
+            <a href="#" class="social-link" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
           </div>
         </div>
-
-        <!-- NAVEGAÇÃO -->
         <div class="footer-nav-group">
           <h4 class="footer-heading">Produto</h4>
           <ul class="footer-links">
             <li><a href="../index.html">Início</a></li>
             <li><a href="../index.html#funcionalidades">Funcionalidades</a></li>
             <li><a href="../index.html#como-funciona">Como Funciona</a></li>
-            <li><a href="../index.html#numeros">Nossos Números</a></li>
           </ul>
         </div>
-
         <div class="footer-nav-group">
           <h4 class="footer-heading">Empresa</h4>
           <ul class="footer-links">
             <li><a href="sobre.html">Sobre Nós</a></li>
-            <li><a href="contato.html">Contato</a></li>
-            <li><a href="planos.html">Planos</a></li>
             <li><a href="instrucoes.html">Instruções</a></li>
           </ul>
         </div>
-
         <div class="footer-nav-group">
-          <h4 class="footer-heading">Legal</h4>
+          <h4 class="footer-heading">Informativo</h4>
           <ul class="footer-links">
-            <li><a href="privacidade.html">Privacidade</a></li>
-            <li><a href="termos.html">Termos de Uso</a></li>
-            <li><a href="cookies.html">Cookies</a></li>
+            <li><a href="dica.html">Dicas de Foco</a></li>
+            <li><a href="organizacao.html">Organização Rotineira</a></li>
+            <li><a href="download.html">Download do App</a></li>
           </ul>
         </div>
-
-        <!-- NEWSLETTER -->
-        <div class="footer-newsletter">
-          <h4 class="footer-heading">Fique por dentro</h4>
-          <p>Dicas de foco e produtividade direto no seu e-mail.</p>
-          <form class="newsletter-form" onsubmit="return false;">
-            <input type="email" placeholder="seu@email.com" aria-label="E-mail para newsletter" />
-            <button type="submit" aria-label="Inscrever">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </button>
-          </form>
-        </div>
-
-      </div><!-- /footer-top -->
-
-      <!-- DIVISOR -->
+      </div>
       <div class="footer-divider"></div>
-
-      <!-- RODAPÉ INFERIOR -->
       <div class="footer-bottom">
         <p>&copy; 2026 Focus Study. Todos os direitos reservados.</p>
         <div class="footer-bottom-links">
@@ -592,11 +463,9 @@
           <a href="cookies.html">Cookies</a>
         </div>
       </div>
-
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="js/script.js"></script>
   <script src="js/instrucoes.js"></script>
 </body>
