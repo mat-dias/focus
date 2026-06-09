@@ -1,4 +1,6 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as PHPMailerException;
 session_start();
 header('Content-Type: application/json; charset=utf-8');
 
@@ -216,11 +218,138 @@ try {
             exit;
         }
 
-        $stmt = $conn->prepare("UPDATE calls SET reply = ?, replied_at = NOW(), status = 'replied', updated_at = NOW() WHERE call_id = ?");
-        $stmt->bind_param('si', $reply, $id);
-        $stmt->execute();
+        // BUSCAR O E-MAIL, NOME DO USUÁRIO E O ASSUNTO ORIGINAL DO CHAMADO
+        $stmtUser = $conn->prepare("
+            SELECT u.email, p.username, c.subject, c.message 
+            FROM calls c
+            LEFT JOIN profiles p ON c.profile_id = p.profile_id
+            LEFT JOIN users u ON u.user_id = p.user_id
+            WHERE c.call_id = ? 
+            LIMIT 1
+        ");
+        $stmtUser->bind_param('i', $id);
+        $stmtUser->execute();
+        $userData = $stmtUser->get_result()->fetch_object();
 
-        echo json_encode(['success' => true, 'message' => 'Resposta enviada com sucesso']);
+        // Se o email não for encontrado, barramos ANTES de atualizar o banco de dados
+        if (!$userData || empty($userData->email)) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Não foi possível encontrar o e-mail deste usuário no banco. Verifique as relações entre as tabelas users e profiles.'
+            ]);
+            exit;
+        }
+
+        // DISPARAR O E-MAIL PRIMEIRO
+        try {
+            $pathException = __DIR__ . '/../PHPMailer/Exception.php';
+            $pathPHPMailer = __DIR__ . '/../PHPMailer/PHPMailer.php';
+            $pathSMTP      = __DIR__ . '/../PHPMailer/SMTP.php';
+            $pathSenha     = __DIR__ . '/senha_email.php';
+
+            if (!file_exists($pathException) || !file_exists($pathPHPMailer) || !file_exists($pathSMTP)) {
+                throw new \Exception("Arquivos da biblioteca PHPMailer não foram encontrados.");
+            }
+            if (!file_exists($pathSenha)) {
+                throw new \Exception("Arquivo senha_email.php não encontrado.");
+            }
+
+            require_once $pathException;
+            require_once $pathPHPMailer;
+            require_once $pathSMTP;
+            require_once $pathSenha; 
+
+            $mail = new PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = USER;
+            $mail->Password = PWD;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+            $mail->CharSet = 'UTF-8';
+            
+            $mail->SMTPOptions = [
+                'ssl' => [
+                    'verify_peer' => false, 
+                    'verify_peer_name' => false, 
+                    'allow_self_signed' => true
+                ]
+            ];
+
+            $mail->setFrom(USER, 'Suporte - Focus Study');
+            
+            $nomeDestinatario = htmlspecialchars($userData->username ?? "Usuário");
+            $emailDestinatario = $userData->email;
+            $assuntoOriginal = htmlspecialchars($userData->subject);
+            $mensagemOriginal = nl2br(htmlspecialchars($userData->message));
+            $respostaAdmin = nl2br(htmlspecialchars($reply));
+
+            $mail->addAddress($emailDestinatario, $nomeDestinatario);
+            $mail->isHTML(true);
+            $mail->Subject = "RE: " . $assuntoOriginal . " - Focus Study";
+
+            $mail->Body = "
+            <div style='background-color: #0b1120; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif; min-height: 100%;'>
+            <table align='center' border='0' cellpadding='0' cellspacing='0' width='100%' style='max-width: 500px; background-color: #151f32; border: 1.5px solid #22314d; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); border-collapse: separate;'>
+                <tr>
+                    <td style='padding: 40px 32px;'>
+                        <div style='text-align: center; margin-bottom: 24px;'>
+                            <div style='margin: 0 auto; width: 56px; height: 56px; background-color: rgba(6, 182, 212, 0.1); border: 1.5px solid rgba(6, 182, 212, 0.3); border-radius: 16px; text-align: center;'>
+                                <span style='font-size: 28px; line-height: 54px; color: #06b6d4;'>💬</span>
+                            </div>
+                            <h2 style='color: #ffffff; font-size: 22px; font-weight: 800; margin: 16px 0 4px 0; letter-spacing: -0.02em;'>
+                                Chamado Respondido!
+                            </h2>
+                            <p style='color: #64748b; font-size: 13px; margin: 0;'>Protocolo do Chamado: #{$id}</p>
+                        </div>
+
+                        <p style='color: #ffffff; font-size: 15px; font-weight: 700; margin: 0 0 8px 0;'>Olá, {$nomeDestinatario},</p>
+                        <p style='color: #94a3b8; font-size: 14px; line-height: 1.6; margin: 0 0 24px 0;'>
+                            A equipe de suporte do <strong>Focus Study</strong> enviou uma resposta para a sua solicitação. Veja os detalhes abaixo:
+                        </p>
+
+                        <div style='background-color: rgba(6, 182, 212, 0.05); border-left: 4px solid #06b6d4; padding: 16px; border-radius: 4px 12px 12px 4px; margin-bottom: 24px;'>
+                            <strong style='color: #06b6d4; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 6px;'>Resposta do Suporte:</strong>
+                            <p style='color: #e2e8f0; font-size: 14px; line-height: 1.6; margin: 0;'>{$respostaAdmin}</p>
+                        </div>
+
+                        <div style='background-color: #1e293b; padding: 16px; border-radius: 12px; border: 1px solid #2d3748;'>
+                            <strong style='color: #94a3b8; font-size: 12px; display: block; margin-bottom: 6px;'>Sua mensagem original ({$assuntoOriginal}):</strong>
+                            <p style='color: #64748b; font-size: 13px; line-height: 1.5; margin: 0; font-style: italic;'>\"{$mensagemOriginal}\"</p>
+                        </div>
+
+                        <hr style='border: 0; border-top: 1px solid #22314d; margin: 32px 0 20px 0;'>
+
+                        <p style='font-size: 12px; color: #64748b; line-height: 1.5; text-align: center; margin: 0;'>
+                            Se precisar de mais ajuda, basta responder diretamente a este e-mail ou abrir um novo ticket pelo painel.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            </div>";
+
+            $mail->send();
+            
+            // ATUALIZAR O CHAMADO NO BANCO APENAS SE O EMAIL FOR ENVIADO COM SUCESSO
+            $stmt = $conn->prepare("UPDATE calls SET reply = ?, replied_at = NOW(), status = 'replied', updated_at = NOW() WHERE call_id = ?");
+            $stmt->bind_param('si', $reply, $id);
+            $stmt->execute();
+
+            echo json_encode(['success' => true, 'message' => 'Resposta gravada e e-mail enviado com sucesso!']);
+            
+        } catch (PHPMailerException $e) {
+            echo json_encode([
+                'success' => false, 
+                'message' => 'O chamado não foi respondido. Falha na autenticação do e-mail (SMTP): ' . $mail->ErrorInfo
+            ]);
+        } catch (\Exception $e) {
+            echo json_encode([
+                'success' => false, 
+                'message' => 'O chamado não foi respondido. Erro interno: ' . $e->getMessage()
+            ]);
+        }
         exit;
     }
 

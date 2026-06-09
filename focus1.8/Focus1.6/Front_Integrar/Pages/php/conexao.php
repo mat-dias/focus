@@ -23,7 +23,7 @@ if (!function_exists('loadEnv')) {
 function getConexao() 
 { 
     try {
-        loadEnv(__DIR__ . '/../../.env');
+        loadEnv(__DIR__ . '/../../.env'); //alterar baseado em como fica a estrutura de pastas do projeto
     } catch (Exception $e) {
     }
 
